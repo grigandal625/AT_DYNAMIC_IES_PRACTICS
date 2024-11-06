@@ -11,3 +11,4 @@ RUN apt-get update && apt-get install -y --no-install-recommends --fix-missing l
 RUN pip install poetry
 COPY ./package/pyproject.toml ./
 RUN poetry install
+RUN poetry update
