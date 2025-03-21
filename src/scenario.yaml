@@ -1,5 +1,8 @@
 initial_attributes:
   attempts: 0
+  kb_editor_host: 45.148.245.134
+  kb_editor_port: 8787
+
 states:
 
   # состояния для технологии построения темпоральных БЗ
@@ -18,7 +21,7 @@ states:
     initial: false
     frame_rows:
       kb_editor:
-        src: http://185.17.141.230:8787/token?token={auth_token}&frame_id=kb_editor
+        src: http://{kb_editor_host}:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/new
         span: 20
@@ -33,7 +36,7 @@ states:
     initial: false
     frame_rows:
       kb_editor:
-        src: http://185.17.141.230:8787/token?token={auth_token}&frame_id=kb_editor
+        src: http://{kb_editor_host}:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/types
         span: 20
@@ -48,7 +51,7 @@ states:
     initial: false
     frame_rows:
       kb_editor:
-        src: http://185.17.141.230:8787/token?token={auth_token}&frame_id=kb_editor
+        src: http://{kb_editor_host}:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/objects/base_objects
   building_intervals:
@@ -58,7 +61,7 @@ states:
     initial: false
     frame_rows:
       kb_editor:
-        src: http://185.17.141.230:8787/token?token={auth_token}&frame_id=kb_editor
+        src: http://{kb_editor_host}:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/objects/intervals
   building_events:
@@ -68,7 +71,7 @@ states:
     initial: false
     frame_rows:
       kb_editor:
-        src: http://185.17.141.230:8787/token?token={auth_token}&frame_id=kb_editor
+        src: http://{kb_editor_host}:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/objects/events
   building_rules:
@@ -78,7 +81,7 @@ states:
     initial: false
     frame_rows:
       kb_editor:
-        src: http://185.17.141.230:8787/token?token={auth_token}&frame_id=kb_editor
+        src: http://{kb_editor_host}:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/rules
   exporting_kb:
@@ -88,7 +91,7 @@ states:
     initial: false
     frame_rows:
       kb_editor:
-        src: http://185.17.141.230:8787/token?token={auth_token}&frame_id=kb_editor
+        src: http://{kb_editor_host}:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}
   kb_finished:
@@ -154,6 +157,16 @@ transitions:
       - set_attribute:
           attribute: test_status
           value: kb_creation
+  proceed_sm:
+    type: link
+    position: control
+    source: kb_start
+    dest: sm_creation
+    label: Приступить к работе 2 - Технология построения имитационных моделей внешней среды
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: sm_creation
   build_types:
     type: frame_handler
     frame_id: kb_editor
@@ -408,6 +421,23 @@ events:
           attribute: skills_result
           value:
             event_data: []
+          next:
+            - show_message:
+                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
+
+  templates/create:
+    actions:
+      - set_attribute:
+          attribute: skills_result
+          value: $event_data
+          next:
+            - show_message:
+                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
+  templates/update:
+    actions:
+      - set_attribute:
+          attribute: skills_result
+          value: $event_data
           next:
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
