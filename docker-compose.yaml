@@ -274,6 +274,11 @@ services:
     depends_on:
       at_queue:
         condition: service_healthy
+    healthcheck:
+      test: ps -p $(cat /var/run/at_controller/pidfile.pid) || exit 1
+      interval: 1s
+      timeout: 3s
+      retries: 30
     networks:
       - custom-network
 
@@ -289,6 +294,8 @@ services:
       --config ${AT_CONFIGURATOR_CONFIG}
     depends_on:
       at_queue:
+        condition: service_healthy
+      at_controller:
         condition: service_healthy
     networks:
       - custom-network
@@ -321,7 +328,7 @@ services:
       retries: 10
     volumes:
       - knowledge-postgres-data:/var/lib/postgresql/data
-    command: postgres -c port=${AT_KRL_EDITOR_DB_PORT}
+    command: postgres -c port=${AT_KRL_EDITOR_DB_PORT} -c password_encryption=scram-sha-256
 
   at_redis:
     container_name: at_redis
@@ -339,7 +346,7 @@ services:
       --port ${REDIS_PORT}
       --maxmemory "${REDIS_MAXMEMORY}"
     environment:
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
     healthcheck:
       test: >
         redis-cli
@@ -388,8 +395,8 @@ services:
     ports:
       - "${AT_KRL_EDITOR_FRONT_PORT}:${AT_KRL_EDITOR_FRONT_PORT}"
     environment:
-      - PORT=${AT_KRL_EDITOR_FRONT_PORT}
-      - API_PORT=${AT_KRL_EDITOR_FRONT_API_PORT}
+      PORT: ${AT_KRL_EDITOR_FRONT_PORT}
+      API_PORT: ${AT_KRL_EDITOR_FRONT_API_PORT}
     restart: unless-stopped
     networks:
       - custom-network
@@ -400,8 +407,8 @@ services:
     ports:
       - "${AT_SIMULATION_FRONT_PORT}:${AT_SIMULATION_FRONT_PORT}"
     environment:
-      - PORT=${AT_SIMULATION_FRONT_PORT}
-      - API_PORT=${AT_SIMULATION_FRONT_API_PORT}
+      PORT: ${AT_SIMULATION_FRONT_PORT}
+      API_PORT: ${AT_SIMULATION_FRONT_API_PORT}
     restart: unless-stopped
     networks:
       - custom-network
