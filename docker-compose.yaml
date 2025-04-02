@@ -7,24 +7,24 @@ services:
     container_name: at_rabbitmq
     image: "rabbitmq:management"
     ports:
-      - "${RABBITMQ_UI_PORT}:15672"  
-      - "${RABBITMQ_PORT}:5672"    
+      - "${RABBITMQ_UI_PORT}:15672"
+      - "${RABBITMQ_PORT}:5672"
     networks:
       - custom-network
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_LOGIN}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
     healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "check_running"]
+      test: rabbitmq-diagnostics check_running
       interval: 5s
       timeout: 10s
       retries: 20
-    
+
   at_queue:
     container_name: at_queue
     build:
       dockerfile: ./docker/Dockerfile.at_queue
-    command: > 
+    command: >
       python -m at_queue
       --host at_rabbitmq
       --port ${AT_QUEUE_RABBITMQ_PORT}
@@ -33,7 +33,7 @@ services:
       --debugger-host 0.0.0.0
       --debugger-port ${AT_QUEUE_DEBUGGER_PORT}
     ports:
-      - "${AT_QUEUE_DEBUGGER_PORT}:${AT_QUEUE_DEBUGGER_PORT}"  
+      - "${AT_QUEUE_DEBUGGER_PORT}:${AT_QUEUE_DEBUGGER_PORT}"
     expose:
       - "${AT_QUEUE_DEBUGGER_PORT}"
     networks:
@@ -53,7 +53,7 @@ services:
     expose:
       - "${AT_SIMULATION_DB_PORT}"
     ports:
-      - "${AT_SIMULATION_DB_PORT}:${AT_SIMULATION_DB_PORT}"  
+      - "${AT_SIMULATION_DB_PORT}:${AT_SIMULATION_DB_PORT}"
     environment:
       POSTGRES_USER: ${AT_SIMULATION_DB_USER}
       POSTGRES_PASSWORD: ${AT_SIMULATION_DB_PASS}
@@ -62,13 +62,18 @@ services:
     networks:
       - custom-network
     healthcheck:
-      test: pg_isready --dbname=${AT_SIMULATION_DB_NAME} --username=${AT_SIMULATION_DB_USER} --host=localhost --port=${AT_SIMULATION_DB_PORT}
-      interval: 10s  
+      test: >
+        pg_isready
+        --dbname=${AT_SIMULATION_DB_NAME}
+        --username=${AT_SIMULATION_DB_USER}
+        --host=localhost
+        --port=${AT_SIMULATION_DB_PORT}
+      interval: 10s
       timeout: 5s
-      retries: 10 
+      retries: 10
     volumes:
       - simulation-postgres-data:/var/lib/postgresql/data
-    command: ["postgres", "-c", "port=${AT_SIMULATION_DB_PORT}"]
+    command: postgres -c port=${AT_SIMULATION_DB_PORT}
 
   at_minio:
     container_name: at_minio
@@ -145,14 +150,14 @@ services:
         condition: service_healthy
     networks:
       - custom-network
-    
+
   at_user_db:
     container_name: at_user_db
     image: "postgres:alpine"
     expose:
       - "${AT_USER_DB_PORT}"
     ports:
-      - "${AT_USER_DB_PORT}:${AT_USER_DB_PORT}"  
+      - "${AT_USER_DB_PORT}:${AT_USER_DB_PORT}"
     environment:
       POSTGRES_USER: ${AT_USER_DB_USER}
       POSTGRES_PASSWORD: ${AT_USER_DB_PASS}
@@ -161,14 +166,19 @@ services:
     networks:
       - custom-network
     healthcheck:
-      test: pg_isready --dbname=${AT_USER_DB_NAME} --username=${AT_USER_DB_USER} --host=localhost --port=${AT_USER_DB_PORT}
-      interval: 10s  
+      test: >
+        pg_isready
+        --dbname=${AT_USER_DB_NAME}
+        --username=${AT_USER_DB_USER}
+        --host=localhost
+        --port=${AT_USER_DB_PORT}
+      interval: 10s
       timeout: 5s
-      retries: 10 
+      retries: 10
     volumes:
       - user-postgres-data:/var/lib/postgresql/data
-    command: ["postgres", "-c", "port=${AT_USER_DB_PORT}"]
-  
+    command: postgres -c port=${AT_USER_DB_PORT}
+
   at_solver:
     container_name: at_solver
     build:
@@ -183,7 +193,7 @@ services:
         condition: service_healthy
     networks:
       - custom-network
-  
+
   at_temporal_solver:
     container_name: at_temporal_solver
     build:
@@ -213,7 +223,7 @@ services:
         condition: service_healthy
     networks:
       - custom-network
-  
+
   at_joint:
     container_name: at_joint
     build:
@@ -243,7 +253,7 @@ services:
       --server-host 0.0.0.0
       --server-port ${AT_RENDERER_PORT}
     ports:
-      - "${AT_RENDERER_PORT}:${AT_RENDERER_PORT}"  
+      - "${AT_RENDERER_PORT}:${AT_RENDERER_PORT}"
     expose:
       - "${AT_RENDERER_PORT}"
     depends_on:
@@ -291,7 +301,7 @@ services:
     expose:
       - "${AT_KRL_EDITOR_DB_PORT}"
     ports:
-      - "${AT_KRL_EDITOR_DB_PORT}:${AT_KRL_EDITOR_DB_PORT}"  
+      - "${AT_KRL_EDITOR_DB_PORT}:${AT_KRL_EDITOR_DB_PORT}"
     environment:
       POSTGRES_USER: ${AT_KRL_EDITOR_DB_USER}
       POSTGRES_PASSWORD: ${AT_KRL_EDITOR_DB_PASS}
@@ -300,17 +310,22 @@ services:
     networks:
       - custom-network
     healthcheck:
-      test: pg_isready --dbname=${AT_KRL_EDITOR_DB_NAME} --username=${AT_KRL_EDITOR_DB_USER} --host=localhost --port=${AT_KRL_EDITOR_DB_PORT}
-      interval: 10s  
+      test: >
+        pg_isready
+        --dbname=${AT_KRL_EDITOR_DB_NAME}
+        --username=${AT_KRL_EDITOR_DB_USER}
+        --host=localhost
+        --port=${AT_KRL_EDITOR_DB_PORT}
+      interval: 10s
       timeout: 5s
-      retries: 10 
+      retries: 10
     volumes:
       - knowledge-postgres-data:/var/lib/postgresql/data
-    command: ["postgres", "-c", "port=${AT_KRL_EDITOR_DB_PORT}"]
+    command: postgres -c port=${AT_KRL_EDITOR_DB_PORT}
 
   at_redis:
     container_name: at_redis
-    image: redis:latest 
+    image: redis:latest
     hostname: at_redis
     restart: unless-stopped
     ports:
@@ -326,13 +341,17 @@ services:
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "-p", "${REDIS_PORT}", "ping"]
+      test: >
+        redis-cli
+        -a ${REDIS_PASSWORD}
+        -p ${REDIS_PORT}
+        ping
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
       - custom-network
-  
+
   at_krl_editor_api:
     container_name: at_krl_editor_api
     build:
@@ -386,7 +405,6 @@ services:
     restart: unless-stopped
     networks:
       - custom-network
-
 
 networks:
   custom-network:
