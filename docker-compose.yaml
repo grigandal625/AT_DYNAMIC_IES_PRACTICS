@@ -7,13 +7,14 @@ services:
     container_name: at_rabbitmq
     image: "rabbitmq:management"
     ports:
-      - "${RABBITMQ_UI_PORT}:15672"
-      - "${RABBITMQ_PORT}:5672"
+      - "${RABBITMQ_UI_PORT}:${RABBITMQ_UI_PORT}"
+      - "${RABBITMQ_PORT}:${RABBITMQ_PORT}"
     networks:
       - custom-network
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_LOGIN}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+      RABBITMQ_NODE_PORT: ${RABBITMQ_PORT}
     healthcheck:
       test: rabbitmq-diagnostics check_running
       interval: 5s
@@ -26,7 +27,7 @@ services:
       dockerfile: ./docker/Dockerfile.at_queue
     command: >
       python -m at_queue
-      --host at_rabbitmq
+      --host ${AT_QUEUE_RABBITMQ_HOST}
       --port ${AT_QUEUE_RABBITMQ_PORT}
       --login ${AT_QUEUE_RABBITMQ_LOGIN}
       --password ${AT_QUEUE_RABBITMQ_PASSWORD}
@@ -101,11 +102,11 @@ services:
       --db_name ${AT_USER_DB_NAME}
       --db_user ${AT_USER_DB_USER}
       --db_pass ${AT_USER_DB_PASS}
-      --rabbitmq_host at_rabbitmq
-      --rabbitmq_port ${RABBITMQ_PORT}
-      --rabbitmq_login ${RABBITMQ_LOGIN}
-      --rabbitmq_password ${RABBITMQ_PASSWORD}
-      --rabbitmq_vhost ${RABBITMQ_VHOST}
+      --rabbitmq_host ${AT_USER_API_RABBITMQ_HOST}
+      --rabbitmq_port ${AT_USER_API_RABBITMQ_PORT}
+      --rabbitmq_login ${AT_USER_API_RABBITMQ_LOGIN}
+      --rabbitmq_password ${AT_USER_API_RABBITMQ_PASSWORD}
+      --rabbitmq_vhost ${AT_USER_API_RABBITMQ_VHOST}
       --server_port ${AT_USER_API_SERVER_PORT}
     environment:
       RABBITMQ_SSL: false
@@ -131,7 +132,7 @@ services:
       --db_name ${AT_SIMULATION_API_DB_NAME}
       --db_user ${AT_SIMULATION_API_DB_USER}
       --db_pass ${AT_SIMULATION_API_DB_PASS}
-      --rabbitmq_host at_rabbitmq
+      --rabbitmq_host ${AT_SIMULATION_API_RABBITMQ_HOST}
       --rabbitmq_port ${AT_SIMULATION_API_RABBITMQ_PORT}
       --rabbitmq_login ${AT_SIMULATION_API_RABBITMQ_LOGIN}
       --rabbitmq_password ${AT_SIMULATION_API_RABBITMQ_PASSWORD}
@@ -184,7 +185,7 @@ services:
     build:
       dockerfile: ./docker/Dockerfile.at_solver
     command: python -m at_solver
-      --host at_rabbitmq
+      --host ${AT_SOLVER_RABBITMQ_HOST}
       --port ${AT_SOLVER_RABBITMQ_PORT}
       --login ${AT_SOLVER_RABBITMQ_LOGIN}
       --password ${AT_SOLVER_RABBITMQ_PASSWORD}
@@ -199,7 +200,7 @@ services:
     build:
       dockerfile: ./docker/Dockerfile.at_temporal_solver
     command: python -m at_temporal_solver
-      --host at_rabbitmq
+      --host ${AT_TEMPORAL_SOLVER_RABBITMQ_HOST}
       --port ${AT_TEMPORAL_SOLVER_RABBITMQ_PORT}
       --login ${AT_TEMPORAL_SOLVER_RABBITMQ_LOGIN}
       --password ${AT_TEMPORAL_SOLVER_RABBITMQ_PASSWORD}
@@ -214,7 +215,7 @@ services:
     build:
       dockerfile: ./docker/Dockerfile.at_blackboard
     command: python -m at_blackboard
-      --host at_rabbitmq
+      --host ${AT_BLACKBOARD_RABBITMQ_HOST}
       --port ${AT_BLACKBOARD_RABBITMQ_PORT}
       --login ${AT_BLACKBOARD_RABBITMQ_LOGIN}
       --password ${AT_BLACKBOARD_RABBITMQ_PASSWORD}
@@ -229,7 +230,7 @@ services:
     build:
       dockerfile: ./docker/Dockerfile.at_joint
     command: python -m at_joint
-      --host at_rabbitmq
+      --host ${AT_JOINT_RABBITMQ_HOST}
       --port ${AT_JOINT_RABBITMQ_PORT}
       --login ${AT_JOINT_RABBITMQ_LOGIN}
       --password ${AT_JOINT_RABBITMQ_PASSWORD}
@@ -246,7 +247,7 @@ services:
     build:
       dockerfile: ./docker/Dockerfile.at_renderer
     command: python -m at_renderer
-      --host at_rabbitmq
+      --host ${AT_RENDERER_RABBITMQ_HOST}
       --port ${AT_RENDERER_RABBITMQ_PORT}
       --login ${AT_RENDERER_RABBITMQ_LOGIN}
       --password ${AT_RENDERER_RABBITMQ_PASSWORD}
@@ -267,7 +268,7 @@ services:
     build:
       dockerfile: ./docker/Dockerfile.at_controller
     command: python -m at_controller
-      --host at_rabbitmq
+      --host ${AT_CONTROLLER_RABBITMQ_HOST}
       --port ${AT_CONTROLLER_RABBITMQ_PORT}
       --login ${AT_CONTROLLER_RABBITMQ_LOGIN}
       --password ${AT_CONTROLLER_RABBITMQ_PASSWORD}
@@ -287,7 +288,7 @@ services:
     build:
       dockerfile: ./docker/Dockerfile.at_configurator
     command: python -m at_configurator
-      --host at_rabbitmq
+      --host ${AT_CONFIGURATOR_RABBITMQ_HOST}
       --port ${AT_CONFIGURATOR_RABBITMQ_PORT}
       --login ${AT_CONFIGURATOR_RABBITMQ_LOGIN}
       --password ${AT_CONFIGURATOR_RABBITMQ_PASSWORD}
@@ -328,7 +329,8 @@ services:
       retries: 10
     volumes:
       - knowledge-postgres-data:/var/lib/postgresql/data
-    command: postgres -c port=${AT_KRL_EDITOR_DB_PORT} -c password_encryption=scram-sha-256
+    command: > 
+      postgres -c port=${AT_KRL_EDITOR_DB_PORT}
 
   at_redis:
     container_name: at_redis
@@ -396,6 +398,7 @@ services:
       - "${AT_KRL_EDITOR_FRONT_PORT}:${AT_KRL_EDITOR_FRONT_PORT}"
     environment:
       PORT: ${AT_KRL_EDITOR_FRONT_PORT}
+      API_HOST: ${AT_KRL_EDITOR_FRONT_API_HOST}
       API_PORT: ${AT_KRL_EDITOR_FRONT_API_PORT}
     restart: unless-stopped
     networks:
@@ -408,6 +411,7 @@ services:
       - "${AT_SIMULATION_FRONT_PORT}:${AT_SIMULATION_FRONT_PORT}"
     environment:
       PORT: ${AT_SIMULATION_FRONT_PORT}
+      API_HOST: ${AT_SIMULATION_FRONT_API_HOST}
       API_PORT: ${AT_SIMULATION_FRONT_API_PORT}
     restart: unless-stopped
     networks:
