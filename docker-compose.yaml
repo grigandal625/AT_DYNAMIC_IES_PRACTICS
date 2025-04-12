@@ -398,7 +398,6 @@ services:
       - "${AT_KRL_EDITOR_FRONT_PORT}:${AT_KRL_EDITOR_FRONT_PORT}"
     environment:
       PORT: ${AT_KRL_EDITOR_FRONT_PORT}
-      API_HOST: ${AT_KRL_EDITOR_FRONT_API_HOST}
       API_PORT: ${AT_KRL_EDITOR_FRONT_API_PORT}
     restart: unless-stopped
     networks:
@@ -411,7 +410,6 @@ services:
       - "${AT_SIMULATION_FRONT_PORT}:${AT_SIMULATION_FRONT_PORT}"
     environment:
       PORT: ${AT_SIMULATION_FRONT_PORT}
-      API_HOST: ${AT_SIMULATION_FRONT_API_HOST}
       API_PORT: ${AT_SIMULATION_FRONT_API_PORT}
     restart: unless-stopped
     networks:
