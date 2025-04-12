@@ -50,7 +50,7 @@ services:
 
   at_simulation_db:
     container_name: at_simulation_db
-    image: "postgres:alpine"
+    image: "postgres:latest"
     expose:
       - "${AT_SIMULATION_DB_PORT}"
     ports:
@@ -154,7 +154,7 @@ services:
 
   at_user_db:
     container_name: at_user_db
-    image: "postgres:alpine"
+    image: "postgres:latest"
     expose:
       - "${AT_USER_DB_PORT}"
     ports:
@@ -305,7 +305,7 @@ services:
 
   at_krl_editor_db:
     container_name: at_krl_editor_db
-    image: "postgres:alpine"
+    image: "postgres:latest"
     expose:
       - "${AT_KRL_EDITOR_DB_PORT}"
     ports:
