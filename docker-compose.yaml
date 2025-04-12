@@ -390,6 +390,10 @@ services:
         condition: service_healthy
     networks:
       - custom-network
+    ports:
+      - "${AT_KRL_EDITOR_API_SERVER_PORT}:${AT_KRL_EDITOR_API_SERVER_PORT}"
+    expose:
+      - "${AT_KRL_EDITOR_API_SERVER_PORT}"
 
   at_krl_editor_front:
     image: grigandal625/at-krl-editor-front:latest
