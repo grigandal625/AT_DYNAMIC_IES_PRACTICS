@@ -91,6 +91,11 @@ services:
     restart: unless-stopped
     networks:
       - custom-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${AT_SIMULATION_MINIO_API_PORT}/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   at_user_api:
     container_name: at_user_api
@@ -132,6 +137,13 @@ services:
       --db_name ${AT_SIMULATION_API_DB_NAME}
       --db_user ${AT_SIMULATION_API_DB_USER}
       --db_pass ${AT_SIMULATION_API_DB_PASS}
+      --minio_host at_minio
+      --minio_access_key ${AT_SIMULATION_API_MINIO_ACCESS_KEY}
+      --minio_secret_key ${AT_SIMULATION_API_MINIO_SECRET_KEY}
+      --minio_secure ${AT_SIMULATION_API_MINIO_BUCKET_NAME}
+      --minio_bucket_name ${AT_SIMULATION_API_MINIO_SECURE}
+      --minio_api_port ${AT_SIMULATION_API_MINIO_API_PORT}
+      --minio_console_port ${AT_SIMULATION_API_MINIO_CONSOLE_PORT}
       --rabbitmq_host ${AT_SIMULATION_API_RABBITMQ_HOST}
       --rabbitmq_port ${AT_SIMULATION_API_RABBITMQ_PORT}
       --rabbitmq_login ${AT_SIMULATION_API_RABBITMQ_LOGIN}
@@ -148,6 +160,8 @@ services:
       at_queue:
         condition: service_healthy
       at_simulation_db:
+        condition: service_healthy
+      at_minio:
         condition: service_healthy
     networks:
       - custom-network
