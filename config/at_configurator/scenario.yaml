@@ -2,6 +2,10 @@ initial_attributes:
   attempts: 0
   kb_editor_port:
     env: AT_KRL_EDITOR_FRONT_PORT
+  sm_front_port:
+    env: AT_SIMULATION_FRONT_PORT
+  at_joint_port:
+    env: AT_JOINT_DEBUGGER_PORT
 
 states:
 
@@ -36,7 +40,7 @@ states:
     initial: false
     frame_rows:
       kb_editor:
-        src: http://{kb_editor_host}:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
+        src: http://%location.hostname%:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/types
         span: 20
@@ -51,7 +55,7 @@ states:
     initial: false
     frame_rows:
       kb_editor:
-        src: http://{kb_editor_host}:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
+        src: http://%location.hostname%:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/objects/base_objects
   building_intervals:
@@ -61,7 +65,7 @@ states:
     initial: false
     frame_rows:
       kb_editor:
-        src: http://{kb_editor_host}:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
+        src: http://%location.hostname%:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/objects/intervals
   building_events:
@@ -71,7 +75,7 @@ states:
     initial: false
     frame_rows:
       kb_editor:
-        src: http://{kb_editor_host}:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
+        src: http://%location.hostname%:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/objects/events
   building_rules:
@@ -81,7 +85,7 @@ states:
     initial: false
     frame_rows:
       kb_editor:
-        src: http://{kb_editor_host}:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
+        src: http://%location.hostname%:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/rules
   exporting_kb:
@@ -91,7 +95,7 @@ states:
     initial: false
     frame_rows:
       kb_editor:
-        src: http://{kb_editor_host}:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
+        src: http://%location.hostname%:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}
   kb_finished:
@@ -120,7 +124,7 @@ states:
     initial: false
     frame_rows:
       sm_editor:
-        src: http://45.148.245.134:5000/token?token={auth_token}&frame_id=sm_editor
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
         type: format_attributes
         redirect: /models/new
         span: 20
@@ -135,7 +139,7 @@ states:
     initial: false
     frame_rows:
       sm_editor:
-        src: http://45.148.245.134:5000/token?token={auth_token}&frame_id=sm_editor
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
         type: format_attributes
         redirect: /models/{selected_sm}/resource-types
         span: 20
