@@ -8,7 +8,6 @@ initial_attributes:
     env: AT_JOINT_DEBUGGER_PORT
 
 states:
-
   # состояния для технологии построения темпоральных БЗ
   kb_start:
     label: Средства поддержки обучающего воздействия типа "Тренинг с ЭС/ИЭС" для учебного проектирования базовых компонентов динамических ИЭС
@@ -18,6 +17,7 @@ states:
       kb_editor:
         src: /docview?asFrame=true&viewing=true&docs=%23+Учебное+проектирование+базовых+компонентов+динамических+интегрированных+экспертных+систем%0A%0A%23%23+Практическая+работа+1.+Моделирование+проблемной+области+с+использованием+средств+динамической+версии+комплекса+АТ-ТЕХНОЛОГИЯ.%0A%0A**Цель+работы.**+Освоение+навыков+построения+простейших+фрагментов+темпоральных+баз+знаний+%28БЗ%29+на+расширенном+языке+представления+знаний+%28ЯПЗ%29+с+использованием+специализированного+редактора+темпоральной+БЗ+%28динамическая+версия+инструментального+комплекса+АТ-ТЕХНОЛОГИЯ%29.
         type: basic
+
   kb_creation:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения темпоральных баз знаний (БЗ)
@@ -33,6 +33,7 @@ states:
         src: /docview?asFrame=true&viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл+базы+знаний.%0A%0AПосле+нажатия+кнопки+%60Создать%60+в+нижней+части+окна+редактора+базы+знаний+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+темпоральной+базы+знаний
         type: basic
         span: 4
+
   building_types:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения темпоральных баз знаний (БЗ)
@@ -48,6 +49,7 @@ states:
         src: /docview?asFrame=true&viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0A%23%23%23%23+Этап+создания+типов%0A%0AВ+ЯПЗ+поддерживаются+три+основных+типа%3A%0A-+Символьный+тип+-+тип%2C+для+которого+указывается+множество+возможных+символьных+значений%0A-+Числовой+тип+-+тип%2C+для+которого+указывается+числовой+промежуток%2C+в+рамках+которого+могут+быть+значения%0A-+Нечеткий+тип+-+тип%2C+определяющий+лингвистическую+переменную+и+ее+значения%0A%0AПримеры+типов%3A%0A%0A*Символьный*%09%0A%60%60%60%0AТИП+Характер_Кашля%0AСИМВОЛ%0A"Отсутствует"%0A"Cухой"%0A"Влажный+продукативный"%0A"Влажный+непродуктивный"%0AКОММЕНТАРИЙ+Тип+для+характера+кашля%0A%60%60%60%0A%0A*Числовой*%0A%60%60%60%09%0AТИП+Процедур_в_месяц%0AЧИСЛО%0AОТ+0%0AДО+8%0AКОММЕНТАРИЙ+Тип+для+частоты+назначенных+посещений+процедур+в+месяц%0A%60%60%60%0A%0A*Нечеткий*%09%0A%60%60%60%0AТИП+Температура%0AНЕЧЕТКИЙ%0A3%0A"Высокая"+34+42+4+%3D%7B34%7C0%3B+36%7C0%3B+38%7C1%3B+42%7C1%7D%0A"Нормальная"+34+42+8+%3D%7B34%7C0%3B+35%7C0%3B+35.7%7C0.5%3B+36.2%7C0.9%3B+36.6%7C1%3B+37%7C0.4%3B+37.4%7C0%3B+42%7C0%7D%0A"Низкая"+34+42+4+%3D%7B34%7C1%3B+36%7C1%3B+37%7C0%3B+42%7C0%7D%0AКОММЕНТАРИЙ+Тип+для+характера+температуры%0A%60%60%60
         type: basic
         span: 4
+
   building_basic_objects:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения темпоральных баз знаний (БЗ)
@@ -58,6 +60,7 @@ states:
         src: http://%location.hostname%:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/objects/base_objects
+
   building_intervals:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения темпоральных баз знаний (БЗ)
@@ -68,6 +71,7 @@ states:
         src: http://%location.hostname%:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/objects/intervals
+
   building_events:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения темпоральных баз знаний (БЗ)
@@ -78,6 +82,7 @@ states:
         src: http://%location.hostname%:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/objects/events
+
   building_rules:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения темпоральных баз знаний (БЗ)
@@ -88,6 +93,7 @@ states:
         src: http://%location.hostname%:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/rules
+
   exporting_kb:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения темпоральных баз знаний (БЗ)
@@ -98,6 +104,7 @@ states:
         src: http://%location.hostname%:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}
+
   kb_finished:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения темпоральных баз знаний (БЗ)
@@ -117,6 +124,7 @@ states:
       docs:
         src: /docview?viewing=true&docs=%23+Учебное+проектирование+базовых+компонентов+динамических+интегрированных+экспертных+систем%0A%0A%23%23+Практическая+работа+2.+Моделирование+внешней+среды+с+помощью+средств+подсистемы+имитационного+моделирования+и+языка+РДО<sup>АТ<%2Fsup>%0A%0A**Цель+работы.**+Освоение+навыков+построения+простейших+имитационных+моделей+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>+с+помощью+подсистемы+имитационного+моделирования+%28динамическая+версия+комплекса+АТ-ТЕХНОЛОГИЯ%29.
         type: basic
+
   sm_creation:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения имитационных моделей внешней среды
@@ -132,6 +140,7 @@ states:
         src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
         type: basic
         span: 4
+
   building_resource_types:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения имитационных моделей внешней среды
@@ -149,7 +158,6 @@ states:
         span: 4
 
 transitions:
-
   # переходы для технологии построения темпоральной БЗ
   create_kb:
     type: link
@@ -157,10 +165,12 @@ transitions:
     source: kb_start
     dest: kb_creation
     label: Приступить к работе 1 - Технология построения темпоральных баз знаний
+    show_message:
     actions:
       - set_attribute:
           attribute: test_status
           value: kb_creation
+
   proceed_sm:
     type: link
     position: control
@@ -171,6 +181,7 @@ transitions:
       - set_attribute:
           attribute: test_status
           value: sm_creation
+
   build_types:
     type: frame_handler
     frame_id: kb_editor
@@ -189,6 +200,7 @@ transitions:
               parse:
                 regexp: .*/knowledge_bases/(\d+)/?
                 group: 0
+
   build_basic_objects:
     type: link
     position: control
@@ -199,6 +211,7 @@ transitions:
       - set_attribute:
           attribute: test_status
           value: building_basic_objects
+
   back_build_types:
     type: link
     position: control
@@ -209,6 +222,7 @@ transitions:
       - set_attribute:
           attribute: test_status
           value: building_basic_objects
+
   build_intervals:
     type: link
     position: control
@@ -219,6 +233,7 @@ transitions:
       - set_attribute:
           attribute: test_status
           value: building_intervals
+
   build_events:
     type: link
     position: control
@@ -229,6 +244,7 @@ transitions:
       - set_attribute:
           attribute: test_status
           value: building_events
+
   exchange_build_events:
     type: link
     position: control
@@ -239,6 +255,7 @@ transitions:
       - set_attribute:
           attribute: test_status
           value: building_events
+
   exchange_build_intervals:
     type: link
     position: control
@@ -249,6 +266,7 @@ transitions:
       - set_attribute:
           attribute: test_status
           value: building_intervals
+
   back_intervals_objects:
     type: link
     position: control
@@ -259,6 +277,7 @@ transitions:
       - set_attribute:
           attribute: test_status
           value: building_basic_objects
+
   back_events_objects:
     type: link
     position: control
@@ -269,6 +288,7 @@ transitions:
       - set_attribute:
           attribute: test_status
           value: building_basic_objects
+
   intervals_build_rules:
     type: link
     position: control
@@ -279,6 +299,7 @@ transitions:
       - set_attribute:
           attribute: test_status
           value: building_rules
+
   events_build_rules:
     type: link
     position: control
@@ -289,6 +310,7 @@ transitions:
       - set_attribute:
           attribute: test_status
           value: building_rules
+
   back_build_events:
     type: link
     position: control
@@ -299,6 +321,7 @@ transitions:
       - set_attribute:
           attribute: test_status
           value: building_events
+
   back_build_intervals:
     type: link
     position: control
@@ -309,6 +332,7 @@ transitions:
       - set_attribute:
           attribute: test_status
           value: building_intervals
+
   export_kb:
     type: link
     position: control
@@ -319,6 +343,7 @@ transitions:
       - set_attribute:
           attribute: test_status
           value: building_intervals
+
   back_build_rules:
     type: link
     position: control
@@ -329,6 +354,7 @@ transitions:
       - set_attribute:
           attribute: test_status
           value: building_rules
+          
   finishing_kb:
     type: link
     position: control
