@@ -428,6 +428,64 @@ services:
     networks:
       - custom-network
 
+  at_tutoring_skills_db:
+      container_name: at_tutoring_skills_db
+      image: "postgres:latest"
+      expose:
+        - "${AT_TUTORING_SKILLS_DB_PORT}"
+      ports:
+        - "${AT_TUTORING_SKILLS_DB_PORT}:${AT_TUTORING_SKILLS_DB_PORT}"
+      environment:
+        POSTGRES_USER: ${AT_TUTORING_SKILLS_DB_USER}
+        POSTGRES_PASSWORD: ${AT_TUTORING_SKILLS_DB_PASS}
+        POSTGRES_DB: ${AT_TUTORING_SKILLS_DB_NAME}
+      restart: unless-stopped
+      networks:
+        - custom-network
+      healthcheck:
+        test: >
+          pg_isready
+          --dbname=${AT_TUTORING_SKILLS_DB_NAME}
+          --username=${AT_TUTORING_SKILLS_DB_USER}
+          --host=localhost
+          --port=${AT_TUTORING_SKILLS_DB_PORT}
+        interval: 10s
+        timeout: 5s
+        retries: 10
+      volumes:
+        - tutoring-skills-postgres-data:/var/lib/postgresql/data
+      command: postgres -c port=${AT_TUTORING_SKILLS_DB_PORT}
+
+  at_tutoring_skills_api:
+    container_name: at_tutoring_skills_api
+    expose:
+      - "${AT_TUTORING_SKILLS_API_SERVER_PORT}"
+    ports:
+      - "${AT_TUTORING_SKILLS_API_SERVER_PORT}:${AT_TUTORING_SKILLS_API_SERVER_PORT}"
+    build:
+      dockerfile: ./docker/Dockerfile.at_tutoring_skills_api
+    command: python -m at_tutoring_skills
+      --host ${AT_TUTORING_SKILLS_API_RABBITMQ_HOST}
+      --port ${AT_TUTORING_SKILLS_API_RABBITMQ_PORT}
+      --login ${AT_TUTORING_SKILLS_API_RABBITMQ_LOGIN}
+      --password ${AT_TUTORING_SKILLS_API_RABBITMQ_PASSWORD}
+      --server-host 0.0.0.0
+      --server-port ${AT_TUTORING_SKILLS_API_SERVER_PORT}
+    depends_on:
+      at_queue:
+        condition: service_healthy
+      at_tutoring_skills_db:
+        condition: service_healthy
+    networks:
+      - custom-network
+    environment:
+      DB_ENGINE: ${AT_TUTORING_SKILLS_API_DB_ENGINE}
+      DB_NAME: ${AT_TUTORING_SKILLS_API_DB_NAME}
+      DB_USER: ${AT_TUTORING_SKILLS_API_DB_USER}
+      DB_PASS: ${AT_TUTORING_SKILLS_API_DB_PASS}
+      DB_HOST: ${AT_TUTORING_SKILLS_API_DB_HOST}
+      DB_PORT: ${AT_TUTORING_SKILLS_API_DB_PORT}
+
 networks:
   custom-network:
     external: true
@@ -435,6 +493,7 @@ networks:
 volumes:
   simulation-postgres-data:
   knowledge-postgres-data:
+  tutoring-skills-postgres-data:
   user-postgres-data:
   minio-data:
   redis_data:
