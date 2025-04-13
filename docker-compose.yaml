@@ -83,6 +83,9 @@ services:
     ports:
       - "${AT_SIMULATION_MINIO_API_PORT}:${AT_SIMULATION_MINIO_API_PORT}"
       - "${AT_SIMULATION_MINIO_CONSOLE_PORT}:${AT_SIMULATION_MINIO_CONSOLE_PORT}"
+    expose:
+      - "${AT_SIMULATION_MINIO_API_PORT}"
+      - "${AT_SIMULATION_MINIO_CONSOLE_PORT}"
     environment:
       MINIO_ROOT_USER: ${AT_SIMULATION_MINIO_ACCESS_KEY}
       MINIO_ROOT_PASSWORD: ${AT_SIMULATION_MINIO_SECRET_KEY}
@@ -137,7 +140,7 @@ services:
       --db_name ${AT_SIMULATION_API_DB_NAME}
       --db_user ${AT_SIMULATION_API_DB_USER}
       --db_pass ${AT_SIMULATION_API_DB_PASS}
-      --minio_host at_minio
+      --minio_host ${AT_SIMULATION_API_MINIO_HOST}
       --minio_access_key ${AT_SIMULATION_API_MINIO_ACCESS_KEY}
       --minio_secret_key ${AT_SIMULATION_API_MINIO_SECRET_KEY}
       --minio_secure ${AT_SIMULATION_API_MINIO_BUCKET_NAME}
