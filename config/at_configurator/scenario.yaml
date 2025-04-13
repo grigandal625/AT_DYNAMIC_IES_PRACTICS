@@ -1,7 +1,7 @@
 initial_attributes:
   attempts: 0
-  kb_editor_host: 45.148.245.134
-  kb_editor_port: 8787
+  kb_editor_port:
+    env: AT_KRL_EDITOR_FRONT_PORT
 
 states:
 
@@ -21,7 +21,7 @@ states:
     initial: false
     frame_rows:
       kb_editor:
-        src: http://{kb_editor_host}:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
+        src: http://%location.hostname%:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/new
         span: 20

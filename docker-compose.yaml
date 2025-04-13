@@ -262,6 +262,8 @@ services:
         condition: service_healthy
     networks:
       - custom-network
+    environment:
+      AT_KRL_EDITOR_FRONT_PORT: ${AT_KRL_EDITOR_FRONT_PORT}
 
   at_controller:
     container_name: at_controller
@@ -282,6 +284,13 @@ services:
       retries: 30
     networks:
       - custom-network
+    volumes:
+      - ./config/at_configurator:/var/config/at_configurator
+    environment:
+      AT_KRL_EDITOR_FRONT_PORT: ${AT_KRL_EDITOR_FRONT_PORT}
+      AT_SIMULATION_FRONT_PORT: ${AT_SIMULATION_FRONT_PORT}
+      AT_JOINT_DEBUGGER_PORT: ${AT_JOINT_DEBUGGER_PORT}
+
 
   at_configurator:
     container_name: at_configurator
