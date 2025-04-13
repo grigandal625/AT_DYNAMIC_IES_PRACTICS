@@ -76,8 +76,8 @@ services:
       - simulation-postgres-data:/var/lib/postgresql/data
     command: postgres -c port=${AT_SIMULATION_DB_PORT}
 
-  at_minio:
-    container_name: at_minio
+  minio:
+    container_name: minio
     image: "minio/minio:latest"
     command: server /data --console-address ":${AT_SIMULATION_MINIO_CONSOLE_PORT}" --address ":${AT_SIMULATION_MINIO_API_PORT}"
     ports:
@@ -143,8 +143,7 @@ services:
       --minio_host ${AT_SIMULATION_API_MINIO_HOST}
       --minio_access_key ${AT_SIMULATION_API_MINIO_ACCESS_KEY}
       --minio_secret_key ${AT_SIMULATION_API_MINIO_SECRET_KEY}
-      --minio_secure ${AT_SIMULATION_API_MINIO_BUCKET_NAME}
-      --minio_bucket_name ${AT_SIMULATION_API_MINIO_SECURE}
+      --minio_bucket_name ${AT_SIMULATION_API_MINIO_BUCKET_NAME}
       --minio_api_port ${AT_SIMULATION_API_MINIO_API_PORT}
       --minio_console_port ${AT_SIMULATION_API_MINIO_CONSOLE_PORT}
       --rabbitmq_host ${AT_SIMULATION_API_RABBITMQ_HOST}
@@ -155,6 +154,7 @@ services:
       --server_port ${AT_SIMULATION_API_SERVER_PORT}
     environment:
       RABBITMQ_SSL: false
+      MINIO_SECURE: false
     expose:
       - "${AT_SIMULATION_API_SERVER_PORT}"
     ports:
@@ -164,7 +164,7 @@ services:
         condition: service_healthy
       at_simulation_db:
         condition: service_healthy
-      at_minio:
+      minio:
         condition: service_healthy
     networks:
       - custom-network
