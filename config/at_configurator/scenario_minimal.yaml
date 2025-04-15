@@ -1,0 +1,235 @@
+initial_attributes:
+  kb_editor_port:
+    env: AT_KRL_EDITOR_FRONT_PORT
+  sm_front_port:
+    env: AT_SIMULATION_FRONT_PORT
+  at_joint_port:
+    env: AT_JOINT_DEBUGGER_PORT
+
+states:
+  kb_start:
+    label: Средства поддержки обучающего воздействия типа "Тренинг с ЭС/ИЭС" для учебного проектирования базовых компонентов динамических ИЭС
+    translation: Начало работы 1
+    initial: true
+    frame_rows:
+      kb_editor:
+        src: /docview?asFrame=true&viewing=true&docs=%23+Учебное+проектирование+базовых+компонентов+динамических+интегрированных+экспертных+систем%0A%0A%23%23+Практическая+работа+1.+Моделирование+проблемной+области+с+использованием+средств+динамической+версии+комплекса+АТ-ТЕХНОЛОГИЯ.%0A%0A**Цель+работы.**+Освоение+навыков+построения+простейших+фрагментов+темпоральных+баз+знаний+%28БЗ%29+на+расширенном+языке+представления+знаний+%28ЯПЗ%29+с+использованием+специализированного+редактора+темпоральной+БЗ+%28динамическая+версия+инструментального+комплекса+АТ-ТЕХНОЛОГИЯ%29.
+        type: basic
+
+  kb_creation:
+    label: Учебное проектирование базовых компонентов динамических ИЭС
+    control_label: Технология построения темпоральных баз знаний (БЗ)
+    control_subtitle: Создание файла БЗ
+    initial: false
+    frame_rows:
+      kb_editor:
+        src: http://%location.hostname%:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
+        type: format_attributes
+        redirect: /knowledge_bases/new
+        span: 20
+      docs:
+        src: /docview?asFrame=true&viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл+базы+знаний.%0A%0AПосле+нажатия+кнопки+%60Создать%60+в+нижней+части+окна+редактора+базы+знаний+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+темпоральной+базы+знаний
+        type: basic
+        span: 4
+
+  sm_creation:
+    label: Учебное проектирование базовых компонентов динамических ИЭС
+    control_label: Технология построения имитационных моделей внешней среды
+    control_subtitle: Создание файла ИМ
+    initial: false
+    frame_rows:
+      sm_editor:
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
+        type: format_attributes
+        redirect: /models/new
+        span: 20
+      docs:
+        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
+        type: basic
+        span: 4
+
+  sm_translation:
+    label: Учебное проектирование базовых компонентов динамических ИЭС
+    control_label: Технология построения имитационных моделей внешней среды
+    control_subtitle: Трансляция файла ИМ на языке РДО-АТ во внутреннее представление
+    initial: false
+    frame_rows:
+      sm_editor:
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
+        type: format_attributes
+        redirect: /evaluate/translation/{translating_sm}
+        span: 20
+      docs:
+        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A
+        type: basic
+        span: 4
+  
+  starting_process:
+    label: Учебное проектирование базовых компонентов динамических ИЭС
+    control_label: Технология построения имитационных моделей внешней среды
+    control_subtitle: Инициализация прогона имитационной модели
+    initial: false
+    frame_rows:
+      sm_editor:
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
+        type: format_attributes
+        redirect: /evaluate/runner/{translated_file}/
+        span: 20
+      docs:
+        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A
+        type: basic
+        span: 4
+
+  perform_sm_run:
+    label: Учебное проектирование базовых компонентов динамических ИЭС
+    control_label: Технология построения имитационных моделей внешней среды
+    control_subtitle: Конфигурация и расчет состояний имитационной модели
+    initial: false
+    frame_rows:
+      sm_editor:
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
+        type: format_attributes
+        redirect: /evaluate/runner/{translated_file}/process/{started_process}
+        span: 20
+      docs:
+        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A
+        type: basic
+        span: 4
+
+  joint_functioning:
+    label: Учебное проектирование базовых компонентов динамических ИЭС
+    control_label: Совместное функционирование базовых компонентов динамических ИЭС
+    control_subtitle: Организация и запуск совместного функционирования
+    initial: false
+    frame_rows:
+      sm_editor:
+        src: http://%location.hostname%:{at_joint_port}/state?token={auth_token}
+        type: format_attributes
+        span: 20
+      docs:
+        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A
+        type: basic
+        span: 4
+
+transitions:
+  # переходы для технологии построения темпоральной БЗ
+  create_kb:
+    type: link
+    position: control
+    source: kb_start
+    dest: kb_creation
+    label: Приступить к работе 1 - Технология построения темпоральных баз знаний
+    show_message:
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: kb_creation
+
+  kb_selected:
+    type: frame_handler
+    frame_id: kb_editor
+    test: /knowledge_bases/\d+
+    source: kb_creation
+    dest: sm_creation
+    actions:
+      - set_attribute:
+          attribute: selected_kb
+          value:
+            frame_url:
+              frame_id: kb_editor
+              parse:
+                regexp: .*/knowledge_bases/(\d+)/?
+                group: 0
+          next:
+            - show_message:
+                message: "Управляющая программа зафиксировала идентификатор файла темпоральной базы знаний:\n\n{selected_kb}"
+
+  sm_selected:
+    type: frame_handler
+    frame_id: sm_editor
+    test: .*/models/(\d+)/?
+    source: sm_creation
+    dest: sm_translation
+    actions:
+      - set_attribute:
+          attribute: translating_sm
+          value:
+            frame_url:
+              frame_id: sm_editor
+              parse:
+                regexp: .*/models/(\d+)/?
+                group: 0
+          next:
+            - show_message:
+                message: "Управляющая программа зафиксировала идентификатор файла имитационной модели:\n\n{translating_sm}"
+              
+  sm_translated:
+    type: frame_handler
+    frame_id: sm_editor
+    test: .*/evaluate/runner/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})
+    source: sm_translation
+    dest: starting_process
+    actions:
+      - set_attribute:
+          attribute: translated_file
+          value:
+            frame_url:
+              frame_id: sm_editor
+              parse:
+                regexp: .*/evaluate/runner/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})
+                group: 0
+          next:
+            - show_message:
+                message: "Управляющая программа зафиксировала идентификатор файла внутреннего представления ИМ:\n\n{translated_file}"
+
+  start_sm_run:
+    # пример url: /evaluate/runner/cd3471f7-e067-4459-81b3-4a5ffab677d0/process/21a8501f-ac27-45ea-b637-7c9423f982bd
+    type: frame_handler
+    frame_id: sm_editor
+    test: .*/evaluate/runner/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/process/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})
+    source: starting_process
+    dest: perform_sm_run
+    actions:
+      - set_attribute:
+          attribute: started_process
+          value:
+            frame_url:
+              frame_id: sm_editor
+              parse:
+                regexp: .*/evaluate/runner/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/process/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})
+                group: 1
+          next:
+            - show_message:
+                message: "Управляющая программа зафиксировала идентификатор прогона:\n\n{started_process}"
+
+  start_joint:
+    type: link
+    position: control
+    source: perform_sm_run
+    dest: joint_functioning
+    label: Перейти к этапу организации совместного функционирования
+    actions:
+      - show_message:
+          message: "Управляющая программа конфигурацию базовых компонентов со следующими параметрами:\n\nФайл базы знаний в редакторе: {selected_kb}\nФайл внутреннего представления ИМ: {translated_file}"
+      - exec_method:
+          component: ATConfigurator
+          method: authorized_configurate
+          method_args:
+            config:
+              ATSolver:
+                kb:
+                  component: ATKRLEditor
+                  method: get_knowledge_base
+                  method_args:
+                    id: { get_attribute: selected_kb }
+                    format: at_krl
+              ATTemporalSolver:
+                kb:
+                  component: ATKRLEditor
+                  method: get_knowledge_base
+                  method_args:
+                    id: { get_attribute: selected_kb }
+                    format: at_krl
+              ATJoint:
+                at_simulation: ATSimulationWorker
+                at_simulation_file: { get_attribute: translated_file }
