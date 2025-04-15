@@ -258,6 +258,10 @@ services:
         condition: service_healthy
     networks:
       - custom-network
+    ports:
+      - "${AT_JOINT_DEBUGGER_PORT}:${AT_JOINT_DEBUGGER_PORT}"
+    expose:
+      - "${AT_JOINT_DEBUGGER_PORT}"
 
   at_renderer:
     container_name: at_renderer
