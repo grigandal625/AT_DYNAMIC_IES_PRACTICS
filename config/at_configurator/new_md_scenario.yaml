@@ -1,0 +1,150 @@
+initial_attributes:
+  kb_editor_port:
+    env: AT_KRL_EDITOR_FRONT_PORT
+  sm_front_port:
+    env: AT_SIMULATION_FRONT_PORT
+  at_joint_port:
+    env: AT_JOINT_DEBUGGER_PORT
+
+states:
+  # состояния для технологии построения темпоральных БЗ
+  kb_start:
+    label: Средства поддержки обучающего воздействия типа "Тренинг с ЭС/ИЭС" для учебного проектирования базовых компонентов динамических ИЭС
+    translation: Начало работы 1
+    initial: true
+    frame_rows:
+      docs:
+        type: docs
+        src: |
+          # Учебное проектирование базовых компонентов динамических интегрированных экспертных систем
+
+          ## Практическая работа 1. Моделирование проблемной области с использованием средств динамической версии комплекса АТ-ТЕХНОЛОГИЯ.
+
+          **Цель работы.** Освоение навыков построения простейших фрагментов темпоральных баз знаний (БЗ) на расширенном языке представления знаний (ЯПЗ) с использованием специализированного редактора темпоральной БЗ (динамическая версия инструментального комплекса АТ-ТЕХНОЛОГИЯ).
+        
+  kb_creation:
+    label: Учебное проектирование базовых компонентов динамических ИЭС
+    control_label: Технология построения темпоральных баз знаний (БЗ)
+    control_subtitle: Создание файла БЗ
+    initial: false
+    frame_rows:
+      kb_editor:
+        src: http://%location.hostname%:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
+        type: format_attributes
+        redirect: /knowledge_bases/new
+        span: 20
+      docs:
+        src: |
+          ### Подсказки и объяснения
+
+          Для начала работы необходимо создать файл базы знаний.
+
+          После нажатия кнопки `Создать` в нижней части окна редактора базы знаний будет осуществлен автоматический переход к следующему этапу технологии построения темпоральной базы знаний
+        type: docs
+        span: 4
+
+  building_types:
+    label: Учебное проектирование базовых компонентов динамических ИЭС
+    control_label: Технология построения темпоральных баз знаний (БЗ)
+    control_subtitle: Построение типов
+    initial: false
+    frame_rows:
+      kb_editor:
+        src: http://%location.hostname%:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
+        type: format_attributes
+        redirect: /knowledge_bases/{selected_kb}/types
+        span: 20
+      docs:
+        type: docs
+        span: 4
+        src: |
+          ### Подсказки и объяснения
+
+          {hint}
+
+          #### Этап создания типов
+
+          В ЯПЗ поддерживаются три основных типа:
+          - Символьный тип - тип, для которого указывается множество возможных символьных значений
+          - Числовой тип - тип, для которого указывается числовой промежуток, в рамках которого могут быть значения
+          - Нечеткий тип - тип, определяющий лингвистическую переменную и ее значения
+
+          Примеры типов:
+
+          *Символьный*	
+          ```
+          ТИП Характер_Кашля
+          СИМВОЛ
+          "Отсутствует"
+          "Cухой"
+          "Влажный продукативный"
+          "Влажный непродуктивный"
+          КОММЕНТАРИЙ Тип для характера кашля
+          ```
+
+          *Числовой*
+          ```	
+          ТИП Процедур_в_месяц
+          ЧИСЛО
+          ОТ 0
+          ДО 8
+          КОММЕНТАРИЙ Тип для частоты назначенных посещений процедур в месяц
+          ```
+
+          *Нечеткий*	
+          ```
+          ТИП Температура
+          НЕЧЕТКИЙ
+          3
+          "Высокая" 34 42 4 ={{34|0; 36|0; 38|1; 42|1}}
+          "Нормальная" 34 42 8 ={{34|0; 35|0; 35.7|0.5; 36.2|0.9; 36.6|1; 37|0.4; 37.4|0; 42|0}}
+          "Низкая" 34 42 4 ={{34|1; 36|1; 37|0; 42|0}}
+          КОММЕНТАРИЙ Тип для характера температуры
+          ```
+        # двойные {{}} для того, чтобы игнорировать форматирование атрибутами
+        # например, {hint} - если в атрибтах есть ключ hint - подставится значение hint
+        # {{hint}} преобразуется в {hint} без подстановки
+        # {hint} - если в атрибтах нет ключа hint - останется {hint}
+
+transitions:
+  # переходы для технологии построения темпоральной БЗ
+  create_kb:
+    type: link
+    position: control
+    source: kb_start
+    dest: kb_creation
+    label: Приступить к работе 1 - Технология построения темпоральных баз знаний
+    show_message:
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: kb_creation
+
+  kb_created:
+    type: event
+    event: knowledgeBase/create
+    source: kb_creation
+    dest: building_types
+    label: Создать файл БЗ
+    trigger_condition:
+      has_attr:
+        left_value: $event_data
+        right_value: kb_id
+    actions:
+      - set_attribute:
+          attribute: selected_kb
+          value:
+            event_data: ["kb_id"]
+          next:
+            - show_message:
+                message: "Управляющая программа зафиксировала идентификатор файла БЗ: {selected_kb}"
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ["hint"]
+
+events:
+  #================== Knowlenge Base =========================
+  knowledgeBase/create:
+    handler_component: ATTutoringKBSkills
+    handler_method: handle_knowledge_base_created
