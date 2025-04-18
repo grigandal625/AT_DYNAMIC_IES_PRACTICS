@@ -115,6 +115,55 @@ states:
         src: http://127.0.0.1:2222/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/objects/base_objects
+        span: 20
+      docs:
+        type: docs
+        span: 4
+        src: |
+          ### Подсказки и объяснения
+          {url}
+          {hint}
+
+          #### Этап создания типов
+
+          В ЯПЗ поддерживаются три основных типа:
+          - Символьный тип - тип, для которого указывается множество возможных символьных значений
+          - Числовой тип - тип, для которого указывается числовой промежуток, в рамках которого могут быть значения
+          - Нечеткий тип - тип, определяющий лингвистическую переменную и ее значения
+
+          Примеры типов:
+
+          *Символьный*	
+          ```
+          ТИП Характер_Кашля
+          СИМВОЛ
+          "Отсутствует"
+          "Cухой"
+          "Влажный продукативный"
+          "Влажный непродуктивный"
+          КОММЕНТАРИЙ Тип для характера кашля
+          ```
+
+          *Числовой*
+          ```	
+          ТИП Процедур_в_месяц
+          ЧИСЛО
+          ОТ 0
+          ДО 8
+          КОММЕНТАРИЙ Тип для частоты назначенных посещений процедур в месяц
+          ```
+
+          *Нечеткий*	
+          ```
+          ТИП Температура
+          НЕЧЕТКИЙ
+          3
+          "Высокая" 34 42 4 ={{34|0; 36|0; 38|1; 42|1}}
+          "Нормальная" 34 42 8 ={{34|0; 35|0; 35.7|0.5; 36.2|0.9; 36.6|1; 37|0.4; 37.4|0; 42|0}}
+          "Низкая" 34 42 4 ={{34|1; 36|1; 37|0; 42|0}}
+          КОММЕНТАРИЙ Тип для характера температуры
+          ```
+
   building_intervals:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения темпоральных баз знаний (БЗ)
@@ -125,6 +174,54 @@ states:
         src: http://127.0.0.1:2222/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/objects/intervals
+        span: 20
+      docs:
+        type: docs
+        span: 4
+        src: |
+          ### Подсказки и объяснения
+          {url}
+          {hint}
+
+          #### Этап создания типов
+
+          В ЯПЗ поддерживаются три основных типа:
+          - Символьный тип - тип, для которого указывается множество возможных символьных значений
+          - Числовой тип - тип, для которого указывается числовой промежуток, в рамках которого могут быть значения
+          - Нечеткий тип - тип, определяющий лингвистическую переменную и ее значения
+
+          Примеры типов:
+
+          *Символьный*	
+          ```
+          ТИП Характер_Кашля
+          СИМВОЛ
+          "Отсутствует"
+          "Cухой"
+          "Влажный продукативный"
+          "Влажный непродуктивный"
+          КОММЕНТАРИЙ Тип для характера кашля
+          ```
+
+          *Числовой*
+          ```	
+          ТИП Процедур_в_месяц
+          ЧИСЛО
+          ОТ 0
+          ДО 8
+          КОММЕНТАРИЙ Тип для частоты назначенных посещений процедур в месяц
+          ```
+
+          *Нечеткий*	
+          ```
+          ТИП Температура
+          НЕЧЕТКИЙ
+          3
+          "Высокая" 34 42 4 ={{34|0; 36|0; 38|1; 42|1}}
+          "Нормальная" 34 42 8 ={{34|0; 35|0; 35.7|0.5; 36.2|0.9; 36.6|1; 37|0.4; 37.4|0; 42|0}}
+          "Низкая" 34 42 4 ={{34|1; 36|1; 37|0; 42|0}}
+          КОММЕНТАРИЙ Тип для характера температуры
+          ```
   building_events:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения темпоральных баз знаний (БЗ)
@@ -135,6 +232,54 @@ states:
         src: http://127.0.0.1:2222/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/objects/events
+        span: 20
+      docs:
+        type: docs
+        span: 4
+        src: |
+          ### Подсказки и объяснения
+          {url}
+          {hint}
+
+          #### Этап создания типов
+
+          В ЯПЗ поддерживаются три основных типа:
+          - Символьный тип - тип, для которого указывается множество возможных символьных значений
+          - Числовой тип - тип, для которого указывается числовой промежуток, в рамках которого могут быть значения
+          - Нечеткий тип - тип, определяющий лингвистическую переменную и ее значения
+
+          Примеры типов:
+
+          *Символьный*	
+          ```
+          ТИП Характер_Кашля
+          СИМВОЛ
+          "Отсутствует"
+          "Cухой"
+          "Влажный продукативный"
+          "Влажный непродуктивный"
+          КОММЕНТАРИЙ Тип для характера кашля
+          ```
+
+          *Числовой*
+          ```	
+          ТИП Процедур_в_месяц
+          ЧИСЛО
+          ОТ 0
+          ДО 8
+          КОММЕНТАРИЙ Тип для частоты назначенных посещений процедур в месяц
+          ```
+
+          *Нечеткий*	
+          ```
+          ТИП Температура
+          НЕЧЕТКИЙ
+          3
+          "Высокая" 34 42 4 ={{34|0; 36|0; 38|1; 42|1}}
+          "Нормальная" 34 42 8 ={{34|0; 35|0; 35.7|0.5; 36.2|0.9; 36.6|1; 37|0.4; 37.4|0; 42|0}}
+          "Низкая" 34 42 4 ={{34|1; 36|1; 37|0; 42|0}}
+          КОММЕНТАРИЙ Тип для характера температуры
+          ```
   # ---------------------------------------------------------------------------------------
   # Этап 2. Построение темпоральных правил
   # ---------------------------------------------------------------------------------------
@@ -148,6 +293,54 @@ states:
         src: http://127.0.0.1:2222/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/rules
+        span: 20
+      docs:
+        type: docs
+        span: 4
+        src: |
+          ### Подсказки и объяснения
+          {url}
+          {hint}
+
+          #### Этап создания типов
+
+          В ЯПЗ поддерживаются три основных типа:
+          - Символьный тип - тип, для которого указывается множество возможных символьных значений
+          - Числовой тип - тип, для которого указывается числовой промежуток, в рамках которого могут быть значения
+          - Нечеткий тип - тип, определяющий лингвистическую переменную и ее значения
+
+          Примеры типов:
+
+          *Символьный*	
+          ```
+          ТИП Характер_Кашля
+          СИМВОЛ
+          "Отсутствует"
+          "Cухой"
+          "Влажный продукативный"
+          "Влажный непродуктивный"
+          КОММЕНТАРИЙ Тип для характера кашля
+          ```
+
+          *Числовой*
+          ```	
+          ТИП Процедур_в_месяц
+          ЧИСЛО
+          ОТ 0
+          ДО 8
+          КОММЕНТАРИЙ Тип для частоты назначенных посещений процедур в месяц
+          ```
+
+          *Нечеткий*	
+          ```
+          ТИП Температура
+          НЕЧЕТКИЙ
+          3
+          "Высокая" 34 42 4 ={{34|0; 36|0; 38|1; 42|1}}
+          "Нормальная" 34 42 8 ={{34|0; 35|0; 35.7|0.5; 36.2|0.9; 36.6|1; 37|0.4; 37.4|0; 42|0}}
+          "Низкая" 34 42 4 ={{34|1; 36|1; 37|0; 42|0}}
+          КОММЕНТАРИЙ Тип для характера температуры
+          ```
   # ---------------------------------------------------------------------------------------
   # Этап 3. Сохранение БЗ в формате расширенного ЯПЗ
   # ---------------------------------------------------------------------------------------
@@ -1320,19 +1513,23 @@ transitions:
     source: building_types
     dest: building_types
     trigger_condition:
-      or:
-        - and:
-            - has_attr:
-                left_value: { get_attribute: skills_result }
-                right_value: stage_done
-            - not:
-                get_attr:
+      and:
+        - or:
+            - and:
+                - has_attr:
                     left_value: { get_attribute: skills_result }
                     right_value: stage_done
-        - not:
-            has_attr:
-              left_value: { get_attribute: skills_result }
-              right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: url
     actions:
       - set_attribute:
           attribute: url
@@ -1347,19 +1544,23 @@ transitions:
     source: building_basic_objects
     dest: building_basic_objects
     trigger_condition:
-      or:
-        - and:
-            - has_attr:
-                left_value: { get_attribute: skills_result }
-                right_value: stage_done
-            - not:
-                get_attr:
+      and:
+        - or:
+            - and:
+                - has_attr:
                     left_value: { get_attribute: skills_result }
                     right_value: stage_done
-        - not:
-            has_attr:
-              left_value: { get_attribute: skills_result }
-              right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: url
     actions:
       - set_attribute:
           attribute: url
@@ -1368,25 +1569,29 @@ transitions:
       - show_message:
           message: "Компонент оценивания вернул необходимость исправлений типа"
   
-    errors_in_update_event:
+  errors_in_update_event:
     type: event
     event: kbEvents/update
     source: building_events
     dest: building_events
     trigger_condition:
-      or:
-        - and:
-            - has_attr:
-                left_value: { get_attribute: skills_result }
-                right_value: stage_done
-            - not:
-                get_attr:
+      and:
+        - or:
+            - and:
+                - has_attr:
                     left_value: { get_attribute: skills_result }
                     right_value: stage_done
-        - not:
-            has_attr:
-              left_value: { get_attribute: skills_result }
-              right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: url
     actions:
       - set_attribute:
           attribute: url
@@ -1395,25 +1600,29 @@ transitions:
       - show_message:
           message: "Компонент оценивания вернул необходимость исправлений типа"
     
-    errors_in_update_interval:
+  errors_in_update_interval:
     type: event
     event: kbIntervals/update
     source: building_intervals
     dest: building_intervals
     trigger_condition:
-      or:
-        - and:
-            - has_attr:
-                left_value: { get_attribute: skills_result }
-                right_value: stage_done
-            - not:
-                get_attr:
+      and:
+        - or:
+            - and:
+                - has_attr:
                     left_value: { get_attribute: skills_result }
                     right_value: stage_done
-        - not:
-            has_attr:
-              left_value: { get_attribute: skills_result }
-              right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: url
     actions:
       - set_attribute:
           attribute: url
@@ -1421,26 +1630,30 @@ transitions:
             event_data: ["url"]
       - show_message:
           message: "Компонент оценивания вернул необходимость исправлений типа"
-  
-    errors_in_update_rule:
+
+  errors_in_update_rule:
     type: event
     event: kbRules/update
     source: building_rules
     dest: building_rules
     trigger_condition:
-      or:
-        - and:
-            - has_attr:
-                left_value: { get_attribute: skills_result }
-                right_value: stage_done
-            - not:
-                get_attr:
+      and:
+        - or:
+            - and:
+                - has_attr:
                     left_value: { get_attribute: skills_result }
                     right_value: stage_done
-        - not:
-            has_attr:
-              left_value: { get_attribute: skills_result }
-              right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: url
     actions:
       - set_attribute:
           attribute: url
@@ -1449,6 +1662,161 @@ transitions:
       - show_message:
           message: "Компонент оценивания вернул необходимость исправлений типа"
   
+  no_errors_in_update_type:
+    type: event
+    event: kbTypes/update
+    source: building_types
+    dest: building_types
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - show_message:
+          message: "Задание выполнено успешно no_errors_in_update_type"
+
+  no_errors_in_update_object:
+    type: event
+    event: kbObjects/update
+    source: building_basic_objects
+    dest: building_basic_objects
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - show_message:
+          message: "Задание выполнено успешно сработало событие no_errors_in_update_object"
+
+  no_errors_in_update_event:
+    type: event
+    event: kbEvents/update
+    source: building_events
+    dest: building_events
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - show_message:
+          message: "Задание выполнено успешно"
+
+  no_errors_in_update_interval:
+    type: event
+    event: kbIntervals/update
+    source: building_intervals
+    dest: building_intervals
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - show_message:
+          message: "Задание выполнено успешно"
+
+  no_errors_in_update_rule:
+    type: event
+    event: kbRules/update
+    source: building_rules
+    dest: building_rules
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - show_message:
+          message: "Задание выполнено успешно"
+
   all_types_updated:
     type: event
     event: kbTypes/update
