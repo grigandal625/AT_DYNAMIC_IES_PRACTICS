@@ -9,6 +9,8 @@ initial_attributes:
   at_joint_port:
     env: AT_JOINT_DEBUGGER_PORT
   url: ""
+  skills: "Для отображения навыков начните выполнение работы"
+  hints: "Для отображения текущих проектных задач начните выполнение работы"
 
 #==============================================================
 #                        Состояния
@@ -71,7 +73,26 @@ states:
         src: |
           ### Подсказки и объяснения
           {url}
+
+          <details>
+          <summary>Текущие оценки навыков</summary>
+          <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+
+          ***По мере появления ошибок, будут начисляться штрафы***
+
+          {skills}
+
+          </div>
+          </details>
+
+          <details>
+          <summary>Проектные задачи</summary>
+          <div style="padding: 15px; padding-top: 0px; border: 1px solid silver; border-radius: 2px;">
+          
           {hint}
+          
+          </div>
+          </details>
 
           #### Этап создания типов
 
@@ -809,6 +830,10 @@ transitions:
           attribute: hint
           value:
             event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул необходимость исправлений типа"
 
@@ -840,6 +865,14 @@ transitions:
           attribute: url
           value:
             event_data: ["url"]
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул необходимость исправлений объекта"
   
@@ -871,6 +904,14 @@ transitions:
           attribute: url
           value:
             event_data: ["url"]
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул необходимость исправлений события"
     
@@ -902,6 +943,14 @@ transitions:
           attribute: url
           value:
             event_data: ["url"]
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул необходимость исправлений интервала"
 
@@ -933,6 +982,14 @@ transitions:
           attribute: url
           value:
             event_data: ["url"]
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул необходимость исправлений правила"
   
@@ -968,6 +1025,10 @@ transitions:
           attribute: hint
           value:
             event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Задание выполнено успешно"
 
@@ -999,6 +1060,14 @@ transitions:
       - set_attribute:
           attribute: url
           value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Задание выполнено успешно"
 
@@ -1030,6 +1099,14 @@ transitions:
       - set_attribute:
           attribute: url
           value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Задание выполнено успешно"
 
@@ -1061,6 +1138,14 @@ transitions:
       - set_attribute:
           attribute: url
           value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Задание выполнено успешно"
 
@@ -1092,6 +1177,14 @@ transitions:
       - set_attribute:
           attribute: url
           value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Задание выполнено успешно"
 
@@ -1109,6 +1202,17 @@ transitions:
             left_value: { get_attribute: skills_result }
             right_value: stage_done
     actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул возможность завершения этапа построения типов. Осуществлен переход к этапу построения базовых объектов"
 
@@ -1126,6 +1230,17 @@ transitions:
             left_value: { get_attribute: skills_result }
             right_value: stage_done
     actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул возможность завершения этапа построения базовых объектов. Осуществлен переход к этапу построения событий"
 
@@ -1143,6 +1258,17 @@ transitions:
             left_value: { get_attribute: skills_result }
             right_value: stage_done
     actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул возможность завершения этапа построения базовых объектов. Осуществлен переход к этапу построения событий"        
 
@@ -1160,6 +1286,17 @@ transitions:
             left_value: { get_attribute: skills_result }
             right_value: stage_done
     actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул возможность завершения этапа построения событий. Осуществлен переход к этапу построения интервалов"
   
@@ -1177,6 +1314,17 @@ transitions:
             left_value: { get_attribute: skills_result }
             right_value: stage_done
     actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул возможность завершения этапа построения событий. Осуществлен переход к этапу построения интервалов"        
 
@@ -1194,6 +1342,17 @@ transitions:
             left_value: { get_attribute: skills_result }
             right_value: stage_done
     actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул возможность завершения этапа построения интервалов. Осуществлен переход к этапу построения правил"
   
@@ -1211,6 +1370,17 @@ transitions:
             left_value: { get_attribute: skills_result }
             right_value: stage_done
     actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул возможность завершения этапа построения интервалов. Осуществлен переход к этапу построения правил"        
 
@@ -1228,6 +1398,17 @@ transitions:
             left_value: { get_attribute: skills_result }
             right_value: stage_done
     actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул возможность завершения этапа построения правил. Осуществлен переход к этапу сохранения фрагмента БЗ"
   
@@ -1245,6 +1426,17 @@ transitions:
             left_value: { get_attribute: skills_result }
             right_value: stage_done
     actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул возможность завершения этапа построения правил. Осуществлен переход к этапу сохранения фрагмента БЗ"        
 
