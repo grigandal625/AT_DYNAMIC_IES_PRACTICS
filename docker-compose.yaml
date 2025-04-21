@@ -9,6 +9,9 @@ services:
     ports:
       - "${RABBITMQ_UI_PORT}:${RABBITMQ_UI_PORT}"
       - "${RABBITMQ_PORT}:${RABBITMQ_PORT}"
+    expose:
+      - ${RABBITMQ_PORT}
+      - ${RABBITMQ_UI_PORT}
     networks:
       - custom-network
     environment:
