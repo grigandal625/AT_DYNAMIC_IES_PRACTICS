@@ -9,8 +9,10 @@ initial_attributes:
   at_joint_port:
     env: AT_JOINT_DEBUGGER_PORT
   url: ""
+  desc: ""
   skills: "Для отображения навыков начните выполнение работы"
-  hints: "Для отображения текущих проектных задач начните выполнение работы"
+  hint: "Для отображения текущих проектных задач начните выполнение работы"
+  hint2: ""
 
 #==============================================================
 #                        Состояния
@@ -56,6 +58,24 @@ states:
   # ---------------------------------------------------------------------------------------
   # Этап 1. Построение типов, базовых объектов и темпоральных объекто (событий/интервалов)
   # ---------------------------------------------------------------------------------------
+  variant_description:
+    label: Учебное проектирование базовых компонентов динамических ИЭС
+    control_label: Технология построения темпоральных баз знаний (БЗ)
+    frame_rows:
+      docs:
+        type: docs
+        src: |
+          # Вам назначен следующий вариант задания
+
+          {desc}
+
+          # Проектные задачи
+
+          {hint}
+
+          {hint2}
+
+
   building_types:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения темпоральных баз знаний (БЗ)
@@ -797,7 +817,7 @@ transitions:
     type: event
     event: knowledgeBase/create
     source: kb_creation
-    dest: building_types
+    dest: variant_description
     label: Создать файл БЗ
     trigger_condition:
       has_attr:
@@ -814,12 +834,17 @@ transitions:
       - set_attribute:
           attribute: hint
           value:
-            event_data: ["hint"]                
+            event_data: ["hint"]
+      - set_attribute:
+          attribute: hint2
+          value:
+            event_data: ["hint2"]
+          
   kb_updated:
     type: event
     event: knowledgeBase/update
     source: kb_creation
-    dest: building_types
+    dest: variant_description
     trigger_condition:
       has_attr:
         left_value: $event_data
@@ -835,8 +860,23 @@ transitions:
       - set_attribute:
           attribute: hint
           value:
-            event_data: ["hint"]                                                               
+            event_data: ["hint"]
+      - set_attribute:
+          attribute: hint2
+          value:
+            event_data: ["hint2"]                                                            
   
+  start_types:
+    type: link # ручной переход по кнопке
+    position: control # header/control/footer расположение кнопки перехода
+    source: variant_description # из состояния
+    dest: building_types # в состояние
+    label: Приступить к работе 1 - Технология построения темпоральных баз знаний
+    actions: # действия set_attribute/show_message
+      # задать значение атрибуте
+      - set_attribute:
+          attribute: test_status # сам атрибут/параметр
+          value: kb_creation # значение 
   #======================= Переходы по событию ===============================
 
   errors_in_update_type:
