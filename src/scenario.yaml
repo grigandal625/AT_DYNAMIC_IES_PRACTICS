@@ -952,7 +952,7 @@ transitions:
           attribute: hint
           value:
             event_data: ["hint"]
-            - set_attribute:
+      - set_attribute:
           attribute: hint2
           value:
             event_data: ["hint2"]
