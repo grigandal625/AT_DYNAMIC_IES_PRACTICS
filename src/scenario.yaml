@@ -9,8 +9,10 @@ initial_attributes:
   at_joint_port:
     env: AT_JOINT_DEBUGGER_PORT
   url: ""
+  desc: ""
   skills: "Для отображения навыков начните выполнение работы"
-  hints: "Для отображения текущих проектных задач начните выполнение работы"
+  hint: "Для отображения текущих проектных задач начните выполнение работы"
+  hint2: ""
 
 #==============================================================
 #                        Состояния
@@ -56,6 +58,23 @@ states:
   # ---------------------------------------------------------------------------------------
   # Этап 1. Построение типов, базовых объектов и темпоральных объекто (событий/интервалов)
   # ---------------------------------------------------------------------------------------
+  variant_description:
+    label: Учебное проектирование базовых компонентов динамических ИЭС
+    control_label: Технология построения темпоральных баз знаний (БЗ)
+    frame_rows:
+      docs:
+        type: docs
+        src: |
+          # Вам назначен следующий вариант задания
+
+          {desc}
+
+          # Проектные задачи
+
+          {hint}
+
+          {hint2}
+
   building_types:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения темпоральных баз знаний (БЗ)
@@ -789,7 +808,7 @@ states:
     initial: false
     frame_rows:
       kb_editor:
-        src: http://127.0.0.1:2222/token?token={auth_token}&frame_id=kb_editor
+        src: http://%location.hostname%:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect:  /models/{selected_sm}                        
   sm_translation_finished:
@@ -885,7 +904,7 @@ transitions:
     type: event
     event: knowledgeBase/create
     source: kb_creation
-    dest: building_types
+    dest: variant_description
     label: Создать файл БЗ
     trigger_condition:
       has_attr:
@@ -902,12 +921,21 @@ transitions:
       - set_attribute:
           attribute: hint
           value:
-            event_data: ["hint"]                
+            event_data: ["hint"]
+      - set_attribute:
+          attribute: hint2
+          value:
+            event_data: ["hint2"]
+      - set_attribute:
+          attribute: desc
+          value:
+            event_data: ["desc"]
+
   kb_updated:
     type: event
     event: knowledgeBase/update
     source: kb_creation
-    dest: building_types
+    dest: variant_description
     trigger_condition:
       has_attr:
         left_value: $event_data
@@ -923,8 +951,27 @@ transitions:
       - set_attribute:
           attribute: hint
           value:
-            event_data: ["hint"]                                                               
-  
+            event_data: ["hint"]
+            - set_attribute:
+          attribute: hint2
+          value:
+            event_data: ["hint2"]
+      - set_attribute:
+          attribute: desc
+          value:
+            event_data: ["desc"]         
+
+  start_types:
+    type: link
+    position: control
+    source: variant_description 
+    dest: building_types 
+    label: Приступить к первому этапу технологии построения темпоральных БЗ
+    actions:
+      - set_attribute:
+          attribute: test_status 
+          value: kb_creation
+                                                    
   #======================= Переходы по событию ===============================
 
   errors_in_update_type:
