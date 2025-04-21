@@ -686,28 +686,6 @@ states:
   # ---------------------------------------------------------------------------------------
   # 2. Построение описания ИМ СТС/СОТС на языке РДО-АТ
   # ---------------------------------------------------------------------------------------
-  sm_confirmation:
-    label: Учебное проектирование базовых компонентов динамических ИЭС
-    control_label: Технология построения имитационных моделей внешней среды
-    control_subtitle: Подтверждение использования файла имитационной модели
-    initial: false
-    frame_rows:
-      sm_editor:
-        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
-        type: format_attributes
-        redirect: /models/{selected_sm}
-        span: 20
-  sm_choosing:
-    label: Учебное проектирование базовых компонентов динамических ИЭС
-    control_label: Технология построения имитационных моделей внешней среды
-    control_subtitle: Выбор файла ИМ
-    initial: false
-    frame_rows:
-      sm_editor:
-        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
-        type: format_attributes
-        redirect: /models/{selected_sm}
-        span: 20
   sm_translation_preparation:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения имитационных моделей внешней среды
@@ -726,142 +704,47 @@ states:
   # ---------------------------------------------------------------------------------------
   # 3. Транляция ИМ на языке РДО-АТ во внутренее представление. 
   # ---------------------------------------------------------------------------------------     
-  sm_translation_start:
+  sm_experiment_preparation:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения имитационных моделей внешней среды
-    control_subtitle: Описание ИМ на языка РДО-АТ загружено
+    control_subtitle: Подготовка прогона имитационной модели
     initial: false
     frame_rows:
       sm_editor:
         src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
         type: format_attributes
-        redirect: /models/{selected_sm}/translates # TODO: добавить нужную ссылку
+        redirect: /evaluate/runner/{translated_sm}
         span: 20
       docs:
         src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
         type: basic
         span: 4
-  sm_translation_lexical_errors:
-    label: Учебное проектирование базовых компонентов динамических ИЭС
-    control_label: Технология построения имитационных моделей внешней среды
-    control_subtitle: Обнаружены ошибки при лексическом анализе
-    initial: false
-    frame_rows:
-      sm_editor:
-        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
-        type: format_attributes
-        redirect: /models/{selected_sm}/translates/results/errors # TODO: добавить нужную ссылку
-        span: 20
-      docs:
-        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
-        type: basic
-        span: 4
-  sm_translation_syntax_errors:
-    label: Учебное проектирование базовых компонентов динамических ИЭС
-    control_label: Технология построения имитационных моделей внешней среды
-    control_subtitle: Обнаружены ошибки при синтаксическом анализе
-    initial: false
-    frame_rows:
-      sm_editor:
-        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
-        type: format_attributes
-        redirect: /models/{selected_sm}/translates/results/errors # TODO: добавить нужную ссылку
-        span: 20
-      docs:
-        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
-        type: basic
-        span: 4
-  sm_translation_semantic_errors:
-    label: Учебное проектирование базовых компонентов динамических ИЭС
-    control_label: Технология построения имитационных моделей внешней среды
-    control_subtitle: Обнаружены ошибки при семантическом анализе
-    initial: false
-    frame_rows:
-      sm_editor:
-        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
-        type: format_attributes
-        redirect: /models/{selected_sm}/translates/results/errors # TODO: добавить нужную ссылку
-        span: 20
-      docs:
-        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
-        type: basic
-        span: 4
-  sm_translation_compilation_errors:
-    label: Учебное проектирование базовых компонентов динамических ИЭС
-    control_label: Технология построения имитационных моделей внешней среды
-    control_subtitle: Обнаружены ошибки при компиляуции ИМ
-    initial: false
-    frame_rows:
-      sm_editor:
-        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
-        type: format_attributes
-        redirect: /models/{selected_sm}/translates/results/errors # TODO: добавить нужную ссылку
-        span: 20
-      docs:
-        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
-        type: basic
-        span: 4
-  sm_exporting:
-    label: Учебное проектирование базовых компонентов динамических ИЭС
-    control_label: Технология построения имитационных моделей внешней среды
-    control_subtitle: Загрузка готового файла ИМ
-    initial: false
-    frame_rows:
-      kb_editor:
-        src: http://%location.hostname%:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
-        type: format_attributes
-        redirect:  /models/{selected_sm}                        
-  sm_translation_finished:
-    label: Учебное проектирование базовых компонентов динамических ИЭС
-    control_label: Технология построения имитационных моделей внешней среды
-    control_subtitle: Все этапы трансляции пройдены успешно
-    initial: false
-    frame_rows:
-      sm_editor:
-        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
-        type: format_attributes
-        redirect: /models/{selected_sm}/translates/results # TODO: добавить нужную ссылку
-        span: 20
-      docs:
-        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
-        type: basic
-        span: 4
+    
   # ---------------------------------------------------------------------------------------
-  # 4. Конфигурирование параметров ИМ.      
+  # 4. Конфигурирование параметров ИМ и запуск прогона.      
   # ---------------------------------------------------------------------------------------   
-  sm_modeling_start:
+  sm_experiment_run:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения имитационных моделей внешней среды
-    control_subtitle: Настройка конфигурации ИМ
+    control_subtitle: Конфигурирование параметров ИМ и запуск прогона для расчета состояний ИМ
     initial: false
     frame_rows:
       sm_editor:
         src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
         type: format_attributes
-        redirect: /models/{selected_sm}/translates/results # TODO: добавить нужную ссылку
+        redirect: /evaluate/runner/{translated_sm}/process/{experiment_id}
         span: 20
       docs:
-        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
-        type: basic
         span: 4
+        type: docs
+        src: |
+          ### Выполните исследование поведения разработанной имитационной модели
+
+          Если результат не устраивает, вернитесь на этапы разработки имитационной модели
   # ---------------------------------------------------------------------------------------
   # 5. Расчет состояний ИМ и визуализация (опционально).
   # ---------------------------------------------------------------------------------------
-  sm_modeling_finished:
-    label: Учебное проектирование базовых компонентов динамических ИЭС
-    control_label: Технология построения имитационных моделей внешней среды
-    control_subtitle: Результаты прогона ИМ
-    initial: false
-    frame_rows:
-      sm_editor:
-        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
-        type: format_attributes
-        redirect: /models/{selected_sm}/translates/results # TODO: добавить нужную ссылку
-        span: 20
-      docs:
-        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
-        type: basic
-        span: 4              
+  
   sm_finished:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения имитационных моделей внешней среды
@@ -1508,6 +1391,9 @@ transitions:
       - show_message:
           message: "Компонент оценивания вернул возможность завершения этапа построения правил. Осуществлен переход к этапу сохранения фрагмента БЗ"        
 
+# переходы для имитационной модели
+
+# ------------- ручные и frame_handler переходы -------------
   create_sm:
     type: link
     position: control
@@ -1518,6 +1404,8 @@ transitions:
       - set_attribute:
           attribute: test_status
           value: sm_creation
+
+# frame_handler переход для выбора модели (добавить событие создания модели)
   build_resource_types:
     type: frame_handler
     frame_id: sm_editor
@@ -1536,341 +1424,57 @@ transitions:
               parse:
                 regexp: .*/models/(\d+)/?
                 group: 0
-  exchange_resource_types_1:
-    type: frame_handler
-    frame_id: sm_editor
-    test: /models/(\d+)/resource-types
-    source: building_resources
-    dest: building_resource_types
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_resource_types
-  exchange_resource_types_2:
-    type: frame_handler
-    frame_id: sm_editor
-    test: /models/(\d+)/resource-types
-    source: building_templates
-    dest: building_resource_types
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_resource_types
-  exchange_resource_types_3:
-    type: frame_handler
-    frame_id: sm_editor
-    test: /models/(\d+)/resource-types
-    source: building_template_usages
-    dest: building_resource_types
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_resource_types
-  exchange_resource_types_4:
-    type: frame_handler
-    frame_id: sm_editor
-    test: /models/(\d+)/resource-types
-    source: building_funcs
-    dest: building_resource_types
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_resource_types                                    
-  # ---------------------------------------------------------------------------
-  # Ручные переходы из других состояний на определение ресурсов ИМ
-  # ---------------------------------------------------------------------------
-  build_resources:
-    type: link
-    position: control
-    label: Перейти к этапу построения ресурсов
-    source: building_resource_types
-    dest: building_resources
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_resources
-  back_build_resources:
-    type: link
-    position: control
-    label: Вернуться к этапу построения ресурсов
-    source: building_funcs
-    dest: building_resources
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_resources
-  # ---------------------------------------------------------------------------
-  # Автоматические переходы из других состояний на определение ресурсов ИМ
-  # ---------------------------------------------------------------------------
-  exchange_resources_1:
-    type: frame_handler
-    frame_id: sm_editor
-    test: /models/(\d+)/resources
-    source: building_resource_types
-    dest: building_resources
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_resources
-  exchange_resources_2:
-    type: frame_handler
-    frame_id: sm_editor
-    test: /models/(\d+)/resources
-    source: building_templates
-    dest: building_resources
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_resources
-  exchange_resources_3:
-    type: frame_handler
-    frame_id: sm_editor
-    test: /models/(\d+)/resources
-    source: building_template_usages
-    dest: building_resources
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_resources
-  exchange_resources_4:
-    type: frame_handler
-    frame_id: sm_editor
-    test: /models/(\d+)/resources
-    source: building_funcs
-    dest: building_resources
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_resources
-  # ---------------------------------------------------------------------------
-  # Ручные переходы из других состояний на построение функций ИМ
-  # ---------------------------------------------------------------------------
+
+# опциональный ручной переход на построение функций из образцов
   build_funcs:
     type: link
     position: control
-    label: Перейти к этапу построения функций
-    source: building_resources
-    dest: building_funcs
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_funcs
-  back_build_funcs:
-    type: link
-    position: control
-    label: Вернуться к этапу построения функций
+    label: Перейти к этапу построения функций (опциональный этап)
     source: building_templates
     dest: building_funcs
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_funcs
-  # ---------------------------------------------------------------------------
-  # Автоматические переходы из других состояний на построение функций ИМ
-  # ---------------------------------------------------------------------------
-  exchange_funcs_1:
-    type: frame_handler
-    frame_id: sm_editor
-    test: /models/(\d+)/funcs
-    source: building_resource_types
-    dest: building_funcs
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_funcs
-  exchange_funcs_2:
-    type: frame_handler
-    frame_id: sm_editor
-    test: /models/(\d+)/funcs
-    source: building_templates
-    dest: building_funcs
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_funcs
-  exchange_funcs_3:
-    type: frame_handler
-    frame_id: sm_editor
-    test: /models/(\d+)/funcs
-    source: building_template_usages
-    dest: building_funcs
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_funcs
-  exchange_funcs_4:
-    type: frame_handler
-    frame_id: sm_editor
-    test: /models/(\d+)/funcs
-    source: building_resources
-    dest: building_funcs
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_funcs        
-  # ---------------------------------------------------------------------------
-  # Ручные переходы из других состояний на построение образцов операций ИМ
-  # ---------------------------------------------------------------------------
-  build_templates:
+
+# ручное возвращение на образцы из функций
+  build_templates_after_build_funcs:
     type: link
     position: control
-    label: Перейти к этапу построения событий и законов функционирования
+    label: Вернуться к этапу построения образцов операций
     source: building_funcs
     dest: building_templates
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_templates
-  back_build_templates:
+
+# ручной переход из прогона к разработке типов ресурсов
+  rebuild_resource_types:
     type: link
     position: control
-    label: Вернуться к этапу построения событий и законов функционирования
-    source: building_template_usages
-    dest: building_templates
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_templates
-  # ---------------------------------------------------------------------------
-  # Автоматические переходы из других состояний на построение образцов операций ИМ
-  # ---------------------------------------------------------------------------
-  exchange_templates_1:
-    type: frame_handler
-    frame_id: sm_editor
-    test: /models/(\d+)/templates
-    source: building_resource_types
-    dest: building_templates
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_templates
-  exchange_templates_2:
-    type: frame_handler
-    frame_id: sm_editor
-    test: /models/(\d+)/templates
-    source: building_funcs
-    dest: building_templates
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_templates
-  exchange_templates_3:
-    type: frame_handler
-    frame_id: sm_editor
-    test: /models/(\d+)/templates
-    source: building_template_usages
-    dest: building_templates
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_templates
-  exchange_templates_4:
-    type: frame_handler
-    frame_id: sm_editor
-    test: /models/(\d+)/templates
-    source: building_resources
-    dest: building_templates
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_templates                  
-  # ---------------------------------------------------------------------------
-  # Ручные переходы из других состояний на построение операций ИМ
-  # ---------------------------------------------------------------------------
-  build_templates_usages:
+    source: sm_experiment_run
+    dest: building_resource_types
+    label: Вернуться к доработке типов ресурсов
+
+# ручной переход из прогона к разработке ресурсов
+  rebuild_resources:
     type: link
     position: control
-    label: Перейти к этапу построения операций
-    source: building_templates
-    dest: building_template_usages
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_template_usages                 
-  # ---------------------------------------------------------------------------
-  # Автоматические переходы из других состояний на построение операций ИМ
-  # ---------------------------------------------------------------------------
-  exchange_template_usages_1:
-    type: frame_handler
-    frame_id: sm_editor
-    test: /models/(\d+)/template-usages
-    source: building_resource_types
-    dest: building_template_usages
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_template_usages
-  exchange_template_usages_2:
-    type: frame_handler
-    frame_id: sm_editor
-    test: /models/(\d+)/template-usages
-    source: building_funcs
-    dest: building_template_usages
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_template_usages
-  exchange_template_usages_3:
-    type: frame_handler
-    frame_id: sm_editor
-    test: /models/(\d+)/template-usages
-    source: building_templates
-    dest: building_template_usages
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_template_usages
-  exchange_template_usages_4:
-    type: frame_handler
-    frame_id: sm_editor
-    test: /models/(\d+)/template-usages
-    source: building_resources
-    dest: building_template_usages
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_template_usages 
+    source: sm_experiment_run
+    dest: building_resources
+    label: Вернуться к доработке ресурсов
 
-  export_sm:
+# ручной переход из прогона к разработке образцов операций
+  rebuild_templates:
     type: link
     position: control
-    label: Перейти к этапу подтверждения файла ИМ
-    source: building_template_usages
-    dest: exporting_sm
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: exporting_sm
-  finish_sm:
+    source: sm_experiment_run
+    dest: building_templates
+    label: Вернуться к доработке образцов операций
+
+# ручной переход из прогона к разработке операций
+  rebuild_template_usages:
     type: link
     position: control
-    label: Перейти к этапу подтверждения файла ИМ
-    source: exporting_sm
-    dest: sm_finished
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: sm_finished        
+    source: sm_experiment_run
+    dest: building_template_usages
+    label: Вернуться к доработке операций
 
-  #======================= Переходы по событию ===============================
-  knowlenge_base_updated:
-    type: event
-    event: knowlengeBase/update
-    source: exporting_kb
-    dest: finishing_kb
-    trigger_condition:
-      and:
-        - has_attr:
-            left_value: { get_attribute: skills_result }
-            right_value: stage_done
-        - get_attr:
-            left_value: { get_attribute: skills_result }
-            right_value: stage_done
-    actions:
-      - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа построения типов. Осуществлен переход к этапу завершения построения темпоральной БЗ"
-
-
+#======================= Переходы по событию ===============================
+  
 #================== Imitation model =========================
 #================ Resource Types create =====================
   no_errors_in_create_resource_types:
@@ -2095,7 +1699,6 @@ transitions:
       - show_message:
           message: "Компонент оценивания вернул необходимость исправлений ресурса"
 
-
   all_resources_create:
     type: event
     event: resources/create
@@ -2175,7 +1778,6 @@ transitions:
             event_data: ["url"]
       - show_message:
           message: "Компонент оценивания вернул необходимость исправления ресурса"
-
 
   all_resources_update:
     type: event
@@ -2257,7 +1859,6 @@ transitions:
       - show_message:
           message: "Компонент оценивания вернул необходимость исправлений образца операции"
 
-
   all_templates_create:
     type: event
     event: templates/create
@@ -2338,7 +1939,6 @@ transitions:
       - show_message:
           message: "Компонент оценивания вернул необходимость исправлений образцов операций"
 
-
   all_templates_updated:
     type: event
     event: templates/update
@@ -2388,7 +1988,6 @@ transitions:
       - show_message:
           message: "Задание выполнено успешно"
 
-
   errors_in_create_template_usages:
     type: event
     event: templateUsages/create
@@ -2419,7 +2018,6 @@ transitions:
             event_data: ["url"]
       - show_message:
           message: "Компонент оценивания вернул необходимость исправления операции"
-
 
   all_template_usages_created:
     type: event
@@ -2501,7 +2099,6 @@ transitions:
     - show_message:
         message: "Компонент оценивания вернул необходимость исправлений операции"
 
-
   all_template_usages_updated:
     type: event
     event: templateUsages/update
@@ -2519,12 +2116,59 @@ transitions:
       - show_message:
           message: "Компонент оценивания вернул возможность завершения этапа создания операции. Осуществлен переход к этапу расчета ИМ внешней среды."
 
+#====================== Model translated =============================
+  model_translated_successfuly:
+    type: event
+    event: translatedModels/create
+    source: sm_translation_preparation
+    dest: sm_experiment_preparation
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - set_attribute:
+          attribute: translated_sm
+          value:
+            event_data: ['translated_sm']
+          next:
+            - show_message:
+                message: "Компонент оценивания вернул возможность завершения этапа трансляции ИМ. Управляющая программа зафиксировала идентификатор файла внутреннего представления ИМ: {translated_sm}. Осуществлен переход к подготовке прогона модели."
+
+#====================== Experiment =============================
+  experiment_started_successfuly:
+    type: event
+    event: simulationProcesses/create
+    source: sm_experiment_preparation
+    dest: sm_experiment_run
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - set_attribute:
+          attribute: experiment_id
+          value:
+            event_data: ['experiment_id']
+          next:
+            - show_message:
+                message: "Компонент оценивания вернул возможность завершения этапа подготовки прогона модели. Управляющая программа зафиксировала идентификатор процесса прогона: {translated_sm}. Осуществлен переход к конфигурированию параметров ИМ и запуску прогона."
+
   
 #==============================================================
 #                          Events
 #==============================================================
 events:
-  #================== Knowlenge Base =========================
+
+#================== Knowlenge Base =========================
   knowledgeBase/create:
     handler_component: ATTutoringKBSkills
     handler_method: handle_knowledge_base_created
@@ -2857,9 +2501,7 @@ events:
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
 
-#==============================================================
-  #==============================================================
-  #================== Imitation model =========================
+#================== Imitation model =========================
   models/create:
     handler_component: SimulationService
     handler_method: handle_simulation_model_created
@@ -2902,7 +2544,6 @@ events:
             - show_message:
                 message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
 
-
   resourceTypes/update:
     handler_component: SimulationService
     handler_method: handle_resource_type
@@ -2921,7 +2562,6 @@ events:
           next:
             - show_message:
                 message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
-
 
   resourceTypes/duplicate:
     handler_component: SimulationService
@@ -2945,7 +2585,6 @@ events:
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
   
-
   #====================== Resources =============================     
   resources/create:
     handler_component: SimulationService
@@ -2966,7 +2605,6 @@ events:
             - show_message:
                 message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
 
-
   resources/update:
     handler_component: SimulationService
     handler_method: handle_resource
@@ -2978,7 +2616,6 @@ events:
           next: # выволнить следующим последовательным действием
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-
 
   resources/duplicate:
     handler_component: SimulationService
@@ -2999,7 +2636,6 @@ events:
             - show_message:
                 message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
 
-
   resources/delete:
     handler_component: SimulationService
     handler_method: handle_im_resources_deleted
@@ -3010,7 +2646,6 @@ events:
           next:
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
   
   #====================== Template =============================
   templates/create:
@@ -3032,7 +2667,6 @@ events:
             - show_message:
                 message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
 
-
   templates/update:
     handler_component: SimulationService
     handler_method: handle_template
@@ -3051,7 +2685,6 @@ events:
           next:
             - show_message:
                 message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
-
 
   templates/dublicate:
     handler_component: SimulationService
@@ -3075,8 +2708,7 @@ events:
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
 
-
-#====================== Template Usages ============================
+  #====================== Template Usages ============================
   templateUsages/create:
     handler_component: SimulationService
     handler_method: handle_template_usage
@@ -3096,7 +2728,6 @@ events:
             - show_message:
                 message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
 
-
   templateUsages/update:
     handler_component: SimulationService
     handler_method: handle_template_usage
@@ -3115,7 +2746,6 @@ events:
           next:
             - show_message:
                 message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
-
 
   templateUsages/dublicate:
     handler_component: SimulationService
@@ -3139,8 +2769,7 @@ events:
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
 
-
-#====================== Funcs =============================
+  #====================== Funcs =============================
   funcs/create:
     handler_component: SimulationService
     handler_method: handle_function
@@ -3159,7 +2788,6 @@ events:
           next:
             - show_message:
                 message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
-
 
   funcs/update:
     handler_component: SimulationService
@@ -3180,7 +2808,6 @@ events:
             - show_message:
                 message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
 
-
   funcs/dublicate:
     handler_component: SimulationService
     handler_method: handle_im_func_dublicated
@@ -3195,6 +2822,28 @@ events:
   funcs/delete:
     handler_component: SimulationService
     handler_method: handle_im_func_deleted
+    actions:
+      - set_attribute:
+          attribute: skills_result
+          value: $event_data
+          next:
+            - show_message:
+                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
+
+  translatedModels/create:
+    handler_component: SimulationService
+    handler_method: handle_translate_model
+    actions:
+      - set_attribute:
+          attribute: skills_result
+          value: $event_data
+          next:
+            - show_message:
+                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
+
+  simulationProcesses/create:
+    handler_component: SimulationService
+    handler_method: handle_start_experiment
     actions:
       - set_attribute:
           attribute: skills_result
