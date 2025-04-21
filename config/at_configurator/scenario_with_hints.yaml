@@ -75,7 +75,6 @@ states:
 
           {hint2}
 
-
   building_types:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения темпоральных баз знаний (БЗ)
@@ -496,13 +495,19 @@ states:
   #           Состояния по технологии построения ИМ
   #==============================================================
   sm_start:
-    label: Средства поддержки практических занятий по учебному проектированию базовых компонентов динамических ИЭС
-    translation: Начало работы 2
-    initial: true
-    frame_rows:
-      docs:
-        src: /docview?viewing=true&docs=%23+Учебное+проектирование+базовых+компонентов+динамических+интегрированных+экспертных+систем%0A%0A%23%23+Практическая+работа+2.+Моделирование+внешней+среды+с+помощью+средств+подсистемы+имитационного+моделирования+и+языка+РДО<sup>АТ<%2Fsup>%0A%0A**Цель+работы.**+Освоение+навыков+построения+простейших+имитационных+моделей+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>+с+помощью+подсистемы+имитационного+моделирования+%28динамическая+версия+комплекса+АТ-ТЕХНОЛОГИЯ%29.
-        type: basic
+      label: Средства поддержки обучающего воздействия типа "Тренинг с ЭС/ИЭС" для учебного проектирования базовых компонентов динамических ИЭС
+      translation: Начало работы 2
+      initial: true
+      frame_rows:
+        docs:
+          type: docs
+          src: |
+            # Учебное проектирование базовых компонентов динамических интегрированных экспертных систем
+
+            ## Практическая работа 2. Моделирование внешней среды с помощью средств подсистемы имитационного моделирования и языка РДО<sup>АТ</sup>.
+
+            **Цель работы.** Освоение навыков построения простейших имитационных моделей внешней среды на языке РДО<sup>АТ</sup> с помощью подсистемы имитационного моделирования (динамическая версия комплекса АТ-ТЕХНОЛОГИЯ).
+        
   sm_creation:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения имитационных моделей внешней среды
@@ -515,9 +520,15 @@ states:
         redirect: /models/new
         span: 20
       docs:
-        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
-        type: basic
+        src: |
+          ### Подсказки и объяснения
+
+          Для начала работы необходимо создать имитационную модель нешней среды.
+
+          После нажатия кнопки `Создать` будет осуществлен автоматический переход к следующему этапу технологии построения имитационной модели
+        type: docs
         span: 4
+  # ----------------------------------
   # ------------------------------------------------------------------------------------------------------
   # 1. Выделение ресурсов и параметров, выделение событий и определений законов функционирования СТС/СОТС
   # ------------------------------------------------------------------------------------------------------
@@ -533,9 +544,23 @@ states:
         redirect: /models/{selected_sm}/resource-types
         span: 20
       docs:
-        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
-        type: basic
+        type: docs
         span: 4
+        src: |
+          ### Подсказки и объяснения
+          {url}
+          {hint}
+
+          #### Этап создания типа ресурса
+
+          Типы ресурса могут быть двух видов:
+          - Регулярный
+          - Нерегулярный
+          
+        # двойные {{}} для того, чтобы игнорировать форматирование атрибутами
+        # например, {hint} - если в атрибтах есть ключ hint - подставится значение hint
+        # {{hint}} преобразуется в {hint} без подстановки
+        # {hint} - если в атрибтах нет ключа hint - останется {hint}
   building_resources:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения имитационных моделей внешней среды
@@ -548,9 +573,14 @@ states:
         redirect: /models/{selected_sm}/resources
         span: 20
       docs:
-        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
-        type: basic
-        span: 4  
+        type: docs
+        span: 4
+        src: |
+          ### Подсказки и объяснения
+          {url}
+          {hint}
+
+          #### Этап создания ресурса 
   building_templates:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения имитационных моделей внешней среды
@@ -563,9 +593,31 @@ states:
         redirect: /models/{selected_sm}/templates
         span: 20
       docs:
-        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
-        type: basic
+        type: docs
         span: 4
+        src: |
+          ### Подсказки и объяснения
+          {url}
+          {hint}
+
+          #### Этап создания образца операции
+
+          Образец операции может быть одним из трех типов:
+          - Операция, 
+          - Нерегулярное событие, 
+          - Правило.
+
+          Тело образца операции составляют процедурную часть программы на языке РДО<sup>АТ</sup>:
+
+          *Ниже представлены синтаксические определения, общих для всех объектов:* 	
+          ```
+          <арифметическое_выражение> ::= ( <операнд> (* | / | + | -) <операнд>)
+          <операнд> ::= <арифметическое_выражение> | <число>
+          <число> :: = [+| -] <натчисло> [.[<натчисло>]] [(e|E) [+|-] <натчисло>]
+          <натчисло> :: = <цифра> {<цифра>}
+          <Буква> ::= A…Z, a…z; А…Я, а…я;
+          <цифра> ::= 0…9
+          ```
   building_template_usages:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения имитационных моделей внешней среды
@@ -578,9 +630,26 @@ states:
         redirect: /models/{selected_sm}/template-usages
         span: 20
       docs:
-        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
-        type: basic
+        type: docs
         span: 4
+        src: |
+          ### Подсказки и объяснения
+          {url}
+          {hint}
+
+          #### Этап создания операции
+
+          Тело образца операции составляют процедурную часть программы на языке РДО<sup>АТ</sup>:
+
+          *Ниже представлены синтаксические определения, общих для всех объектов:* 	
+          ```
+          <арифметическое_выражение> ::= ( <операнд> (* | / | + | -) <операнд>)
+          <операнд> ::= <арифметическое_выражение> | <число>
+          <число> :: = [+| -] <натчисло> [.[<натчисло>]] [(e|E) [+|-] <натчисло>]
+          <натчисло> :: = <цифра> {<цифра>}
+          <Буква> ::= A…Z, a…z; А…Я, а…я;
+          <цифра> ::= 0…9
+          ```
   building_funcs:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения имитационных моделей внешней среды
@@ -593,9 +662,27 @@ states:
         redirect: /models/{selected_sm}/funcs
         span: 20
       docs:
-        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
-        type: basic
-        span: 4     
+        type: docs
+        span: 4
+        src: |
+          ### Подсказки и объяснения
+          {url}
+          {hint}
+
+          #### Этап создания функции
+
+          Тело функции составляет процедурную часть программы на языке РДО<sup>АТ</sup>:
+
+          *Ниже представлены синтаксические определения, общих для всех объектов:* 	
+          ```
+          <арифметическое_выражение> ::= ( <операнд> (* | / | + | -) <операнд>)
+          <операнд> ::= <арифметическое_выражение> | <число>
+          <число> :: = [+| -] <натчисло> [.[<натчисло>]] [(e|E) [+|-] <натчисло>]
+          <натчисло> :: = <цифра> {<цифра>}
+          <Буква> ::= A…Z, a…z; А…Я, а…я;
+          <цифра> ::= 0…9
+          ```
+
   # ---------------------------------------------------------------------------------------
   # 2. Построение описания ИМ СТС/СОТС на языке РДО-АТ
   # ---------------------------------------------------------------------------------------
@@ -843,7 +930,7 @@ transitions:
           attribute: desc
           value:
             event_data: ["desc"]
-          
+
   kb_updated:
     type: event
     event: knowledgeBase/update
@@ -865,25 +952,26 @@ transitions:
           attribute: hint
           value:
             event_data: ["hint"]
-      - set_attribute:
+            - set_attribute:
           attribute: hint2
           value:
             event_data: ["hint2"]
       - set_attribute:
           attribute: desc
           value:
-            event_data: ["desc"]
-  
+            event_data: ["desc"]         
+
   start_types:
     type: link
     position: control
     source: variant_description 
     dest: building_types 
-    label: Приступить к работе 1 - Технология построения темпоральных баз знаний
+    label: Приступить к первому этапу технологии построения темпоральных БЗ
     actions:
       - set_attribute:
           attribute: test_status 
           value: kb_creation
+                                                    
   #======================= Переходы по событию ===============================
 
   errors_in_update_type:
@@ -1430,6 +1518,1008 @@ transitions:
       - set_attribute:
           attribute: test_status
           value: sm_creation
+  build_resource_types:
+    type: frame_handler
+    frame_id: sm_editor
+    test: /models/\d+
+    source: sm_creation
+    dest: building_resource_types
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_resource_types
+      - set_attribute:
+          attribute: selected_sm
+          value:
+            frame_url:
+              frame_id: sm_editor
+              parse:
+                regexp: .*/models/(\d+)/?
+                group: 0
+  exchange_resource_types_1:
+    type: frame_handler
+    frame_id: sm_editor
+    test: /models/(\d+)/resource-types
+    source: building_resources
+    dest: building_resource_types
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_resource_types
+  exchange_resource_types_2:
+    type: frame_handler
+    frame_id: sm_editor
+    test: /models/(\d+)/resource-types
+    source: building_templates
+    dest: building_resource_types
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_resource_types
+  exchange_resource_types_3:
+    type: frame_handler
+    frame_id: sm_editor
+    test: /models/(\d+)/resource-types
+    source: building_template_usages
+    dest: building_resource_types
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_resource_types
+  exchange_resource_types_4:
+    type: frame_handler
+    frame_id: sm_editor
+    test: /models/(\d+)/resource-types
+    source: building_funcs
+    dest: building_resource_types
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_resource_types                                    
+  # ---------------------------------------------------------------------------
+  # Ручные переходы из других состояний на определение ресурсов ИМ
+  # ---------------------------------------------------------------------------
+  build_resources:
+    type: link
+    position: control
+    label: Перейти к этапу построения ресурсов
+    source: building_resource_types
+    dest: building_resources
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_resources
+  back_build_resources:
+    type: link
+    position: control
+    label: Вернуться к этапу построения ресурсов
+    source: building_funcs
+    dest: building_resources
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_resources
+  # ---------------------------------------------------------------------------
+  # Автоматические переходы из других состояний на определение ресурсов ИМ
+  # ---------------------------------------------------------------------------
+  exchange_resources_1:
+    type: frame_handler
+    frame_id: sm_editor
+    test: /models/(\d+)/resources
+    source: building_resource_types
+    dest: building_resources
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_resources
+  exchange_resources_2:
+    type: frame_handler
+    frame_id: sm_editor
+    test: /models/(\d+)/resources
+    source: building_templates
+    dest: building_resources
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_resources
+  exchange_resources_3:
+    type: frame_handler
+    frame_id: sm_editor
+    test: /models/(\d+)/resources
+    source: building_template_usages
+    dest: building_resources
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_resources
+  exchange_resources_4:
+    type: frame_handler
+    frame_id: sm_editor
+    test: /models/(\d+)/resources
+    source: building_funcs
+    dest: building_resources
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_resources
+  # ---------------------------------------------------------------------------
+  # Ручные переходы из других состояний на построение функций ИМ
+  # ---------------------------------------------------------------------------
+  build_funcs:
+    type: link
+    position: control
+    label: Перейти к этапу построения функций
+    source: building_resources
+    dest: building_funcs
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_funcs
+  back_build_funcs:
+    type: link
+    position: control
+    label: Вернуться к этапу построения функций
+    source: building_templates
+    dest: building_funcs
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_funcs
+  # ---------------------------------------------------------------------------
+  # Автоматические переходы из других состояний на построение функций ИМ
+  # ---------------------------------------------------------------------------
+  exchange_funcs_1:
+    type: frame_handler
+    frame_id: sm_editor
+    test: /models/(\d+)/funcs
+    source: building_resource_types
+    dest: building_funcs
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_funcs
+  exchange_funcs_2:
+    type: frame_handler
+    frame_id: sm_editor
+    test: /models/(\d+)/funcs
+    source: building_templates
+    dest: building_funcs
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_funcs
+  exchange_funcs_3:
+    type: frame_handler
+    frame_id: sm_editor
+    test: /models/(\d+)/funcs
+    source: building_template_usages
+    dest: building_funcs
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_funcs
+  exchange_funcs_4:
+    type: frame_handler
+    frame_id: sm_editor
+    test: /models/(\d+)/funcs
+    source: building_resources
+    dest: building_funcs
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_funcs        
+  # ---------------------------------------------------------------------------
+  # Ручные переходы из других состояний на построение образцов операций ИМ
+  # ---------------------------------------------------------------------------
+  build_templates:
+    type: link
+    position: control
+    label: Перейти к этапу построения событий и законов функционирования
+    source: building_funcs
+    dest: building_templates
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_templates
+  back_build_templates:
+    type: link
+    position: control
+    label: Вернуться к этапу построения событий и законов функционирования
+    source: building_template_usages
+    dest: building_templates
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_templates
+  # ---------------------------------------------------------------------------
+  # Автоматические переходы из других состояний на построение образцов операций ИМ
+  # ---------------------------------------------------------------------------
+  exchange_templates_1:
+    type: frame_handler
+    frame_id: sm_editor
+    test: /models/(\d+)/templates
+    source: building_resource_types
+    dest: building_templates
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_templates
+  exchange_templates_2:
+    type: frame_handler
+    frame_id: sm_editor
+    test: /models/(\d+)/templates
+    source: building_funcs
+    dest: building_templates
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_templates
+  exchange_templates_3:
+    type: frame_handler
+    frame_id: sm_editor
+    test: /models/(\d+)/templates
+    source: building_template_usages
+    dest: building_templates
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_templates
+  exchange_templates_4:
+    type: frame_handler
+    frame_id: sm_editor
+    test: /models/(\d+)/templates
+    source: building_resources
+    dest: building_templates
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_templates                  
+  # ---------------------------------------------------------------------------
+  # Ручные переходы из других состояний на построение операций ИМ
+  # ---------------------------------------------------------------------------
+  build_templates_usages:
+    type: link
+    position: control
+    label: Перейти к этапу построения операций
+    source: building_templates
+    dest: building_template_usages
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_template_usages                 
+  # ---------------------------------------------------------------------------
+  # Автоматические переходы из других состояний на построение операций ИМ
+  # ---------------------------------------------------------------------------
+  exchange_template_usages_1:
+    type: frame_handler
+    frame_id: sm_editor
+    test: /models/(\d+)/template-usages
+    source: building_resource_types
+    dest: building_template_usages
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_template_usages
+  exchange_template_usages_2:
+    type: frame_handler
+    frame_id: sm_editor
+    test: /models/(\d+)/template-usages
+    source: building_funcs
+    dest: building_template_usages
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_template_usages
+  exchange_template_usages_3:
+    type: frame_handler
+    frame_id: sm_editor
+    test: /models/(\d+)/template-usages
+    source: building_templates
+    dest: building_template_usages
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_template_usages
+  exchange_template_usages_4:
+    type: frame_handler
+    frame_id: sm_editor
+    test: /models/(\d+)/template-usages
+    source: building_resources
+    dest: building_template_usages
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: building_template_usages 
+
+  export_sm:
+    type: link
+    position: control
+    label: Перейти к этапу подтверждения файла ИМ
+    source: building_template_usages
+    dest: exporting_sm
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: exporting_sm
+  finish_sm:
+    type: link
+    position: control
+    label: Перейти к этапу подтверждения файла ИМ
+    source: exporting_sm
+    dest: sm_finished
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: sm_finished        
+
+  #======================= Переходы по событию ===============================
+  knowlenge_base_updated:
+    type: event
+    event: knowlengeBase/update
+    source: exporting_kb
+    dest: finishing_kb
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - show_message:
+          message: "Компонент оценивания вернул возможность завершения этапа построения типов. Осуществлен переход к этапу завершения построения темпоральной БЗ"
+
+
+#================== Imitation model =========================
+#================ Resource Types create =====================
+  no_errors_in_create_resource_types:
+    type: event
+    event: resourceTypes/create
+    source: building_resource_types
+    dest: building_resource_types
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - show_message:
+          message: "Задание выполнено успешно"
+
+  errors_in_create_resource_types:
+    type: event
+    event: resourceTypes/create
+    source: building_resource_types
+    dest: building_resource_types
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+      - show_message:
+          message: "Компонент оценивания вернул необходимость исправлений ошибок в типе ресурса"
+
+  all_resource_types_create:
+    type: event
+    event: resourceTypes/create
+    source: building_resource_types
+    dest: building_resources
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - show_message:
+          message: "Компонент оценивания вернул возможность завершения этапа создания типов ресурсов. Осуществлен переход к этапу создания ресурсов ИМ внешней среды."
+
+#================ Resource Types update ======================
+  no_errors_in_update_resource_types:
+    type: event
+    event: resourceTypes/update
+    source: building_resource_types
+    dest: building_resource_types
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - show_message:
+          message: "Задание выполнено успешно"
+
+  errors_in_update_resource_types:
+    type: event
+    event: resourceTypes/update
+    source: building_resource_types
+    dest: building_resource_types
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+      - show_message:
+          message: "Компонент оценивания вернул необходимость исправлений типа"
+
+  all_resource_types_update:
+    type: event
+    event: resourceTypes/update
+    source: building_resource_types
+    dest: building_resources
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - show_message:
+          message: "Компонент оценивания вернул возможность завершения этапа создания типов ресурсов. Осуществлен переход к этапу создания ресурсов ИМ внешней среды."
+
+#==================== Resources create ======================= 
+  no_errors_in_create_resources:
+    type: event
+    event: resources/create
+    source: building_resources
+    dest: building_resources
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - show_message:
+          message: "Задание выполнено успешно"
+          
+  errors_in_create_resources:
+    type: event
+    event: resources/create
+    source: building_resources
+    dest: building_resources
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+      - show_message:
+          message: "Компонент оценивания вернул необходимость исправлений ресурса"
+
+
+  all_resources_create:
+    type: event
+    event: resources/create
+    source: building_resources
+    dest: building_templates
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - show_message:
+          message: "Компонент оценивания вернул возможность завершения этапа создания ресурсов. Осуществлен переход к этапу создания образцов операций ИМ внешней среды."
+
+#====================== Resources update ===================== 
+  no_errors_in_update_resources:
+    type: event
+    event: resources/update
+    source: building_resources
+    dest: building_resources
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - show_message:
+          message: "Задание выполнено успешно"
+          
+  errors_in_update_resources:
+    type: event
+    event: resources/update
+    source: building_resources
+    dest: building_resources
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+      - show_message:
+          message: "Компонент оценивания вернул необходимость исправления ресурса"
+
+
+  all_resources_update:
+    type: event
+    event: resources/update
+    source: building_resources
+    dest: building_templates
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - show_message:
+          message: "Компонент оценивания вернул возможность завершения этапа создания ресурсов. Осуществлен переход к этапу создания образцов операций ИМ внешней среды."
+ 
+# ====================== Template create =============================
+    no_errors_in_create_templates:
+    type: event
+    event: templates/create
+    source: building_templates
+    dest: building_templates
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - show_message:
+          message: "Задание выполнено успешно"
+  
+  errors_in_create_templates:
+    type: event
+    event: templates/create
+    source: building_templates
+    dest: building_templates
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+      - show_message:
+          message: "Компонент оценивания вернул необходимость исправлений образца операции"
+
+
+  all_templates_create:
+    type: event
+    event: templates/create
+    source: building_templates
+    dest: building_template_usages
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - show_message:
+          message: "Компонент оценивания вернул возможность завершения этапа создания образцов операции. Осуществлен переход к этапу создания операций ИМ внешней среды."
+ 
+# ====================== Template update =============================
+  no_errors_in_update_templates:
+    type: event
+    event: templates/update
+    source: building_templates
+    dest: building_templates
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - show_message:
+          message: "Задание выполнено успешно"
+
+  errors_in_update_templates:
+    type: event
+    event: templates/update
+    source: building_templates
+    dest: building_templates
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+      - show_message:
+          message: "Компонент оценивания вернул необходимость исправлений образцов операций"
+
+
+  all_templates_updated:
+    type: event
+    event: templates/update
+    source: building_templates
+    dest: building_template_usages
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - show_message:
+          message: "Компонент оценивания вернул возможность завершения этапа создания образцов операции. Осуществлен переход к этапу создания операций ИМ внешней среды."
+ 
+#====================== Template Usages create =============================
+  no_errors_in_create_template_usages:
+    type: event
+    event: templateUsages/create
+    source: building_template_usages
+    dest: building_template_usages
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - show_message:
+          message: "Задание выполнено успешно"
+
+
+  errors_in_create_template_usages:
+    type: event
+    event: templateUsages/create
+    source: building_template_usages
+    dest: building_template_usages
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+      - show_message:
+          message: "Компонент оценивания вернул необходимость исправления операции"
+
+
+  all_template_usages_created:
+    type: event
+    event: templateUsages/create
+    source: building_template_usages
+    dest: sm_translation_preparation
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - show_message:
+          message: "Компонент оценивания вернул возможность завершения этапа создания операции. Осуществлен переход к этапу расчета ИМ внешней среды."
+ 
+#====================== Template Usages update =============================
+  no_errors_in_update_template_usages:
+    type: event
+    event: templateUsages/create
+    source: building_template_usages
+    dest: building_template_usages
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - show_message:
+          message: "Задание выполнено успешно"
+
+  errors_in_update_template_usages:
+    type: event
+    event: templateUsages/update
+    source: building_template_usages
+    dest: building_template_usages
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: url
+    actions:
+    - set_attribute:
+        attribute: url
+        value:
+          event_data: ["url"]
+    - show_message:
+        message: "Компонент оценивания вернул необходимость исправлений операции"
+
+
+  all_template_usages_updated:
+    type: event
+    event: templateUsages/update
+    source: building_template_usages
+    dest: sm_translation_preparation
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - show_message:
+          message: "Компонент оценивания вернул возможность завершения этапа создания операции. Осуществлен переход к этапу расчета ИМ внешней среды."
+
+  
 #==============================================================
 #                          Events
 #==============================================================
@@ -1768,12 +2858,11 @@ events:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
 
 #==============================================================
-#                          Events
-#==============================================================
+  #==============================================================
   #================== Imitation model =========================
   models/create:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_created
+    handler_component: SimulationService
+    handler_method: handle_simulation_model_created
     actions:
       - set_attribute:
           attribute: skills_result
@@ -1782,55 +2871,21 @@ events:
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
 
-  models/delete:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_delete
+  models/update:
+    handler_component: SimulationService
+    handler_method: handle_simulation_model_updated
     actions:
       - set_attribute:
           attribute: skills_result
           value: $event_data
           next:
             - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"             
-
-  models/load:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_load
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-          next:
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"             
+                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
 
   #====================== Resource Types ============================== 
-  # брать из компонентов
-  resourceTypes/load:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_resourceTypes_load
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-          next:
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-
   resourceTypes/create:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_resourceTypes_created
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-          next:
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-
-  resourceTypes/update:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_resourceTypes_updated
+    handler_component: SimulationService
+    handler_method: handle_resource_type
     actions:
       # отдельно будут выполняться параллельно
       - set_attribute:
@@ -1839,9 +2894,37 @@ events:
           next: # выволнить следующим последовательным действием
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
+
+  resourceTypes/update:
+    handler_component: SimulationService
+    handler_method: handle_resource_type
+    actions:
+      # отдельно будут выполняться параллельно
+      - set_attribute:
+          attribute: skills_result
+          value: $event_data
+          next: # выволнить следующим последовательным действием
+            - show_message:
+                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
 
   resourceTypes/duplicate:
-    handler_component: ATTutoringIMSkills
+    handler_component: SimulationService
     handler_method: handle_im_resourceTypes_duplicated
     actions:
       - set_attribute:
@@ -1852,7 +2935,7 @@ events:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
 
   resourceTypes/delete:
-    handler_component: ATTutoringIMSkills
+    handler_component: SimulationService
     handler_method: handle_im_resourceTypes_deleted
     actions:
       - set_attribute:
@@ -1862,53 +2945,70 @@ events:
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
   
+
   #====================== Resources =============================     
-  resources/load:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_resources_load
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-          next:
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
   resources/create:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_resources_created
+    handler_component: SimulationService
+    handler_method: handle_resource
     actions:
+      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next:
+          next: # выволнить следующим последовательным действием
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
 
   resources/update:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_resources_updated
+    handler_component: SimulationService
+    handler_method: handle_resource
     actions:
+      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next:
+          next: # выволнить следующим последовательным действием
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
+
   resources/duplicate:
-    handler_component: ATTutoringIMSkills
+    handler_component: SimulationService
     handler_method: handle_im_resources_duplicated
     actions:
+      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next:
+          next: # выволнить следующим последовательным действием
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
 
   resources/delete:
-    handler_component: ATTutoringIMSkills
+    handler_component: SimulationService
     handler_method: handle_im_resources_deleted
     actions:
       - set_attribute:
@@ -1918,99 +3018,50 @@ events:
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
   
-  #====================== Template Usages ============================
-  templateUsages/load:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_templateUsages_load
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-          next:
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
   
-
-  templateUsages/create:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_templateUsages_created
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-          next:
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
-  templateUsages/update:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_templateUsages_updated
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-          next:
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
-  templateUsages/dublicate:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_templateUsages_dublicated
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-          next:
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-              
-  templateUsages/delete:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_templateUsages_deleted
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-          next:
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-
   #====================== Template =============================
-  templates/load:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_template_load
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-          next:
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
   templates/create:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_template_created
+    handler_component: SimulationService
+    handler_method: handle_template
     actions:
+      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next:
+          next: # выволнить следующим последовательным действием
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
+
   templates/update:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_template_updated
+    handler_component: SimulationService
+    handler_method: handle_template
     actions:
+      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next:
+          next: # выволнить следующим последовательным действием
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
+
   templates/dublicate:
-    handler_component: ATTutoringIMSkills
+    handler_component: SimulationService
     handler_method: handle_im_template_dublicated
     actions:
       - set_attribute:
@@ -2021,7 +3072,7 @@ events:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
 
   templates/delete:
-    handler_component: ATTutoringIMSkills
+    handler_component: SimulationService
     handler_method: handle_im_template_deleted
     actions:
       - set_attribute:
@@ -2030,11 +3081,52 @@ events:
           next:
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
-  #====================== Funcs =============================
-  funcs/load:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_funcs_load
+
+
+#====================== Template Usages ============================
+  templateUsages/create:
+    handler_component: SimulationService
+    handler_method: handle_template_usage
+    actions:
+      # отдельно будут выполняться параллельно
+      - set_attribute:
+          attribute: skills_result
+          value: $event_data
+          next: # выволнить следующим последовательным действием
+            - show_message:
+                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
+
+  templateUsages/update:
+    handler_component: SimulationService
+    handler_method: handle_template_usage
+    actions:
+      # отдельно будут выполняться параллельно
+      - set_attribute:
+          attribute: skills_result
+          value: $event_data
+          next: # выволнить следующим последовательным действием
+            - show_message:
+                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
+
+  templateUsages/dublicate:
+    handler_component: SimulationService
+    handler_method: handle_im_templateUsages_dublicated
     actions:
       - set_attribute:
           attribute: skills_result
@@ -2042,31 +3134,62 @@ events:
           next:
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
+              
+  templateUsages/delete:
+    handler_component: SimulationService
+    handler_method: handle_im_templateUsages_deleted
+    actions:
+      - set_attribute:
+          attribute: skills_result
+          value: $event_data
+          next:
+            - show_message:
+                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
+
+
+#====================== Funcs =============================
   funcs/create:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_func_created
+    handler_component: SimulationService
+    handler_method: handle_function
     actions:
+      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next:
+          next: # выволнить следующим последовательным действием
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
+
   funcs/update:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_func_updated
+    handler_component: SimulationService
+    handler_method: handle_function
     actions:
+      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next:
+          next: # выволнить следующим последовательным действием
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
+
   funcs/dublicate:
-    handler_component: ATTutoringIMSkills
+    handler_component: SimulationService
     handler_method: handle_im_func_dublicated
     actions:
       - set_attribute:
@@ -2077,7 +3200,7 @@ events:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
 
   funcs/delete:
-    handler_component: ATTutoringIMSkills
+    handler_component: SimulationService
     handler_method: handle_im_func_deleted
     actions:
       - set_attribute:
