@@ -19,7 +19,7 @@ apply_migration() {
         git clone "$repo_url"
         cd "$repo_dir"
     fi
-    
+
     pip install alembic psycopg2-binary git+$repo_url
 
     cd migrations
