@@ -2,12 +2,15 @@
 #                    Параметры сценария
 #==============================================================
 initial_attributes:
-  attempts: 0
-  hint: "Выполните задание"
-  kb_editor_port: 2222
-  sm_front_port: 2223
-  at_joint_port: 2224
-  url: "Подсказки"
+  kb_editor_port:
+    env: AT_KRL_EDITOR_FRONT_PORT
+  sm_front_port:
+    env: AT_SIMULATION_FRONT_PORT
+  at_joint_port:
+    env: AT_JOINT_DEBUGGER_PORT
+  url: ""
+  skills: "Для отображения навыков начните выполнение работы"
+  hints: "Для отображения текущих проектных задач начните выполнение работы"
 
 #==============================================================
 #                        Состояния
@@ -69,8 +72,28 @@ states:
         span: 4
         src: |
           ### Подсказки и объяснения
+
           {url}
+
+          <details>
+          <summary>Текущие оценки навыков</summary>
+          <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+
+          ***К текущим оценкам будут начисляться штрафы в случае допуска ошибок при выполнении заданий***
+
+          {skills}
+
+          </div>
+          </details>
+
+          <details>
+          <summary>Проектные задачи</summary>
+          <div style="padding: 15px; padding-top: 0px; border: 1px solid silver; border-radius: 2px;">
+          
           {hint}
+          
+          </div>
+          </details>
 
           #### Этап создания типов
 
@@ -123,7 +146,7 @@ states:
     initial: false
     frame_rows:
       kb_editor:
-        src: http://127.0.0.1:2222/token?token={auth_token}&frame_id=kb_editor
+        src: http://%location.hostname%:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/objects/base_objects
         span: 20
@@ -132,47 +155,60 @@ states:
         span: 4
         src: |
           ### Подсказки и объяснения
+          
           {url}
+
+          <details>
+          <summary>Текущие оценки навыков</summary>
+          <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+
+          ***К текущим оценкам будут начисляться штрафы в случае допуска ошибок при выполнении заданий***
+
+          {skills}
+
+          </div>
+          </details>
+
+          <details>
+          <summary>Проектные задачи</summary>
+          <div style="padding: 15px; padding-top: 0px; border: 1px solid silver; border-radius: 2px;">
+          
           {hint}
+          
+          </div>
+          </details>
 
-          #### Этап создания типов
+          #### Этап создания базовых объектов
 
-          В ЯПЗ поддерживаются три основных типа:
-          - Символьный тип - тип, для которого указывается множество возможных символьных значений
-          - Числовой тип - тип, для которого указывается числовой промежуток, в рамках которого могут быть значения
-          - Нечеткий тип - тип, определяющий лингвистическую переменную и ее значения
+          Базовые объекты в ЯПЗ состоят из:
+          
+          - Имени
+          - Имени группы
+          - Множества атрибутов
+          - Комментария
+          
+          В свою очередь, каждый атрибут описывается следующим образом:
+          
+          - Имя атрибута
+          - Ссылка на тип
+          - Комментарий
+          
+          Пример базового объекта:
 
-          Примеры типов:
-
-          *Символьный*	
           ```
-          ТИП Характер_Кашля
-          СИМВОЛ
-          "Отсутствует"
-          "Cухой"
-          "Влажный продукативный"
-          "Влажный непродуктивный"
-          КОММЕНТАРИЙ Тип для характера кашля
-          ```
-
-          *Числовой*
-          ```	
-          ТИП Процедур_в_месяц
-          ЧИСЛО
-          ОТ 0
-          ДО 8
-          КОММЕНТАРИЙ Тип для частоты назначенных посещений процедур в месяц
-          ```
-
-          *Нечеткий*	
-          ```
-          ТИП Температура
-          НЕЧЕТКИЙ
-          3
-          "Высокая" 34 42 4 ={{34|0; 36|0; 38|1; 42|1}}
-          "Нормальная" 34 42 8 ={{34|0; 35|0; 35.7|0.5; 36.2|0.9; 36.6|1; 37|0.4; 37.4|0; 42|0}}
-          "Низкая" 34 42 4 ={{34|1; 36|1; 37|0; 42|0}}
-          КОММЕНТАРИЙ Тип для характера температуры
+          ОБЪЕКТ ПАЦИЕНТ
+          ГРУППА ГРУППА1
+          АТРИБУТЫ
+            АТРИБУТ КАШЕЛЬ
+              ТИП Характер_Кашля
+              КОММЕНТАРИЙ Характер кашля пациента
+            АТРИБУТ ПОСЕЩЕНИЕ_ПРОЦЕДУР
+              ТИП Процедур_в_месяц
+              КОММЕНТАРИЙ Назначенное количество процедур в месяц
+            АТРИБУТ ТЕМПЕРАТУРА
+              ТИП Температура
+              КОММЕНТАРИЙ Температура пациента
+          КОММЕНТАРИЙ Пациент
           ```
 
   building_intervals:
@@ -182,7 +218,7 @@ states:
     initial: false
     frame_rows:
       kb_editor:
-        src: http://127.0.0.1:2222/token?token={auth_token}&frame_id=kb_editor
+        src: http://%location.hostname%:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/objects/intervals
         span: 20
@@ -191,48 +227,61 @@ states:
         span: 4
         src: |
           ### Подсказки и объяснения
+
           {url}
+
+          <details>
+          <summary>Текущие оценки навыков</summary>
+          <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+
+          ***К текущим оценкам будут начисляться штрафы в случае допуска ошибок при выполнении заданий***
+
+          {skills}
+
+          </div>
+          </details>
+
+          <details>
+          <summary>Проектные задачи</summary>
+          <div style="padding: 15px; padding-top: 0px; border: 1px solid silver; border-radius: 2px;">
+          
           {hint}
+          
+          </div>
+          </details>
 
-          #### Этап создания типов
+          #### Этап создания темпоральных объектов - интервалов
 
-          В ЯПЗ поддерживаются три основных типа:
-          - Символьный тип - тип, для которого указывается множество возможных символьных значений
-          - Числовой тип - тип, для которого указывается числовой промежуток, в рамках которого могут быть значения
-          - Нечеткий тип - тип, определяющий лингвистическую переменную и ее значения
+          Интервалы и события представляют собой базовые понятия модифицированной интервальной логики Аллена.
+          
+          В отличие от базовых объектов, для интервалов из атрибутов указываются только уловие начала и условие окончания, а для события только условие возникновения, которые имеют зарезервированный тип "ЛогВыр" - логическое выражение, также сразу указываются значения атрибутов. Для отнесения объекта к интервалу или событию также требуется указать группу "ИНТЕРВАЛ" или "СОБЫТИЕ" соответственно.
+          
+          Примеры событий и интервалов:
 
-          Примеры типов:
-
-          *Символьный*	
           ```
-          ТИП Характер_Кашля
-          СИМВОЛ
-          "Отсутствует"
-          "Cухой"
-          "Влажный продукативный"
-          "Влажный непродуктивный"
-          КОММЕНТАРИЙ Тип для характера кашля
-          ```
+          ОБЪЕКТ ОСОБАЯ_ЗАРАЗНОСТЬ
+          ГРУППА ИНТЕРВАЛ
+          АТРИБУТЫ
+            АТРИБУТ УслНач
+            ТИП ЛогВыр
+            ЗНАЧЕНИЕ
+              ПАЦИЕНТ.КАШЕЛЬ = "Влажный продуктивный"
+            АТРИБУТ УслОконч
+            ТИП ЛогВыр
+            ЗНАЧЕНИЕ
+              ПАЦИЕНТ.КАШЕЛЬ <> "Влажный продуктивный"
+          КОММЕНТАРИЙ Период особой заразности
 
-          *Числовой*
-          ```	
-          ТИП Процедур_в_месяц
-          ЧИСЛО
-          ОТ 0
-          ДО 8
-          КОММЕНТАРИЙ Тип для частоты назначенных посещений процедур в месяц
+          ОБЪЕКТ СУХОЙ_КАШЕЛЬ
+          ГРУППА СОБЫТИЕ
+          АТРИБУТЫ
+            АТРИБУТ УслВозн
+            ТИП ЛогВыр
+            ЗНАЧЕНИЕ
+              ПАЦИЕНТ.КАШЕЛЬ = "Сухой"
+          КОММЕНТАРИЙ Наличие сухого кашля у пациента
           ```
-
-          *Нечеткий*	
-          ```
-          ТИП Температура
-          НЕЧЕТКИЙ
-          3
-          "Высокая" 34 42 4 ={{34|0; 36|0; 38|1; 42|1}}
-          "Нормальная" 34 42 8 ={{34|0; 35|0; 35.7|0.5; 36.2|0.9; 36.6|1; 37|0.4; 37.4|0; 42|0}}
-          "Низкая" 34 42 4 ={{34|1; 36|1; 37|0; 42|0}}
-          КОММЕНТАРИЙ Тип для характера температуры
-          ```
+  
   building_events:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения темпоральных баз знаний (БЗ)
@@ -240,7 +289,7 @@ states:
     initial: false
     frame_rows:
       kb_editor:
-        src: http://127.0.0.1:2222/token?token={auth_token}&frame_id=kb_editor
+        src: http://%location.hostname%:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/objects/events
         span: 20
@@ -249,47 +298,59 @@ states:
         span: 4
         src: |
           ### Подсказки и объяснения
+
           {url}
+
+          <details>
+          <summary>Текущие оценки навыков</summary>
+          <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+
+          ***К текущим оценкам будут начисляться штрафы в случае допуска ошибок при выполнении заданий***
+
+          {skills}
+
+          </div>
+          </details>
+
+          <details>
+          <summary>Проектные задачи</summary>
+          <div style="padding: 15px; padding-top: 0px; border: 1px solid silver; border-radius: 2px;">
+          
           {hint}
+          
+          </div>
+          </details>
 
-          #### Этап создания типов
+          #### Этап создания темпоральных объектов - событий
 
-          В ЯПЗ поддерживаются три основных типа:
-          - Символьный тип - тип, для которого указывается множество возможных символьных значений
-          - Числовой тип - тип, для которого указывается числовой промежуток, в рамках которого могут быть значения
-          - Нечеткий тип - тип, определяющий лингвистическую переменную и ее значения
+          Интервалы и события представляют собой базовые понятия модифицированной интервальной логики Аллена.
+          
+          В отличие от базовых объектов, для интервалов из атрибутов указываются только уловие начала и условие окончания, а для события только условие возникновения, которые имеют зарезервированный тип "ЛогВыр" - логическое выражение, также сразу указываются значения атрибутов. Для отнесения объекта к интервалу или событию также требуется указать группу "ИНТЕРВАЛ" или "СОБЫТИЕ" соответственно.
+          
+          Примеры событий и интервалов:
 
-          Примеры типов:
-
-          *Символьный*	
           ```
-          ТИП Характер_Кашля
-          СИМВОЛ
-          "Отсутствует"
-          "Cухой"
-          "Влажный продукативный"
-          "Влажный непродуктивный"
-          КОММЕНТАРИЙ Тип для характера кашля
-          ```
+          ОБЪЕКТ ОСОБАЯ_ЗАРАЗНОСТЬ
+          ГРУППА ИНТЕРВАЛ
+          АТРИБУТЫ
+            АТРИБУТ УслНач
+            ТИП ЛогВыр
+            ЗНАЧЕНИЕ
+              ПАЦИЕНТ.КАШЕЛЬ = "Влажный продуктивный"
+            АТРИБУТ УслОконч
+            ТИП ЛогВыр
+            ЗНАЧЕНИЕ
+              ПАЦИЕНТ.КАШЕЛЬ <> "Влажный продуктивный"
+          КОММЕНТАРИЙ Период особой заразности
 
-          *Числовой*
-          ```	
-          ТИП Процедур_в_месяц
-          ЧИСЛО
-          ОТ 0
-          ДО 8
-          КОММЕНТАРИЙ Тип для частоты назначенных посещений процедур в месяц
-          ```
-
-          *Нечеткий*	
-          ```
-          ТИП Температура
-          НЕЧЕТКИЙ
-          3
-          "Высокая" 34 42 4 ={{34|0; 36|0; 38|1; 42|1}}
-          "Нормальная" 34 42 8 ={{34|0; 35|0; 35.7|0.5; 36.2|0.9; 36.6|1; 37|0.4; 37.4|0; 42|0}}
-          "Низкая" 34 42 4 ={{34|1; 36|1; 37|0; 42|0}}
-          КОММЕНТАРИЙ Тип для характера температуры
+          ОБЪЕКТ СУХОЙ_КАШЕЛЬ
+          ГРУППА СОБЫТИЕ
+          АТРИБУТЫ
+            АТРИБУТ УслВозн
+            ТИП ЛогВыр
+            ЗНАЧЕНИЕ
+              ПАЦИЕНТ.КАШЕЛЬ = "Сухой"
+          КОММЕНТАРИЙ Наличие сухого кашля у пациента
           ```
   # ---------------------------------------------------------------------------------------
   # Этап 2. Построение темпоральных правил
@@ -301,7 +362,7 @@ states:
     initial: false
     frame_rows:
       kb_editor:
-        src: http://127.0.0.1:2222/token?token={auth_token}&frame_id=kb_editor
+        src: http://%location.hostname%:{kb_editor_port}/token?token={auth_token}&frame_id=kb_editor
         type: format_attributes
         redirect: /knowledge_bases/{selected_kb}/rules
         span: 20
@@ -310,61 +371,74 @@ states:
         span: 4
         src: |
           ### Подсказки и объяснения
+
           {url}
+
+          <details>
+          <summary>Текущие оценки навыков</summary>
+          <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+
+          ***К текущим оценкам будут начисляться штрафы в случае допуска ошибок при выполнении заданий***
+
+          {skills}
+
+          </div>
+          </details>
+
+          <details>
+          <summary>Проектные задачи</summary>
+          <div style="padding: 15px; padding-top: 0px; border: 1px solid silver; border-radius: 2px;">
+          
           {hint}
+          
+          </div>
+          </details>
 
-          #### Этап создания типов
+          #### Этап создания правил
 
-          В ЯПЗ поддерживаются три основных типа:
-          - Символьный тип - тип, для которого указывается множество возможных символьных значений
-          - Числовой тип - тип, для которого указывается числовой промежуток, в рамках которого могут быть значения
-          - Нечеткий тип - тип, определяющий лингвистическую переменную и ее значения
+          В ЯПЗ поддерживаются правила на базе расширенной продукционной модели. Правила состоят из:
+          
+          - Имени правила
+          - Антецедента - блока условий
+          - Консеквента - блока действий в случае истинности условия
+          - (Опционально) Блока альтернативных действий - в случае ложности условия
+          - Комментария
+          
+          В качестве условия могут выступать различные логические выражения, в том числе, оперирующие недостоверной и темпоральной информацией. Для представления недостоверной информации предусмотрены конструкции, описывающие такие НЕ-факторы, как неопределенность и неточность. Представление нечеткой информации предусмотрено в типах.
+          
+          Для описания знаний с неопределенностью введены два коэффициента уверенности (уверенность и возможность), приписываемые утверждениям, входящим в посылки и следствия правил.
+          
+          Неточность проявляется в том случае, если значения числового параметра получается в результате измерений с некоторой погрешностью. Для представления неточной информации используется коэффициент точности, который в большинстве случаев можно трактовать как относительную погрешность
+          
+          Пример правила, содержащего недостоверную информацию:
 
-          Примеры типов:
-
-          *Символьный*	
           ```
-          ТИП Характер_Кашля
-          СИМВОЛ
-          "Отсутствует"
-          "Cухой"
-          "Влажный продукативный"
-          "Влажный непродуктивный"
-          КОММЕНТАРИЙ Тип для характера кашля
+          ПРАВИЛО ПРАВИЛО1
+          ЕСЛИ
+            (ПАЦИЕНТ.ТЕМПЕРАТУРА = "Нормальная" УВЕРЕННОСТЬ [75; 100] ТОЧНОСТЬ 0)
+            & (ПАЦИЕНТ.КАШЕЛЬ = "Влажный непродуктивный" УВЕРЕННОСТЬ [60; 90] ТОЧНОСТЬ 0)
+          ТО
+            ПАЦИЕНТ.ПОСЕЩЕНИЕ_ПРОЦЕДУР = 6 УВЕРЕННОСТЬ [90; 100] ТОЧНОСТЬ 0
+          КОММЕНТАРИЙ Правило с недостоверностью
           ```
 
-          *Числовой*
-          ```	
-          ТИП Процедур_в_месяц
-          ЧИСЛО
-          ОТ 0
-          ДО 8
-          КОММЕНТАРИЙ Тип для частоты назначенных посещений процедур в месяц
-          ```
+          Для представления темпоральной информации в условиях правил предусмотрены операции модифицированной логики Аллена между событиями и интервалами. 
 
-          *Нечеткий*	
+          Пример правила, содержащего темпоральные отношения (и отдельно недостоверность):
+
           ```
-          ТИП Температура
-          НЕЧЕТКИЙ
-          3
-          "Высокая" 34 42 4 ={{34|0; 36|0; 38|1; 42|1}}
-          "Нормальная" 34 42 8 ={{34|0; 35|0; 35.7|0.5; 36.2|0.9; 36.6|1; 37|0.4; 37.4|0; 42|0}}
-          "Низкая" 34 42 4 ={{34|1; 36|1; 37|0; 42|0}}
-          КОММЕНТАРИЙ Тип для характера температуры
+          ПРАВИЛО ПРАВИЛО2
+          ЕСЛИ
+            (СУХОЙ_КАШЕЛЬ b ОСОБАЯ_ЗАРАЗНОСТЬ)
+            & (ПАЦИЕНТ.ТЕМПЕРАТУРА = "Высокая" УВЕРЕННОСТЬ [70; 100] ТОЧНОСТЬ 0)
+          ТО
+            ПАЦИЕНТ.ПОСЕЩЕНИЕ_ПРОЦЕДУР = 2 УВЕРЕННОСТЬ [70; 90] ТОЧНОСТЬ 0
+          КОММЕНТАРИЙ Правило с темпоральными отношениями
           ```
   # ---------------------------------------------------------------------------------------
-  # Этап 3. Сохранение БЗ в формате расширенного ЯПЗ
+  # Этап 3. Завершение работы 1/Сохранение БЗ в формате расширенного ЯПЗ
   # ---------------------------------------------------------------------------------------
-  exporting_kb:
-    label: Учебное проектирование базовых компонентов динамических ИЭС
-    control_label: Технология построения темпоральных баз знаний (БЗ)
-    control_subtitle: Сохранение фрагмента темпоральной БЗ в формате расширенного ЯПЗ
-    initial: false
-    frame_rows:
-      kb_editor:
-        src: http://127.0.0.1:2222/token?token={auth_token}&frame_id=kb_editor
-        type: format_attributes
-        redirect: /knowledge_bases/{selected_kb}
+  
   kb_finished:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения темпоральных баз знаний (БЗ)
@@ -372,20 +446,49 @@ states:
     initial: false
     frame_rows:
       kb_finished:
-        src: /docview?viewing=true&docs=%23+Работа+1+завершена
-        type: basic
+        type: docs
+        src: |
+          # Результаты построения темпоральной базы знаний
+
+          ## Финальные оценки навыков:
+
+          <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+
+          {skills}
+
+          </div>
+
+          ## Итоговая темпоральная база знаний
+
+          Построенная темпоральная база знаний сохранена в базе учебных проектов и по завершению всех остальных практических занятий будет автоматически загружена для исследования совместного функционирования базовых компонентов динамических ИЭС.
+
+          <details>
+          <summary>Описание БЗ на расширенном ЯПЗ</summary>
+          <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+
+          ```
+          {kb}
+          ```
+
+          </div>
 
   #==============================================================
   #           Состояния по технологии построения ИМ
   #==============================================================
   sm_start:
-    label: Средства поддержки практических занятий по учебному проектированию базовых компонентов динамических ИЭС
-    translation: Начало работы 2
-    initial: true
-    frame_rows:
-      docs:
-        src: /docview?viewing=true&docs=%23+Учебное+проектирование+базовых+компонентов+динамических+интегрированных+экспертных+систем%0A%0A%23%23+Практическая+работа+2.+Моделирование+внешней+среды+с+помощью+средств+подсистемы+имитационного+моделирования+и+языка+РДО<sup>АТ<%2Fsup>%0A%0A**Цель+работы.**+Освоение+навыков+построения+простейших+имитационных+моделей+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>+с+помощью+подсистемы+имитационного+моделирования+%28динамическая+версия+комплекса+АТ-ТЕХНОЛОГИЯ%29.
-        type: basic
+      label: Средства поддержки обучающего воздействия типа "Тренинг с ЭС/ИЭС" для учебного проектирования базовых компонентов динамических ИЭС
+      translation: Начало работы 2
+      initial: true
+      frame_rows:
+        docs:
+          type: docs
+          src: |
+            # Учебное проектирование базовых компонентов динамических интегрированных экспертных систем
+
+            ## Практическая работа 2. Моделирование внешней среды с помощью средств подсистемы имитационного моделирования и языка РДО<sup>АТ</sup>.
+
+            **Цель работы.** Освоение навыков построения простейших имитационных моделей внешней среды на языке РДО<sup>АТ</sup> с помощью подсистемы имитационного моделирования (динамическая версия комплекса АТ-ТЕХНОЛОГИЯ).
+        
   sm_creation:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения имитационных моделей внешней среды
@@ -393,14 +496,20 @@ states:
     initial: false
     frame_rows:
       sm_editor:
-        src: http://45.148.245.134:5000/token?token={auth_token}&frame_id=sm_editor
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
         type: format_attributes
         redirect: /models/new
         span: 20
       docs:
-        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
-        type: basic
+        src: |
+          ### Подсказки и объяснения
+
+          Для начала работы необходимо создать имитационную модель нешней среды.
+
+          После нажатия кнопки `Создать` будет осуществлен автоматический переход к следующему этапу технологии построения имитационной модели
+        type: docs
         span: 4
+  # ----------------------------------
   # ------------------------------------------------------------------------------------------------------
   # 1. Выделение ресурсов и параметров, выделение событий и определений законов функционирования СТС/СОТС
   # ------------------------------------------------------------------------------------------------------
@@ -411,14 +520,28 @@ states:
     initial: false
     frame_rows:
       sm_editor:
-        src: http://45.148.245.134:5000/token?token={auth_token}&frame_id=sm_editor
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
         type: format_attributes
         redirect: /models/{selected_sm}/resource-types
         span: 20
       docs:
-        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
-        type: basic
+        type: docs
         span: 4
+        src: |
+          ### Подсказки и объяснения
+          {url}
+          {hint}
+
+          #### Этап создания типа ресурса
+
+          Типы ресурса могут быть двух видов:
+          - Регулярный
+          - Нерегулярный
+          
+        # двойные {{}} для того, чтобы игнорировать форматирование атрибутами
+        # например, {hint} - если в атрибтах есть ключ hint - подставится значение hint
+        # {{hint}} преобразуется в {hint} без подстановки
+        # {hint} - если в атрибтах нет ключа hint - останется {hint}
   building_resources:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения имитационных моделей внешней среды
@@ -426,14 +549,19 @@ states:
     initial: false
     frame_rows:
       sm_editor:
-        src: http://45.148.245.134:5000/token?token={auth_token}&frame_id=sm_editor
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
         type: format_attributes
         redirect: /models/{selected_sm}/resources
         span: 20
       docs:
-        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
-        type: basic
-        span: 4  
+        type: docs
+        span: 4
+        src: |
+          ### Подсказки и объяснения
+          {url}
+          {hint}
+
+          #### Этап создания ресурса 
   building_templates:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения имитационных моделей внешней среды
@@ -441,14 +569,36 @@ states:
     initial: false
     frame_rows:
       sm_editor:
-        src: http://45.148.245.134:5000/token?token={auth_token}&frame_id=sm_editor
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
         type: format_attributes
         redirect: /models/{selected_sm}/templates
         span: 20
       docs:
-        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
-        type: basic
+        type: docs
         span: 4
+        src: |
+          ### Подсказки и объяснения
+          {url}
+          {hint}
+
+          #### Этап создания образца операции
+
+          Образец операции может быть одним из трех типов:
+          - Операция, 
+          - Нерегулярное событие, 
+          - Правило.
+
+          Тело образца операции составляют процедурную часть программы на языке РДО<sup>АТ</sup>:
+
+          *Ниже представлены синтаксические определения, общих для всех объектов:* 	
+          ```
+          <арифметическое_выражение> ::= ( <операнд> (* | / | + | -) <операнд>)
+          <операнд> ::= <арифметическое_выражение> | <число>
+          <число> :: = [+| -] <натчисло> [.[<натчисло>]] [(e|E) [+|-] <натчисло>]
+          <натчисло> :: = <цифра> {<цифра>}
+          <Буква> ::= A…Z, a…z; А…Я, а…я;
+          <цифра> ::= 0…9
+          ```
   building_template_usages:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения имитационных моделей внешней среды
@@ -456,14 +606,31 @@ states:
     initial: false
     frame_rows:
       sm_editor:
-        src: http://45.148.245.134:5000/token?token={auth_token}&frame_id=sm_editor
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
         type: format_attributes
         redirect: /models/{selected_sm}/template-usages
         span: 20
       docs:
-        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
-        type: basic
+        type: docs
         span: 4
+        src: |
+          ### Подсказки и объяснения
+          {url}
+          {hint}
+
+          #### Этап создания операции
+
+          Тело образца операции составляют процедурную часть программы на языке РДО<sup>АТ</sup>:
+
+          *Ниже представлены синтаксические определения, общих для всех объектов:* 	
+          ```
+          <арифметическое_выражение> ::= ( <операнд> (* | / | + | -) <операнд>)
+          <операнд> ::= <арифметическое_выражение> | <число>
+          <число> :: = [+| -] <натчисло> [.[<натчисло>]] [(e|E) [+|-] <натчисло>]
+          <натчисло> :: = <цифра> {<цифра>}
+          <Буква> ::= A…Z, a…z; А…Я, а…я;
+          <цифра> ::= 0…9
+          ```
   building_funcs:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения имитационных моделей внешней среды
@@ -471,14 +638,32 @@ states:
     initial: false
     frame_rows:
       sm_editor:
-        src: http://45.148.245.134:5000/token?token={auth_token}&frame_id=sm_editor
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
         type: format_attributes
         redirect: /models/{selected_sm}/funcs
         span: 20
       docs:
-        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
-        type: basic
-        span: 4     
+        type: docs
+        span: 4
+        src: |
+          ### Подсказки и объяснения
+          {url}
+          {hint}
+
+          #### Этап создания функции
+
+          Тело функции составляет процедурную часть программы на языке РДО<sup>АТ</sup>:
+
+          *Ниже представлены синтаксические определения, общих для всех объектов:* 	
+          ```
+          <арифметическое_выражение> ::= ( <операнд> (* | / | + | -) <операнд>)
+          <операнд> ::= <арифметическое_выражение> | <число>
+          <число> :: = [+| -] <натчисло> [.[<натчисло>]] [(e|E) [+|-] <натчисло>]
+          <натчисло> :: = <цифра> {<цифра>}
+          <Буква> ::= A…Z, a…z; А…Я, а…я;
+          <цифра> ::= 0…9
+          ```
+
   # ---------------------------------------------------------------------------------------
   # 2. Построение описания ИМ СТС/СОТС на языке РДО-АТ
   # ---------------------------------------------------------------------------------------
@@ -489,7 +674,7 @@ states:
     initial: false
     frame_rows:
       sm_editor:
-        src: http://45.148.245.134:5000/token?token={auth_token}&frame_id=sm_editor
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
         type: format_attributes
         redirect: /models/{selected_sm}
         span: 20
@@ -500,7 +685,7 @@ states:
     initial: false
     frame_rows:
       sm_editor:
-        src: http://45.148.245.134:5000/token?token={auth_token}&frame_id=sm_editor
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
         type: format_attributes
         redirect: /models/{selected_sm}
         span: 20
@@ -511,7 +696,7 @@ states:
     initial: false
     frame_rows:
       sm_editor:
-        src: http://45.148.245.134:5000/token?token={auth_token}&frame_id=sm_editor
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
         type: format_attributes
         redirect: /models/{selected_sm}/translates # TODO: добавить нужную ссылку
         span: 20
@@ -529,7 +714,7 @@ states:
     initial: false
     frame_rows:
       sm_editor:
-        src: http://45.148.245.134:5000/token?token={auth_token}&frame_id=sm_editor
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
         type: format_attributes
         redirect: /models/{selected_sm}/translates # TODO: добавить нужную ссылку
         span: 20
@@ -544,7 +729,7 @@ states:
     initial: false
     frame_rows:
       sm_editor:
-        src: http://45.148.245.134:5000/token?token={auth_token}&frame_id=sm_editor
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
         type: format_attributes
         redirect: /models/{selected_sm}/translates/results/errors # TODO: добавить нужную ссылку
         span: 20
@@ -559,7 +744,7 @@ states:
     initial: false
     frame_rows:
       sm_editor:
-        src: http://45.148.245.134:5000/token?token={auth_token}&frame_id=sm_editor
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
         type: format_attributes
         redirect: /models/{selected_sm}/translates/results/errors # TODO: добавить нужную ссылку
         span: 20
@@ -574,7 +759,7 @@ states:
     initial: false
     frame_rows:
       sm_editor:
-        src: http://45.148.245.134:5000/token?token={auth_token}&frame_id=sm_editor
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
         type: format_attributes
         redirect: /models/{selected_sm}/translates/results/errors # TODO: добавить нужную ссылку
         span: 20
@@ -589,7 +774,7 @@ states:
     initial: false
     frame_rows:
       sm_editor:
-        src: http://45.148.245.134:5000/token?token={auth_token}&frame_id=sm_editor
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
         type: format_attributes
         redirect: /models/{selected_sm}/translates/results/errors # TODO: добавить нужную ссылку
         span: 20
@@ -614,7 +799,7 @@ states:
     initial: false
     frame_rows:
       sm_editor:
-        src: http://45.148.245.134:5000/token?token={auth_token}&frame_id=sm_editor
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
         type: format_attributes
         redirect: /models/{selected_sm}/translates/results # TODO: добавить нужную ссылку
         span: 20
@@ -632,7 +817,7 @@ states:
     initial: false
     frame_rows:
       sm_editor:
-        src: http://45.148.245.134:5000/token?token={auth_token}&frame_id=sm_editor
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
         type: format_attributes
         redirect: /models/{selected_sm}/translates/results # TODO: добавить нужную ссылку
         span: 20
@@ -650,7 +835,7 @@ states:
     initial: false
     frame_rows:
       sm_editor:
-        src: http://45.148.245.134:5000/token?token={auth_token}&frame_id=sm_editor
+        src: http://%location.hostname%:{sm_front_port}/token?token={auth_token}&frame_id=sm_editor
         type: format_attributes
         redirect: /models/{selected_sm}/translates/results # TODO: добавить нужную ссылку
         span: 20
@@ -685,7 +870,17 @@ transitions:
       - set_attribute:
           attribute: test_status # сам атрибут/параметр
           value: kb_creation # значение 
-      # show_message - вывод сообщения  
+  start_create_sm:
+    type: link
+    position: control
+    source: kb_start
+    dest: sm_creation
+    label: Приступить к работе 2 - Технология построения имитационных моделей внешней среды
+    actions:
+      - set_attribute:
+          attribute: test_status
+          value: sm_creation
+  
   kb_created:
     type: event
     event: knowledgeBase/create
@@ -729,421 +924,543 @@ transitions:
           attribute: hint
           value:
             event_data: ["hint"]                                                               
-  # build_types:
-  #   type: frame_handler
-  #   frame_id: kb_editor
-  #   test: .*/knowledge_bases/\d+
-  #   source: kb_creation
-  #   dest: building_types
-  #   actions:
-  #     - set_attribute:
-  #         attribute: test_status
-  #         value: building_types
-  #     - set_attribute:
-  #         attribute: selected_kb
-  #         value:
-  #           # различные операции/ или само значение
-  #           frame_url:
-  #             frame_id: kb_editor
-  #             parse:
-  #               regexp: .*/knowledge_bases/(\d+)/?
-  #               group: 0
-  # ---------------------------------------------------------------------------
-  # Ручные переходы из других состояний на построение и изменение типов
-  # ---------------------------------------------------------------------------
-  back_build_types:
-    type: link
-    position: control
-    label: Вернуться к этапу построения типов
-    source: building_basic_objects
-    dest: building_types
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_basic_objects
-  # ---------------------------------------------------------------------------
-  # Автоматические переходы из других состояний на построение и изменение типов
-  # ---------------------------------------------------------------------------
-  exchange_types_1:
-    type: frame_handler
-    frame_id: kb_editor
-    test: /knowledge_bases/(\d+)/types
-    source:  building_basic_objects
-    dest: building_types
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_types
-  exchange_types_2:
-    type: frame_handler
-    frame_id: kb_editor
-    test: /knowledge_bases/(\d+)/types
-    source: building_intervals
-    dest: building_types
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_types 
-  exchange_types_3:
-    type: frame_handler
-    frame_id: kb_editor
-    test: /knowledge_bases/(\d+)/types
-    source: building_events
-    dest: building_types
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_types
-  exchange_types_4:
-    type: frame_handler
-    frame_id: kb_editor
-    test: /knowledge_bases/(\d+)/types
-    source: building_rules
-    dest: building_types
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_types 
-  # ---------------------------------------------------------------------------------------
-  # Ручные переходы из других состояний на построение и изменение базовых объектов
-  # ---------------------------------------------------------------------------------------                                                   
-  build_basic_objects:
-    type: link
-    position: control
-    label: Перейти к этапу построения базовых объектов
-    source: building_types
-    dest: building_basic_objects
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_basic_objects
-  back_intervals_objects:
-    type: link
-    position: control
-    label: Вернуться к этапу построения базовых объектов
-    source: building_intervals
-    dest: building_basic_objects
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_basic_objects
-  back_events_objects:
-    type: link
-    position: control
-    label: Вернуться к этапу построения базовых объектов
-    source: building_events
-    dest: building_basic_objects
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_basic_objects        
-  # ---------------------------------------------------------------------------------------
-  # Автоматические переходы из других состояний на построение и изменение базовых объектов
-  # ---------------------------------------------------------------------------------------
-  exchange_basic_objects_1:
-    type: frame_handler
-    frame_id: kb_editor
-    test: /knowledge_bases/(\d+)/objects/base_objects
-    source: building_types
-    dest: building_basic_objects
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_basic_objects
-  exchange_basic_objects_2:
-    type: frame_handler
-    frame_id: kb_editor
-    test: /knowledge_bases/(\d+)/objects/base_objects
-    source: building_intervals
-    dest: building_basic_objects
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_basic_objects 
-  exchange_basic_objects_3:
-    type: frame_handler
-    frame_id: kb_editor
-    test: /knowledge_bases/(\d+)/objects/base_objects
-    source: building_events
-    dest: building_basic_objects
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_basic_objects
-  exchange_basic_objects_4:
-    type: frame_handler
-    frame_id: kb_editor
-    test: /knowledge_bases/(\d+)/objects/base_objects
-    source: building_rules
-    dest: building_basic_objects
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_basic_objects 
-  # ---------------------------------------------------------------------------------------
-  # Ручные переходы из других состояний на построение и изменение интервалов
-  # --------------------------------------------------------------------------------------- 
-  build_intervals:
-    type: link
-    position: control
-    label: Перейти к этапу построения интервалов
-    source: building_basic_objects
-    dest: building_intervals
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_intervals
-  exchange_build_intervals:
-    type: link
-    position: control
-    label: Переключиться на этап построения интервалов
-    source: building_events
-    dest: building_intervals
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_intervals
-  back_build_intervals:
-    type: link
-    position: control
-    label: Вернуться к этапу построения интервалов
-    source: building_rules
-    dest: building_intervals
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_intervals
-  # ---------------------------------------------------------------------------------------
-  # Автоматические переходы из других состояний на построение и изменение интервалов
-  # ---------------------------------------------------------------------------------------
-  exchange_intervals_1:
-    type: frame_handler
-    frame_id: kb_editor
-    test: /knowledge_bases/(\d+)/objects/intervals
-    source: building_types
-    dest: building_intervals
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_intervals
-  exchange_intervals_2:
-    type: frame_handler
-    frame_id: kb_editor
-    test: /knowledge_bases/(\d+)/objects/intervals
-    source: building_basic_objects
-    dest: building_intervals
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_intervals 
-  exchange_intervals_3:
-    type: frame_handler
-    frame_id: kb_editor
-    test: /knowledge_bases/(\d+)/objects/intervals
-    source: building_events
-    dest: building_intervals
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_intervals
-  exchange_intervals_4:
-    type: frame_handler
-    frame_id: kb_editor
-    test: /knowledge_bases/(\d+)/objects/intervals
-    source: building_rules
-    dest: building_intervals
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_intervals 
-  # ---------------------------------------------------------------------------------------
-  # Ручные переходы из других состояний на построение и изменение событий
-  # ---------------------------------------------------------------------------------------
-  build_events:
-    type: link
-    position: control
-    label: Перейти к этапу построения событий
-    source: building_basic_objects
-    dest: building_events
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_events
-  exchange_build_events:
-    type: link
-    position: control
-    label: Переключиться на этап построения событий
-    source: building_intervals
-    dest: building_events
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_events
-  back_build_events:
-    type: link
-    position: control
-    label: Вернуться к этапу построения событий
-    source: building_rules
-    dest: building_events
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_events
-  # ---------------------------------------------------------------------------------------
-  # Автоматические переходы из других состояний на построение и изменение событий
-  # ---------------------------------------------------------------------------------------
-  kb_exchange_events_1:
-    type: frame_handler
-    frame_id: kb_editor
-    test: /knowledge_bases/(\d+)/objects/events
-    source: building_types
-    dest: building_events
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_events
-  kb_exchange_events_2:
-    type: frame_handler
-    frame_id: kb_editor
-    test: /knowledge_bases/(\d+)/objects/events
-    source: building_basic_objects
-    dest: building_events
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_events 
-  kb_exchange_events_3:
-    type: frame_handler
-    frame_id: kb_editor
-    test: /knowledge_bases/(\d+)/objects/events
-    source: building_intervals
-    dest: building_events
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_events
-  kb_exchange_events_4:
-    type: frame_handler
-    frame_id: kb_editor
-    test: /knowledge_bases/(\d+)/objects/events
-    source: building_rules
-    dest: building_events
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_events
-  # ---------------------------------------------------------------------------------------
-  # Ручные переходы из других состояний на построение и изменение правил
-  # ---------------------------------------------------------------------------------------
-  intervals_build_rules:
-    type: link
-    position: control
-    label: Перейти к этапу построения темпоральных правил
-    source: building_intervals
-    dest: building_rules
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_rules
-  events_build_rules:
-    type: link
-    position: control
-    label: Перейти к этапу построения темпоральных правил
-    source: building_events
-    dest: building_rules
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_rules
-  back_build_rules:
-    type: link
-    position: control
-    label: Вернуться к этапу построения правил
-    source: exporting_kb
-    dest: building_rules
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_rules
-  # ---------------------------------------------------------------------------------------
-  # Автоматические переходы из других состояний на построение и изменение событий
-  # ---------------------------------------------------------------------------------------
-  exchange_rules_1:
-    type: frame_handler
-    frame_id: kb_editor
-    test: /knowledge_bases/(\d+)/rules
-    source: building_types
-    dest: building_rules
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_rules
-  exchange_rules_2:
-    type: frame_handler
-    frame_id: kb_editor
-    test: /knowledge_bases/(\d+)/rules
-    source: building_basic_objects
-    dest: building_rules
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_rules 
-  exchange_rules_3:
-    type: frame_handler
-    frame_id: kb_editor
-    test: /knowledge_bases/(\d+)/rules
-    source: building_intervals
-    dest: building_rules
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_rules
-  exchange_rules_4:
-    type: frame_handler
-    frame_id: kb_editor
-    test: /knowledge_bases/(\d+)/rules
-    source: building_events
-    dest: building_rules
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_rules
+  
+  #======================= Переходы по событию ===============================
 
-
-  export_kb:
-    type: link
-    position: control
-    label: Перейти к этапу сохранения фрагмента БЗ в форматах расширенного ЯПЗ
-    source: building_rules
-    dest: exporting_kb
+  errors_in_update_type:
+    type: event
+    event: kbTypes/update
+    source: building_types
+    dest: building_types
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: url
     actions:
       - set_attribute:
-          attribute: test_status
-          value: building_intervals
-  finishing_kb:
-    type: link
-    position: control
-    label: Завершить практическую работу
-    source: exporting_kb
+          attribute: url
+          value:
+            event_data: ["url"]
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
+      - show_message:
+          message: "Компонент оценивания вернул необходимость исправлений типа"
+
+  errors_in_update_object:
+    type: event
+    event: kbObjects/update
+    source: building_basic_objects
+    dest: building_basic_objects
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
+      - show_message:
+          message: "Компонент оценивания вернул необходимость исправлений объекта"
+  
+  errors_in_update_event:
+    type: event
+    event: kbEvents/update
+    source: building_events
+    dest: building_events
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
+      - show_message:
+          message: "Компонент оценивания вернул необходимость исправлений события"
+    
+  errors_in_update_interval:
+    type: event
+    event: kbIntervals/update
+    source: building_intervals
+    dest: building_intervals
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
+      - show_message:
+          message: "Компонент оценивания вернул необходимость исправлений интервала"
+
+  errors_in_update_rule:
+    type: event
+    event: kbRules/update
+    source: building_rules
+    dest: building_rules
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
+      - show_message:
+          message: "Компонент оценивания вернул необходимость исправлений правила"
+  
+  no_errors_in_update_type:
+    type: event
+    event: kbTypes/update
+    source: building_types
+    dest: building_types
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
+      - show_message:
+          message: "Задание выполнено успешно"
+
+  no_errors_in_update_object:
+    type: event
+    event: kbObjects/update
+    source: building_basic_objects
+    dest: building_basic_objects
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
+      - show_message:
+          message: "Задание выполнено успешно"
+
+  no_errors_in_update_event:
+    type: event
+    event: kbEvents/update
+    source: building_events
+    dest: building_events
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
+      - show_message:
+          message: "Задание выполнено успешно"
+
+  no_errors_in_update_interval:
+    type: event
+    event: kbIntervals/update
+    source: building_intervals
+    dest: building_intervals
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
+      - show_message:
+          message: "Задание выполнено успешно"
+
+  no_errors_in_update_rule:
+    type: event
+    event: kbRules/update
+    source: building_rules
+    dest: building_rules
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
+      - show_message:
+          message: "Задание выполнено успешно"
+
+  all_types_updated:
+    type: event
+    event: kbTypes/update
+    source: building_types
+    dest: building_basic_objects
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
+      - show_message:
+          message: "Компонент оценивания вернул возможность завершения этапа построения типов. Осуществлен переход к этапу построения базовых объектов"
+
+  all_objects_updated:
+    type: event
+    event: kbObjects/update
+    source: building_basic_objects
+    dest: building_events
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
+      - show_message:
+          message: "Компонент оценивания вернул возможность завершения этапа построения базовых объектов. Осуществлен переход к этапу построения событий"        
+  
+  all_events_updated:
+    type: event
+    event: kbEvents/update
+    source: building_events
+    dest: building_intervals
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
+      - show_message:
+          message: "Компонент оценивания вернул возможность завершения этапа построения событий. Осуществлен переход к этапу построения интервалов"        
+
+  all_intervals_updated:
+    type: event
+    event: kbIntervals/update
+    source: building_intervals
+    dest: building_rules
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
+      - show_message:
+          message: "Компонент оценивания вернул возможность завершения этапа построения интервалов. Осуществлен переход к этапу построения правил"        
+  
+  all_rules_updated:
+    type: event
+    event: kbRules/update
+    source: building_rules
     dest: kb_finished
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
     actions:
       - set_attribute:
-          attribute: test_status
-          value: building_intervals
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
+      - set_attribute:
+          attribute: kb
+          value:
+            event_data: ['kb']
+      - show_message:
+          message: "Компонент оценивания вернул возможность завершения этапа построения правил. Осуществлен переход к этапу сохранения фрагмента БЗ"        
 
-  #==============================================================
-  #           Переходы для технологии построения ИМ
-  #==============================================================
-  start_create_sm:
-    type: link
-    position: control
-    source: kb_start
-    dest: sm_creation
-    label: Приступить к работе 2 - Технология построения имитационных моделей внешней среды
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: sm_creation
   create_sm:
     type: link
     position: control
@@ -1154,43 +1471,6 @@ transitions:
       - set_attribute:
           attribute: test_status
           value: sm_creation
-  # ---------------------------------------------------------------------------
-  # Ручные переходы из других состояний на определение типов ИМ
-  # ---------------------------------------------------------------------------
-  back_funcs_resource_types:
-    type: link
-    position: control
-    label: Вернуться к этапу построения типов
-    source: building_funcs
-    dest: building_resource_types
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_resource_types
-  back_resourses_resource_types:
-    type: link
-    position: control
-    label: Вернуться к этапу построения типов
-    source: building_resorses
-    dest: building_resource_types
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_resource_types        
-  back_templates_resource_types:
-    type: link
-    position: control
-    label: Вернуться к этапу построения типов
-    source: building_template_usages
-    dest: building_resource_types
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_resource_types   
-
-  # ---------------------------------------------------------------------------
-  # Автоматические переходы из других состояний на определение типов ИМ
-  # ---------------------------------------------------------------------------
   build_resource_types:
     type: frame_handler
     frame_id: sm_editor
@@ -1544,11 +1824,75 @@ transitions:
           message: "Компонент оценивания вернул возможность завершения этапа построения типов. Осуществлен переход к этапу завершения построения темпоральной БЗ"
 
 
-  all_types_created:
+#================== Imitation model =========================
+#================ Resource Types create =====================
+  no_errors_in_create_resource_types:
     type: event
-    event: kbTypes/create
-    source: building_types
-    dest: building_basic_objects
+    event: resourceTypes/create
+    source: building_resource_types
+    dest: building_resource_types
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - show_message:
+          message: "Задание выполнено успешно"
+
+  errors_in_create_resource_types:
+    type: event
+    event: resourceTypes/create
+    source: building_resource_types
+    dest: building_resource_types
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+      - show_message:
+          message: "Компонент оценивания вернул необходимость исправлений ошибок в типе ресурса"
+
+  all_resource_types_create:
+    type: event
+    event: resourceTypes/create
+    source: building_resource_types
+    dest: building_resources
     trigger_condition:
       and:
         - has_attr:
@@ -1559,13 +1903,45 @@ transitions:
             right_value: stage_done
     actions:
       - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа построения типов. Осуществлен переход к этапу построения базовых объектов"
+          message: "Компонент оценивания вернул возможность завершения этапа создания типов ресурсов. Осуществлен переход к этапу создания ресурсов ИМ внешней среды."
 
-  errors_in_update_type:
+#================ Resource Types update ======================
+  no_errors_in_update_resource_types:
     type: event
-    event: kbTypes/update
-    source: building_types
-    dest: building_types
+    event: resourceTypes/update
+    source: building_resource_types
+    dest: building_resource_types
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - show_message:
+          message: "Задание выполнено успешно"
+
+  errors_in_update_resource_types:
+    type: event
+    event: resourceTypes/update
+    source: building_resource_types
+    dest: building_resource_types
     trigger_condition:
       and:
         - or:
@@ -1592,11 +1968,60 @@ transitions:
       - show_message:
           message: "Компонент оценивания вернул необходимость исправлений типа"
 
-  errors_in_update_object:
+  all_resource_types_update:
     type: event
-    event: kbObjects/update
-    source: building_basic_objects
-    dest: building_basic_objects
+    event: resourceTypes/update
+    source: building_resource_types
+    dest: building_resources
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - show_message:
+          message: "Компонент оценивания вернул возможность завершения этапа создания типов ресурсов. Осуществлен переход к этапу создания ресурсов ИМ внешней среды."
+
+#==================== Resources create ======================= 
+  no_errors_in_create_resources:
+    type: event
+    event: resources/create
+    source: building_resources
+    dest: building_resources
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - show_message:
+          message: "Задание выполнено успешно"
+          
+  errors_in_create_resources:
+    type: event
+    event: resources/create
+    source: building_resources
+    dest: building_resources
     trigger_condition:
       and:
         - or:
@@ -1621,13 +2046,63 @@ transitions:
           value:
             event_data: ["url"]
       - show_message:
-          message: "Компонент оценивания вернул необходимость исправлений объекта"
-  
-  errors_in_update_event:
+          message: "Компонент оценивания вернул необходимость исправлений ресурса"
+
+
+  all_resources_create:
     type: event
-    event: kbEvents/update
-    source: building_events
-    dest: building_events
+    event: resources/create
+    source: building_resources
+    dest: building_templates
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - show_message:
+          message: "Компонент оценивания вернул возможность завершения этапа создания ресурсов. Осуществлен переход к этапу создания образцов операций ИМ внешней среды."
+
+#====================== Resources update ===================== 
+  no_errors_in_update_resources:
+    type: event
+    event: resources/update
+    source: building_resources
+    dest: building_resources
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - show_message:
+          message: "Задание выполнено успешно"
+          
+  errors_in_update_resources:
+    type: event
+    event: resources/update
+    source: building_resources
+    dest: building_resources
     trigger_condition:
       and:
         - or:
@@ -1652,13 +2127,63 @@ transitions:
           value:
             event_data: ["url"]
       - show_message:
-          message: "Компонент оценивания вернул необходимость исправлений события"
-    
-  errors_in_update_interval:
+          message: "Компонент оценивания вернул необходимость исправления ресурса"
+
+
+  all_resources_update:
     type: event
-    event: kbIntervals/update
-    source: building_intervals
-    dest: building_intervals
+    event: resources/update
+    source: building_resources
+    dest: building_templates
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - show_message:
+          message: "Компонент оценивания вернул возможность завершения этапа создания ресурсов. Осуществлен переход к этапу создания образцов операций ИМ внешней среды."
+ 
+# ====================== Template create =============================
+    no_errors_in_create_templates:
+    type: event
+    event: templates/create
+    source: building_templates
+    dest: building_templates
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - show_message:
+          message: "Задание выполнено успешно"
+  
+  errors_in_create_templates:
+    type: event
+    event: templates/create
+    source: building_templates
+    dest: building_templates
     trigger_condition:
       and:
         - or:
@@ -1683,13 +2208,63 @@ transitions:
           value:
             event_data: ["url"]
       - show_message:
-          message: "Компонент оценивания вернул необходимость исправлений интервала"
+          message: "Компонент оценивания вернул необходимость исправлений образца операции"
 
-  errors_in_update_rule:
+
+  all_templates_create:
     type: event
-    event: kbRules/update
-    source: building_rules
-    dest: building_rules
+    event: templates/create
+    source: building_templates
+    dest: building_template_usages
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - show_message:
+          message: "Компонент оценивания вернул возможность завершения этапа создания образцов операции. Осуществлен переход к этапу создания операций ИМ внешней среды."
+ 
+# ====================== Template update =============================
+  no_errors_in_update_templates:
+    type: event
+    event: templates/update
+    source: building_templates
+    dest: building_templates
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - show_message:
+          message: "Задание выполнено успешно"
+
+  errors_in_update_templates:
+    type: event
+    event: templates/update
+    source: building_templates
+    dest: building_templates
     trigger_condition:
       and:
         - or:
@@ -1714,380 +2289,190 @@ transitions:
           value:
             event_data: ["url"]
       - show_message:
-          message: "Компонент оценивания вернул необходимость исправлений правила"
+          message: "Компонент оценивания вернул необходимость исправлений образцов операций"
+
+
+  all_templates_updated:
+    type: event
+    event: templates/update
+    source: building_templates
+    dest: building_template_usages
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - show_message:
+          message: "Компонент оценивания вернул возможность завершения этапа создания образцов операции. Осуществлен переход к этапу создания операций ИМ внешней среды."
+ 
+#====================== Template Usages create =============================
+  no_errors_in_create_template_usages:
+    type: event
+    event: templateUsages/create
+    source: building_template_usages
+    dest: building_template_usages
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - show_message:
+          message: "Задание выполнено успешно"
+
+
+  errors_in_create_template_usages:
+    type: event
+    event: templateUsages/create
+    source: building_template_usages
+    dest: building_template_usages
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+      - show_message:
+          message: "Компонент оценивания вернул необходимость исправления операции"
+
+
+  all_template_usages_created:
+    type: event
+    event: templateUsages/create
+    source: building_template_usages
+    dest: sm_translation_preparation
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - show_message:
+          message: "Компонент оценивания вернул возможность завершения этапа создания операции. Осуществлен переход к этапу расчета ИМ внешней среды."
+ 
+#====================== Template Usages update =============================
+  no_errors_in_update_template_usages:
+    type: event
+    event: templateUsages/create
+    source: building_template_usages
+    dest: building_template_usages
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - not:
+            has_attr:
+              left_value: { get_attribute: skills_result }
+              right_value: url
+    actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - show_message:
+          message: "Задание выполнено успешно"
+
+  errors_in_update_template_usages:
+    type: event
+    event: templateUsages/update
+    source: building_template_usages
+    dest: building_template_usages
+    trigger_condition:
+      and:
+        - or:
+            - and:
+                - has_attr:
+                    left_value: { get_attribute: skills_result }
+                    right_value: stage_done
+                - not:
+                    get_attr:
+                        left_value: { get_attribute: skills_result }
+                        right_value: stage_done
+            - not:
+                has_attr:
+                  left_value: { get_attribute: skills_result }
+                  right_value: stage_done
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: url
+    actions:
+    - set_attribute:
+        attribute: url
+        value:
+          event_data: ["url"]
+    - show_message:
+        message: "Компонент оценивания вернул необходимость исправлений операции"
+
+
+  all_template_usages_updated:
+    type: event
+    event: templateUsages/update
+    source: building_template_usages
+    dest: sm_translation_preparation
+    trigger_condition:
+      and:
+        - has_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+        - get_attr:
+            left_value: { get_attribute: skills_result }
+            right_value: stage_done
+    actions:
+      - show_message:
+          message: "Компонент оценивания вернул возможность завершения этапа создания операции. Осуществлен переход к этапу расчета ИМ внешней среды."
+
   
-  no_errors_in_update_type:
-    type: event
-    event: kbTypes/update
-    source: building_types
-    dest: building_types
-    trigger_condition:
-      and:
-        - or:
-            - and:
-                - has_attr:
-                    left_value: { get_attribute: skills_result }
-                    right_value: stage_done
-                - not:
-                    get_attr:
-                        left_value: { get_attribute: skills_result }
-                        right_value: stage_done
-            - not:
-                has_attr:
-                  left_value: { get_attribute: skills_result }
-                  right_value: stage_done
-        - not:
-            has_attr:
-              left_value: { get_attribute: skills_result }
-              right_value: url
-    actions:
-      - set_attribute:
-          attribute: url
-          value: ""
-      - show_message:
-          message: "Задание выполнено успешно"
-
-  no_errors_in_update_object:
-    type: event
-    event: kbObjects/update
-    source: building_basic_objects
-    dest: building_basic_objects
-    trigger_condition:
-      and:
-        - or:
-            - and:
-                - has_attr:
-                    left_value: { get_attribute: skills_result }
-                    right_value: stage_done
-                - not:
-                    get_attr:
-                        left_value: { get_attribute: skills_result }
-                        right_value: stage_done
-            - not:
-                has_attr:
-                  left_value: { get_attribute: skills_result }
-                  right_value: stage_done
-        - not:
-            has_attr:
-              left_value: { get_attribute: skills_result }
-              right_value: url
-    actions:
-      - set_attribute:
-          attribute: url
-          value: ""
-      - show_message:
-          message: "Задание выполнено успешно"
-
-  no_errors_in_update_event:
-    type: event
-    event: kbEvents/update
-    source: building_events
-    dest: building_events
-    trigger_condition:
-      and:
-        - or:
-            - and:
-                - has_attr:
-                    left_value: { get_attribute: skills_result }
-                    right_value: stage_done
-                - not:
-                    get_attr:
-                        left_value: { get_attribute: skills_result }
-                        right_value: stage_done
-            - not:
-                has_attr:
-                  left_value: { get_attribute: skills_result }
-                  right_value: stage_done
-        - not:
-            has_attr:
-              left_value: { get_attribute: skills_result }
-              right_value: url
-    actions:
-      - set_attribute:
-          attribute: url
-          value: ""
-      - show_message:
-          message: "Задание выполнено успешно"
-
-  no_errors_in_update_interval:
-    type: event
-    event: kbIntervals/update
-    source: building_intervals
-    dest: building_intervals
-    trigger_condition:
-      and:
-        - or:
-            - and:
-                - has_attr:
-                    left_value: { get_attribute: skills_result }
-                    right_value: stage_done
-                - not:
-                    get_attr:
-                        left_value: { get_attribute: skills_result }
-                        right_value: stage_done
-            - not:
-                has_attr:
-                  left_value: { get_attribute: skills_result }
-                  right_value: stage_done
-        - not:
-            has_attr:
-              left_value: { get_attribute: skills_result }
-              right_value: url
-    actions:
-      - set_attribute:
-          attribute: url
-          value: ""
-      - show_message:
-          message: "Задание выполнено успешно"
-
-  no_errors_in_update_rule:
-    type: event
-    event: kbRules/update
-    source: building_rules
-    dest: building_rules
-    trigger_condition:
-      and:
-        - or:
-            - and:
-                - has_attr:
-                    left_value: { get_attribute: skills_result }
-                    right_value: stage_done
-                - not:
-                    get_attr:
-                        left_value: { get_attribute: skills_result }
-                        right_value: stage_done
-            - not:
-                has_attr:
-                  left_value: { get_attribute: skills_result }
-                  right_value: stage_done
-        - not:
-            has_attr:
-              left_value: { get_attribute: skills_result }
-              right_value: url
-    actions:
-      - set_attribute:
-          attribute: url
-          value: ""
-      - show_message:
-          message: "Задание выполнено успешно"
-
-  all_types_updated:
-    type: event
-    event: kbTypes/update
-    source: building_types
-    dest: building_basic_objects
-    trigger_condition:
-      and:
-        - has_attr:
-            left_value: { get_attribute: skills_result }
-            right_value: stage_done
-        - get_attr:
-            left_value: { get_attribute: skills_result }
-            right_value: stage_done
-    actions:
-      - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа построения типов. Осуществлен переход к этапу построения базовых объектов"
-
-  all_objects_created:
-    type: event
-    event: kbObjects/create
-    source: building_basic_objects
-    dest: building_events
-    trigger_condition:
-      and:
-        - has_attr:
-            left_value: { get_attribute: skills_result }
-            right_value: stage_done
-        - get_attr:
-            left_value: { get_attribute: skills_result }
-            right_value: stage_done
-    actions:
-      - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа построения базовых объектов. Осуществлен переход к этапу построения событий"
-
-  all_objects_updated:
-    type: event
-    event: kbObjects/update
-    source: building_basic_objects
-    dest: building_events
-    trigger_condition:
-      and:
-        - has_attr:
-            left_value: { get_attribute: skills_result }
-            right_value: stage_done
-        - get_attr:
-            left_value: { get_attribute: skills_result }
-            right_value: stage_done
-    actions:
-      - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа построения базовых объектов. Осуществлен переход к этапу построения событий"        
-
-  # all_objects_deleted:
-  #   type: event
-  #   event: kbObjects/delete
-  #   source: building_basic_objects
-  #   dest: building_types
-  #   trigger_condition:
-  #     state_attr:
-  #       argument: skills_result
-  #       condition:
-  #         and:
-  #           - has_attr: stage_done
-  #           - get_attr: stage_done
-  #   actions:
-  #     - show_message:
-  #         message: "Компонент оценивания вернул возможность возвращение с этапа построения событий. Осуществлен переход к этапу построения интервалов"  
-
-  all_events_created:
-    type: event
-    event: kbEvents/create
-    source: building_events
-    dest: building_intervals
-    trigger_condition:
-      and:
-        - has_attr:
-            left_value: { get_attribute: skills_result }
-            right_value: stage_done
-        - get_attr:
-            left_value: { get_attribute: skills_result }
-            right_value: stage_done
-    actions:
-      - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа построения событий. Осуществлен переход к этапу построения интервалов"
-  
-  all_events_updated:
-    type: event
-    event: kbEvents/update
-    source: building_events
-    dest: building_intervals
-    trigger_condition:
-      and:
-        - has_attr:
-            left_value: { get_attribute: skills_result }
-            right_value: stage_done
-        - get_attr:
-            left_value: { get_attribute: skills_result }
-            right_value: stage_done
-    actions:
-      - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа построения событий. Осуществлен переход к этапу построения интервалов"        
-
-  # all_events_deleted:
-  #   type: event
-  #   event: kbEvents/delete
-  #   source: building_events
-  #   dest: building_basic_objects
-  #   trigger_condition:
-  #     state_attr:
-  #       argument: skills_result
-  #       condition:
-  #         and:
-  #           - has_attr: stage_done
-  #           - get_attr: stage_done
-  #   actions:
-  #     - show_message:
-  #         message: "Компонент оценивания вернул возможность возвращения с этапа построения события. Осуществлен переход к этапу построения базовых объектов" 
-
-  all_intervals_created:
-    type: event
-    event: kbIntervals/create
-    source: building_intervals
-    dest: building_rules
-    trigger_condition:
-      and:
-        - has_attr:
-            left_value: { get_attribute: skills_result }
-            right_value: stage_done
-        - get_attr:
-            left_value: { get_attribute: skills_result }
-            right_value: stage_done
-    actions:
-      - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа построения интервалов. Осуществлен переход к этапу построения правил"
-  
-  all_intervals_updated:
-    type: event
-    event: kbIntervals/update
-    source: building_intervals
-    dest: building_rules
-    trigger_condition:
-      and:
-        - has_attr:
-            left_value: { get_attribute: skills_result }
-            right_value: stage_done
-        - get_attr:
-            left_value: { get_attribute: skills_result }
-            right_value: stage_done
-    actions:
-      - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа построения интервалов. Осуществлен переход к этапу построения правил"        
-
-  # all_intervals_deleted:
-  #   type: event
-  #   event: kbIntervals/delete
-  #   source: building_intervals
-  #   dest: building_events
-  #   trigger_condition:
-  #     state_attr:
-  #       argument: skills_result
-  #       condition:
-  #         and:
-  #           - has_attr: stage_done
-  #           - get_attr: stage_done
-  #   actions:
-  #     - show_message:
-  #         message: "Компонент оценивания вернул возможность возвращения с этапа построения интервалов. Осуществлен переход к этапу построения событий"               
-
-  all_rules_created:
-    type: event
-    event: kbRules/create
-    source: building_rules
-    dest: exporting_kb
-    trigger_condition:
-      and:
-        - has_attr:
-            left_value: { get_attribute: skills_result }
-            right_value: stage_done
-        - get_attr:
-            left_value: { get_attribute: skills_result }
-            right_value: stage_done
-    actions:
-      - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа построения правил. Осуществлен переход к этапу сохранения фрагмента БЗ"
-  
-  all_rules_updated:
-    type: event
-    event: kbRules/update
-    source: building_rules
-    dest: exporting_kb
-    trigger_condition:
-      and:
-        - has_attr:
-            left_value: { get_attribute: skills_result }
-            right_value: stage_done
-        - get_attr:
-            left_value: { get_attribute: skills_result }
-            right_value: stage_done
-    actions:
-      - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа построения правил. Осуществлен переход к этапу сохранения фрагмента БЗ"        
-
-  # all_rules_deleted:
-  #   type: event
-  #   event: kbRules/delete
-  #   source: building_rules
-  #   dest: building_intervals
-  #   trigger_condition:
-  #     state_attr:
-  #       argument: skills_result
-  #       condition:
-  #         and:
-  #           - has_attr: stage_done
-  #           - get_attr: stage_done
-  #   actions:
-  #     - show_message:
-  #         message: "Компонент оценивания вернул возможность возвращения с этапа построения правил. Осуществлен переход к этапу построения интервалов"
-
 #==============================================================
 #                          Events
 #==============================================================
@@ -2424,17 +2809,13 @@ events:
           next:
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  resourceTypes/create: 
-    handler_component: ATTutoringKBSkills
-    handler_method: 
 
 #==============================================================
-#                          Events
-#==============================================================
+  #==============================================================
   #================== Imitation model =========================
   models/create:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_created
+    handler_component: SimulationService
+    handler_method: handle_simulation_model_created
     actions:
       - set_attribute:
           attribute: skills_result
@@ -2443,55 +2824,21 @@ events:
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
 
-  models/delete:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_delete
+  models/update:
+    handler_component: SimulationService
+    handler_method: handle_simulation_model_updated
     actions:
       - set_attribute:
           attribute: skills_result
           value: $event_data
           next:
             - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"             
-
-  models/load:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_load
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-          next:
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"             
+                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
 
   #====================== Resource Types ============================== 
-  # брать из компонентов
-  resourceTypes/load:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_resourceTypes_load
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-          next:
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-
   resourceTypes/create:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_resourceTypes_created
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-          next:
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-
-  resourceTypes/update:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_resourceTypes_updated
+    handler_component: SimulationService
+    handler_method: handle_resource_type
     actions:
       # отдельно будут выполняться параллельно
       - set_attribute:
@@ -2500,9 +2847,37 @@ events:
           next: # выволнить следующим последовательным действием
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
+
+  resourceTypes/update:
+    handler_component: SimulationService
+    handler_method: handle_resource_type
+    actions:
+      # отдельно будут выполняться параллельно
+      - set_attribute:
+          attribute: skills_result
+          value: $event_data
+          next: # выволнить следующим последовательным действием
+            - show_message:
+                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
 
   resourceTypes/duplicate:
-    handler_component: ATTutoringIMSkills
+    handler_component: SimulationService
     handler_method: handle_im_resourceTypes_duplicated
     actions:
       - set_attribute:
@@ -2513,7 +2888,7 @@ events:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
 
   resourceTypes/delete:
-    handler_component: ATTutoringIMSkills
+    handler_component: SimulationService
     handler_method: handle_im_resourceTypes_deleted
     actions:
       - set_attribute:
@@ -2523,53 +2898,70 @@ events:
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
   
+
   #====================== Resources =============================     
-  resources/load:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_resources_load
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-          next:
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
   resources/create:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_resources_created
+    handler_component: SimulationService
+    handler_method: handle_resource
     actions:
+      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next:
+          next: # выволнить следующим последовательным действием
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
 
   resources/update:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_resources_updated
+    handler_component: SimulationService
+    handler_method: handle_resource
     actions:
+      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next:
+          next: # выволнить следующим последовательным действием
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
+
   resources/duplicate:
-    handler_component: ATTutoringIMSkills
+    handler_component: SimulationService
     handler_method: handle_im_resources_duplicated
     actions:
+      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next:
+          next: # выволнить следующим последовательным действием
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
 
   resources/delete:
-    handler_component: ATTutoringIMSkills
+    handler_component: SimulationService
     handler_method: handle_im_resources_deleted
     actions:
       - set_attribute:
@@ -2579,99 +2971,50 @@ events:
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
   
-  #====================== Template Usages ============================
-  templateUsages/load:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_templateUsages_load
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-          next:
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
   
-
-  templateUsages/create:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_templateUsages_created
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-          next:
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
-  templateUsages/update:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_templateUsages_updated
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-          next:
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
-  templateUsages/dublicate:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_templateUsages_dublicated
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-          next:
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-              
-  templateUsages/delete:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_templateUsages_deleted
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-          next:
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-
   #====================== Template =============================
-  templates/load:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_template_load
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-          next:
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
   templates/create:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_template_created
+    handler_component: SimulationService
+    handler_method: handle_template
     actions:
+      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next:
+          next: # выволнить следующим последовательным действием
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
+
   templates/update:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_template_updated
+    handler_component: SimulationService
+    handler_method: handle_template
     actions:
+      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next:
+          next: # выволнить следующим последовательным действием
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
+
   templates/dublicate:
-    handler_component: ATTutoringIMSkills
+    handler_component: SimulationService
     handler_method: handle_im_template_dublicated
     actions:
       - set_attribute:
@@ -2682,7 +3025,7 @@ events:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
 
   templates/delete:
-    handler_component: ATTutoringIMSkills
+    handler_component: SimulationService
     handler_method: handle_im_template_deleted
     actions:
       - set_attribute:
@@ -2691,11 +3034,52 @@ events:
           next:
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
-  #====================== Funcs =============================
-  funcs/load:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_funcs_load
+
+
+#====================== Template Usages ============================
+  templateUsages/create:
+    handler_component: SimulationService
+    handler_method: handle_template_usage
+    actions:
+      # отдельно будут выполняться параллельно
+      - set_attribute:
+          attribute: skills_result
+          value: $event_data
+          next: # выволнить следующим последовательным действием
+            - show_message:
+                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
+
+  templateUsages/update:
+    handler_component: SimulationService
+    handler_method: handle_template_usage
+    actions:
+      # отдельно будут выполняться параллельно
+      - set_attribute:
+          attribute: skills_result
+          value: $event_data
+          next: # выволнить следующим последовательным действием
+            - show_message:
+                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
+
+  templateUsages/dublicate:
+    handler_component: SimulationService
+    handler_method: handle_im_templateUsages_dublicated
     actions:
       - set_attribute:
           attribute: skills_result
@@ -2703,31 +3087,62 @@ events:
           next:
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
+              
+  templateUsages/delete:
+    handler_component: SimulationService
+    handler_method: handle_im_templateUsages_deleted
+    actions:
+      - set_attribute:
+          attribute: skills_result
+          value: $event_data
+          next:
+            - show_message:
+                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
+
+
+#====================== Funcs =============================
   funcs/create:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_func_created
+    handler_component: SimulationService
+    handler_method: handle_function
     actions:
+      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next:
+          next: # выволнить следующим последовательным действием
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
+
   funcs/update:
-    handler_component: ATTutoringIMSkills
-    handler_method: handle_im_func_updated
+    handler_component: SimulationService
+    handler_method: handle_function
     actions:
+      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next:
+          next: # выволнить следующим последовательным действием
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-  
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+          next:
+            - show_message:
+                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
+
+
   funcs/dublicate:
-    handler_component: ATTutoringIMSkills
+    handler_component: SimulationService
     handler_method: handle_im_func_dublicated
     actions:
       - set_attribute:
@@ -2738,7 +3153,7 @@ events:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
 
   funcs/delete:
-    handler_component: ATTutoringIMSkills
+    handler_component: SimulationService
     handler_method: handle_im_func_deleted
     actions:
       - set_attribute:
