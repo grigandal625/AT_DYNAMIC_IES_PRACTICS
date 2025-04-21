@@ -2978,13 +2978,6 @@ events:
           next: # выволнить следующим последовательным действием
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-      - set_attribute:
-          attribute: url
-          value:
-            event_data: ["url"]
-          next:
-            - show_message:
-                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
 
 
   resources/duplicate:
