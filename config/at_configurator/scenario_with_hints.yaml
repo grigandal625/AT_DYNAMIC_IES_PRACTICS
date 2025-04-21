@@ -752,8 +752,37 @@ states:
     initial: false
     frame_rows:
       kb_finished:
-        src: /docview?viewing=true&docs=%23+Работа+2+завершена
-        type: basic
+        type: docs
+        src: |
+          # Результаты построения темпоральной базы знаний
+
+          ## Финальные оценки навыков:
+
+          {{skills}} - сюда надо будет подставить skills и заменить двойные фигурные на одинарные
+
+          > Идентификатор внутреннего представления имитационной модели сохранен для использования в рамках совместного функционирования подсистемы имитационного моделирования и средств вывода
+
+  joint_functioning:
+    label: Учебное проектирование базовых компонентов динамических ИЭС
+    control_label: Совместное функционирование базовых компонентов динамических ИЭС
+    control_subtitle: Организация и запуск совместного функционирования
+    initial: false
+    frame_rows:
+      sm_editor:
+        src: http://%location.hostname%:{at_joint_port}/state?token={auth_token}
+        type: format_attributes
+        span: 20
+      docs:
+        span: 4
+        type: docs
+        src: |
+          ### Подсказки и объяснения
+
+          Исследование совнестного функционирования базовых компонентов динамических ИЭС:
+
+          - подсистемы имитационного моделирования
+          - темпорального решателя
+          - универсального АТ-РЕШАТЕЛЯ
 #==============================================================
 #                        Переходы
 #==============================================================
@@ -1473,6 +1502,47 @@ transitions:
     dest: building_template_usages
     label: Вернуться к доработке операций
 
+# ручной переход из прогона к завершению
+  finish_experiment:
+    type: link
+    position: control
+    source: sm_experiment_run
+    dest: sm_finished
+    label: Закончить построение ИМ
+
+# ручной переход к совместному функционированию
+  start_joint:
+    type: link
+    position: control
+    source: sm_finished
+    dest: joint_functioning
+    label: Перейти к этапу организации совместного функционирования подсистемы имитационного моделирования и средств вывода
+    actions:
+      - show_message:
+          message: "Управляющая программа построила конфигурацию базовых компонентов со следующими параметрами:\n\nФайл базы знаний в редакторе: {selected_kb}\nФайл внутреннего представления ИМ: {translated_file}"
+      - exec_method:
+          component: ATConfigurator
+          method: authorized_configurate
+          method_args:
+            config:
+              ATSolver:
+                kb:
+                  component: ATKRLEditor
+                  method: get_knowledge_base
+                  method_args:
+                    id: { get_attribute: selected_kb }
+                    format: at_krl
+              ATTemporalSolver:
+                kb:
+                  component: ATKRLEditor
+                  method: get_knowledge_base
+                  method_args:
+                    id: { get_attribute: selected_kb }
+                    format: at_krl
+              ATJoint:
+                at_simulation: ATSimulationWorker
+                at_simulation_file: { get_attribute: translated_sm }
+
 #======================= Переходы по событию ===============================
   
 #================== Imitation model =========================
@@ -2191,8 +2261,6 @@ events:
             - show_message:
                 message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}" 
                 
-  
-
   #====================== Types ============================== 
   # брать из компонентов
   kbTypes/create:

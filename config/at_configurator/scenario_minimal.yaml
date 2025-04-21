@@ -210,7 +210,7 @@ transitions:
     label: Перейти к этапу организации совместного функционирования
     actions:
       - show_message:
-          message: "Управляющая программа конфигурацию базовых компонентов со следующими параметрами:\n\nФайл базы знаний в редакторе: {selected_kb}\nФайл внутреннего представления ИМ: {translated_file}"
+          message: "Управляющая программа перешла к конфигурацию базовых компонентов со следующими параметрами:\n\nФайл базы знаний в редакторе: {selected_kb}\nФайл внутреннего представления ИМ: {translated_file}"
       - exec_method:
           component: ATConfigurator
           method: authorized_configurate
