@@ -20,7 +20,7 @@ apply_migration() {
         cd "$repo_dir"
     fi
     
-    pip install --no-cache-dir alembic psycopg2-binary git+$repo_url
+    pip install alembic psycopg2-binary git+$repo_url
 
     cd migrations
     set +a && bash upgrade_head.sh
