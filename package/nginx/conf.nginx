@@ -1,5 +1,5 @@
 client_header_buffer_size 16k;
-large_client_header_buffers 8 256k;  # 8 буферов по 256KB = 2MB для URI + заголовков
+large_client_header_buffers 8 256k;
 
 upstream at_rdr {
     server at_renderer:8888;
@@ -12,9 +12,8 @@ upstream at_queue {
 server {
     listen 8888;
 
-    # Увеличиваем лимиты для этого сервера
     client_header_buffer_size 32k;
-    large_client_header_buffers 16 256k;  # 16 буферов * 256KB = 4MB
+    large_client_header_buffers 16 256k;
 
     location / {
         proxy_pass http://at_rdr;
@@ -24,6 +23,11 @@ server {
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
         proxy_redirect off;
+
+        # Таймауты для 10 минут (600 секунд)
+        proxy_connect_timeout 600s;
+        proxy_send_timeout 600s;
+        proxy_read_timeout 600s;
 
         # Дополнительно для длинных URI
         proxy_buffer_size 128k;
@@ -42,5 +46,10 @@ server {
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
         proxy_redirect off;
+
+        # Таймауты для 10 минут (600 секунд)
+        proxy_connect_timeout 600s;
+        proxy_send_timeout 600s;
+        proxy_read_timeout 600s;
     }
 }
