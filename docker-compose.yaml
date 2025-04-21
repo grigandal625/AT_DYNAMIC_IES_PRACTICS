@@ -103,7 +103,7 @@ services:
     depends_on:
       at_queue:
         condition: service_healthy
-      at_postgres_db:
+      at_postgres:
         condition: service_healthy
     networks:
       - custom-network
@@ -140,7 +140,7 @@ services:
     depends_on:
       at_queue:
         condition: service_healthy
-      at_postgres_db:
+      at_postgres:
         condition: service_healthy
       minio:
         condition: service_healthy
@@ -336,7 +336,7 @@ services:
         condition: service_healthy
       at_redis:
         condition: service_healthy
-      at_postgres_db:
+      at_postgres:
         condition: service_healthy
     networks:
       - custom-network
@@ -387,7 +387,7 @@ services:
     depends_on:
       at_queue:
         condition: service_healthy
-      at_postgres_db:
+      at_postgres:
         condition: service_healthy
     networks:
       - custom-network
@@ -399,8 +399,8 @@ services:
       DB_HOST: ${AT_TUTORING_SKILLS_API_DB_HOST}
       DB_PORT: ${AT_TUTORING_SKILLS_API_DB_PORT}
 
-  at_postgres_db:
-    container_name: at_postgres_db
+  at_postgres:
+    container_name: at_postgres
     image: "postgres:latest"
     expose:
       - "${AT_POSTGRES_DB_PORT}"
@@ -429,16 +429,16 @@ services:
       retries: 10
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - ./config/at_postgres_db:/docker-entrypoint-initdb.d:ro
+      - ./config/at_postgres:/docker-entrypoint-initdb.d:ro
     command: postgres -c port=${AT_POSTGRES_DB_PORT}
 
-  at_postgres_db_migrations:
+  at_postgres_migrations:
     image: python:3.12
-    container_name: at_postgres_db_migrations
+    container_name: at_postgres_migrations
     profiles:
       - manual
     depends_on:
-      at_postgres_db:
+      at_postgres:
         condition: service_healthy
     environment:
       POSTGRES_USER: ${AT_POSTGRES_DB_USER}
@@ -449,7 +449,7 @@ services:
       AT_POSTGRES_DB_NAME_SIMULATION: ${AT_POSTGRES_DB_NAME_SIMULATION}
       AT_POSTGRES_DB_NAME_USER: ${AT_POSTGRES_DB_NAME_USER}
     volumes:
-      - ./config/at_postgres_db_migrations:/migrations
+      - ./config/at_postgres_migrations:/migrations
     entrypoint: ["/migrations/apply.sh"]
     networks:
       - custom-network
