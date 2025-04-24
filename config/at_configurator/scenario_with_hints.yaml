@@ -111,11 +111,17 @@ states:
 
           Модель навыков, приобритаемых и оцениваемых по ходу выполнения работы
 
-          ![IMG](http://%location.hostname%:{skills_port}{skills_url_start}{auth_token}{skills_url_end})
+          ![IMG](http://%location.hostname%:{skills_port}{skills_url_start}{auth_token}{full_skills_url_end})
 
           Легенда
 
-          ![IMG](http://%location.hostname%:{skills_port}{legend_url_start}{auth_token}{skills_url_end})
+          ![IMG](http://%location.hostname%:{skills_port}{legend_url_start}{auth_token}{full_skills_url_end})
+
+          # Задания
+
+          {hint}
+
+          {hint2}
           
   # # Задания
 
@@ -150,7 +156,7 @@ states:
 
             <details>
             <summary>Легенда</summary>
-            <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+            <div style="border: 1px solid silver; border-radius: 2px;">
 
             ![IMG](http://%location.hostname%:{skills_port}{legend_url_start}{auth_token}{skills_url_end})
 
@@ -240,7 +246,7 @@ states:
 
             <details>
             <summary>Легенда</summary>
-            <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+            <div style="border: 1px solid silver; border-radius: 2px;">
 
             ![IMG](http://%location.hostname%:{skills_port}{legend_url_start}{auth_token}{skills_url_end})
 
@@ -319,7 +325,7 @@ states:
 
             <details>
             <summary>Легенда</summary>
-            <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+            <div style="border: 1px solid silver; border-radius: 2px;">
 
             ![IMG](http://%location.hostname%:{skills_port}{legend_url_start}{auth_token}{skills_url_end})
 
@@ -397,7 +403,7 @@ states:
 
             <details>
             <summary>Легенда</summary>
-            <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+            <div style="border: 1px solid silver; border-radius: 2px;">
 
             ![IMG](http://%location.hostname%:{skills_port}{legend_url_start}{auth_token}{skills_url_end})
 
@@ -477,7 +483,7 @@ states:
 
             <details>
             <summary>Легенда</summary>
-            <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+            <div style="border: 1px solid silver; border-radius: 2px;">
 
             ![IMG](http://%location.hostname%:{skills_port}{legend_url_start}{auth_token}{skills_url_end})
 
@@ -589,6 +595,12 @@ states:
           ## Практическая работа 2. Моделирование внешней среды с помощью средств подсистемы имитационного моделирования и языка РДО<sup>АТ</sup>.
 
           **Цель работы.** Освоение навыков построения простейших имитационных моделей внешней среды на языке РДО<sup>АТ</sup> с помощью подсистемы имитационного моделирования (динамическая версия комплекса АТ-ТЕХНОЛОГИЯ).
+
+          План работы
+
+          1. Ознакомление с описанием внешней среды, заданной в варианте
+          2. Выполнение заданий, связанных с построением базовых конструкций языка РДО<sup>АТ</sup>
+          3. Проведение имитационных экспериментов.
         
   sm_creation:
     label: Учебное проектирование базовых компонентов динамических ИЭС
@@ -610,6 +622,33 @@ states:
           После нажатия кнопки `Создать` будет осуществлен автоматический переход к следующему этапу технологии построения имитационной модели
         type: docs
         span: 4
+
+  sm_variant_description:
+    label: Учебное проектирование базовых компонентов динамических ИЭС
+    control_label: Технология построения имитационных моделей
+    frame_rows:
+      docs:
+        type: docs
+        src: |
+          # Вам назначен следующий вариант задания
+
+          {desc}
+
+          # Начальная модель обучаемого
+
+          Модель навыков, приобритаемых и оцениваемых по ходу выполнения работы
+
+          ![IMG](http://%location.hostname%:{skills_port}{skills_url_start}{auth_token}{full_skills_url_end})
+
+          Легенда
+
+          ![IMG](http://%location.hostname%:{skills_port}{legend_url_start}{auth_token}{full_skills_url_end})
+
+          # Задания
+
+          {hint}
+
+          {hint2}
   # ----------------------------------
   # ------------------------------------------------------------------------------------------------------
   # 1. Выделение ресурсов и параметров, выделение событий и определений законов функционирования СТС/СОТС
@@ -630,15 +669,23 @@ states:
         span: 4
         src: |
           ### Подсказки и объяснения
+          
           {url}
 
           <details>
           <summary>Текущая модель обучаемого</summary>
           <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
 
-          ***К текущим оценкам будут начисляться штрафы в случае допуска ошибок при выполнении заданий***
+          ![IMG](http://%location.hostname%:{skills_port}{skills_url_start}{auth_token}{skills_url_end})
 
-          {skills}
+            <details>
+            <summary>Легенда</summary>
+            <div style="border: 1px solid silver; border-radius: 2px;">
+
+            ![IMG](http://%location.hostname%:{skills_port}{legend_url_start}{auth_token}{skills_url_end})
+
+            </div>
+            </details>
 
           </div>
           </details>
@@ -652,9 +699,9 @@ states:
           </div>
           </details>
 
-          #### Этап создания типа ресурса
+          #### Этап создания типов ресурсов
 
-          Тип ресурсов - это определенная категория ресурсов, в которую входят экземпляры ресурсов
+          Тип ресурса - это определенная категория ресурсов, в которую входят экземпляры ресурсов
 
           Типы ресурса могут быть двух видов:
           - Постоянный
@@ -685,15 +732,23 @@ states:
         span: 4
         src: |
           ### Подсказки и объяснения
+          
           {url}
 
           <details>
           <summary>Текущая модель обучаемого</summary>
           <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
 
-          ***К текущим оценкам будут начисляться штрафы в случае допуска ошибок при выполнении заданий***
+          ![IMG](http://%location.hostname%:{skills_port}{skills_url_start}{auth_token}{skills_url_end})
 
-          {skills}
+            <details>
+            <summary>Легенда</summary>
+            <div style="border: 1px solid silver; border-radius: 2px;">
+
+            ![IMG](http://%location.hostname%:{skills_port}{legend_url_start}{auth_token}{skills_url_end})
+
+            </div>
+            </details>
 
           </div>
           </details>
@@ -707,7 +762,7 @@ states:
           </div>
           </details>
 
-          #### Этап создания ресурса 
+          #### Этап создания ресурсов 
           Ресурс - это элемент СТС/СОТС, внутренней структурой которого можно пренебречь, в то время как наличие и свойства его как целого, важны для целей описания, в зависимости от поставленной задачи ресурсом может быть любая часть системы, каждый экземпляр ресурса относится только к одному типу;
 
           *Ниже представлены синтаксические определения, общие для всех объектов:* 	
@@ -730,15 +785,23 @@ states:
         span: 4
         src: |
           ### Подсказки и объяснения
+          
           {url}
 
           <details>
           <summary>Текущая модель обучаемого</summary>
           <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
 
-          ***К текущим оценкам будут начисляться штрафы в случае допуска ошибок при выполнении заданий***
+          ![IMG](http://%location.hostname%:{skills_port}{skills_url_start}{auth_token}{skills_url_end})
 
-          {skills}
+            <details>
+            <summary>Легенда</summary>
+            <div style="border: 1px solid silver; border-radius: 2px;">
+
+            ![IMG](http://%location.hostname%:{skills_port}{legend_url_start}{auth_token}{skills_url_end})
+
+            </div>
+            </details>
 
           </div>
           </details>
@@ -752,7 +815,7 @@ states:
           </div>
           </details>
 
-          #### Этап создания образца операции
+          #### Этап создания образцов операций
           
           Образец операции - это конструкция, описывающая процедура, при которой происходит изменение значений параметров ресурсов;
 
@@ -789,15 +852,23 @@ states:
         span: 4
         src: |
           ### Подсказки и объяснения
+          
           {url}
 
           <details>
           <summary>Текущая модель обучаемого</summary>
           <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
 
-          ***К текущим оценкам будут начисляться штрафы в случае допуска ошибок при выполнении заданий***
+          ![IMG](http://%location.hostname%:{skills_port}{skills_url_start}{auth_token}{skills_url_end})
 
-          {skills}
+            <details>
+            <summary>Легенда</summary>
+            <div style="border: 1px solid silver; border-radius: 2px;">
+
+            ![IMG](http://%location.hostname%:{skills_port}{legend_url_start}{auth_token}{skills_url_end})
+
+            </div>
+            </details>
 
           </div>
           </details>
@@ -836,15 +907,23 @@ states:
         span: 4
         src: |
           ### Подсказки и объяснения
+
           {url}
 
           <details>
           <summary>Текущая модель обучаемого</summary>
           <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
 
-          ***К текущим оценкам будут начисляться штрафы в случае допуска ошибок при выполнении заданий***
+          ![IMG](http://%location.hostname%:{skills_port}{skills_url_start}{auth_token}{skills_url_end})
 
-          {skills}
+            <details>
+            <summary>Легенда</summary>
+            <div style="border: 1px solid silver; border-radius: 2px;">
+
+            ![IMG](http://%location.hostname%:{skills_port}{legend_url_start}{auth_token}{skills_url_end})
+
+            </div>
+            </details>
 
           </div>
           </details>
@@ -858,7 +937,7 @@ states:
           </div>
           </details>
 
-          #### Этап создания функции
+          #### Этап создания функций
 
           Тело функции составляет процедурную часть программы на языке РДО<sup>АТ</sup>:
 
@@ -888,16 +967,17 @@ states:
         redirect: /evaluate/translation/{selected_sm}
         span: 20
       docs:
-        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
-        type: basic
+        type: docs
         span: 4
+        src: |
+          Для расчета состояний имитационной модели в рамках имитационного эксперимента, необходимо выполнить трансляцию модели во внутреннее представление
   # ---------------------------------------------------------------------------------------
   # 3. Транляция ИМ на языке РДО-АТ во внутренее представление. 
   # ---------------------------------------------------------------------------------------     
   sm_experiment_preparation:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения имитационных моделей внешней среды
-    control_subtitle: Подготовка прогона имитационной модели
+    control_subtitle: Подготовка имитационного эксперимента
     initial: false
     frame_rows:
       sm_editor:
@@ -906,9 +986,10 @@ states:
         redirect: /evaluate/runner/{translated_sm}
         span: 20
       docs:
-        src: /docview?viewing=true&docs=%23%23%23+Подсказки+и+объяснения%0A%0AДля+начала+работы+необходимо+создать+файл%2C+который+будет+содержать+описание+имитационной+модели+%28ИМ%29+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.%0A%0AПосле+нажатия+кнопки+%60Создать%60+диалоговом+окне+компонента+синтеза+будет+осуществлен+автоматический+переход+к+следующему+этапу+технологии+построения+ИМ+внешней+среды+на+языке+РДО<sup>АТ<%2Fsup>.
-        type: basic
+        type: docs
         span: 4
+        src: |
+          Для проведения имитационного эксперимента необходимо инициализировать прогон модели
     
   # ---------------------------------------------------------------------------------------
   # 4. Конфигурирование параметров ИМ и запуск прогона.      
@@ -916,7 +997,7 @@ states:
   sm_experiment_run:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения имитационных моделей внешней среды
-    control_subtitle: Конфигурирование параметров ИМ и запуск прогона для расчета состояний ИМ
+    control_subtitle: Конфигурирование параметров ИМ и проведение имитационного эксперимента
     initial: false
     frame_rows:
       sm_editor:
@@ -944,11 +1025,13 @@ states:
       kb_finished:
         type: docs
         src: |
-          # Результаты построения темпоральной базы знаний
+          # Результаты
 
-          ## Финальные оценки навыков:
+          ## Финальная модель обучаемого (навыков обучаемого)
 
-          {{skills}} - сюда надо будет подставить skills и заменить двойные фигурные на одинарные
+          ![IMG](http://%location.hostname%:{skills_port}{skills_url_start}{auth_token}{skills_url_end})
+            
+          ![IMG](http://%location.hostname%:{skills_port}{legend_url_start}{auth_token}{skills_url_end})
 
           > Идентификатор внутреннего представления имитационной модели сохранен для использования в рамках совместного функционирования подсистемы имитационного моделирования и средств вывода
 
@@ -968,11 +1051,13 @@ states:
         src: |
           ### Подсказки и объяснения
 
-          Исследование совнестного функционирования базовых компонентов динамических ИЭС:
+          Запустите совместное функционирования базовых компонентов динамических ИЭС:
 
           - подсистемы имитационного моделирования
           - темпорального решателя
           - универсального АТ-РЕШАТЕЛЯ
+
+          На основе функционирования данных компонентов реализован темпоральный вывод.
 #==============================================================
 #                        Переходы
 #==============================================================
@@ -1030,7 +1115,7 @@ transitions:
     type: event
     event: models/create
     source: sm_creation
-    dest: variant_description
+    dest: sm_variant_description
     label: Создать файл ИМ внешней среды
     trigger_condition:
       has_attr:
@@ -1158,6 +1243,17 @@ transitions:
       - set_attribute:
           attribute: test_status 
           value: kb_creation
+
+    start_types:
+    type: link
+    position: control
+    source: sm_variant_description 
+    dest: building_resource_types
+    label: Приступить к первому этапу технологии построения имитационных моделей внешней среды.
+    actions:
+      - set_attribute:
+          attribute: test_status 
+          value: kb_creation
                                                     
   #======================= Переходы по событию ===============================
 
@@ -1198,7 +1294,7 @@ transitions:
           value:
             event_data: ['skills']
       - show_message:
-          message: "Компонент оценивания вернул необходимость исправлений типа"
+          message: "При построении типа были допущены ошибки"
 
   errors_in_update_object:
     type: event
@@ -1577,7 +1673,7 @@ transitions:
           value:
             event_data: ['skills']
       - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа построения типов. Осуществлен переход к этапу построения базовых объектов"
+          message: "Вы успешно завершили этап построения типов. Осуществлен автоматический переход на следующий этап, связанный с построением базовых объектов"
 
   all_objects_updated:
     type: event
@@ -1605,7 +1701,7 @@ transitions:
           value:
             event_data: ['skills']
       - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа построения базовых объектов. Осуществлен переход к этапу построения событий"        
+          message: "Вы успешно завершили этап построения базовых объектов. Осуществлен переход к этапу построения событий"        
   
   all_events_updated:
     type: event
@@ -1633,7 +1729,7 @@ transitions:
           value:
             event_data: ['skills']
       - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа построения событий. Осуществлен переход к этапу построения интервалов"        
+          message: "Вы успешно завершили этап построения событий. Осуществлен переход к этапу построения интервалов"        
 
   all_intervals_updated:
     type: event
@@ -1661,7 +1757,7 @@ transitions:
           value:
             event_data: ['skills']
       - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа построения интервалов. Осуществлен переход к этапу построения правил"        
+          message: "Вы успешно завершили этап построения интервалов. Осуществлен переход к этапу построения правил"        
   
   all_rules_updated:
     type: event
@@ -1693,7 +1789,7 @@ transitions:
           value:
             event_data: ['kb']
       - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа построения правил. Осуществлен переход к этапу сохранения фрагмента БЗ"        
+          message: "Вы успешно завершили этап построения правил. Выполнен переход к просмотру результатов."        
 
 # переходы для имитационной модели
 
@@ -1710,24 +1806,24 @@ transitions:
           value: sm_creation
 
 # frame_handler переход для выбора модели (добавить событие создания модели)
-  build_resource_types:
-    type: frame_handler
-    frame_id: sm_editor
-    test: /models/\d+
-    source: sm_creation
-    dest: building_resource_types
-    actions:
-      - set_attribute:
-          attribute: test_status
-          value: building_resource_types
-      - set_attribute:
-          attribute: selected_sm
-          value:
-            frame_url:
-              frame_id: sm_editor
-              parse:
-                regexp: .*/models/(\d+)/?
-                group: 0
+  # build_resource_types:
+  #   type: frame_handler
+  #   frame_id: sm_editor
+  #   test: /models/\d+
+  #   source: sm_creation
+  #   dest: building_resource_types
+  #   actions:
+  #     - set_attribute:
+  #         attribute: test_status
+  #         value: building_resource_types
+  #     - set_attribute:
+  #         attribute: selected_sm
+  #         value:
+  #           frame_url:
+  #             frame_id: sm_editor
+  #             parse:
+  #               regexp: .*/models/(\d+)/?
+  #               group: 0
 
 # опциональный ручной переход на построение функций из образцов
   build_funcs:
@@ -1927,7 +2023,7 @@ transitions:
           value:
             event_data: ['skills']
       - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа создания типов ресурсов. Осуществлен переход к этапу создания ресурсов ИМ внешней среды."
+          message: "Вы успешно завершили этап создания типов ресурсов. Осуществлен переход к этапу создания ресурсов ИМ внешней среды."
 
 #================ Resource Types update ======================
   no_errors_in_update_resource_types:
@@ -2036,7 +2132,7 @@ transitions:
           value:
             event_data: ['skills']
       - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа создания типов ресурсов. Осуществлен переход к этапу создания ресурсов ИМ внешней среды."
+          message: "Вы успешно завершили этап создания типов ресурсов. Осуществлен переход к этапу создания ресурсов ИМ внешней среды."
 
 #==================== Resources create ======================= 
   no_errors_in_create_resources:
@@ -2145,7 +2241,7 @@ transitions:
           value:
             event_data: ['skills']
       - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа создания ресурсов. Осуществлен переход к этапу создания образцов операций ИМ внешней среды."
+          message: "Вы успешно завершили этап создания ресурсов. Осуществлен переход к этапу создания образцов операций ИМ внешней среды."
 
 #====================== Resources update ===================== 
   no_errors_in_update_resources:
@@ -2251,7 +2347,7 @@ transitions:
           value:
             event_data: ['skills']
       - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа создания ресурсов. Осуществлен переход к этапу создания образцов операций ИМ внешней среды."
+          message: "Вы успешно завершили этап создания ресурсов. Осуществлен переход к этапу создания образцов операций ИМ внешней среды."
  
 # ====================== Template create =============================
   no_errors_in_create_templates:
@@ -2350,7 +2446,7 @@ transitions:
           value:
             event_data: ['skills']
       - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа создания образцов операции. Осуществлен переход к этапу создания операций ИМ внешней среды."
+          message: "Вы успешно завершили этап создания образцов операции. Осуществлен переход к этапу создания операций ИМ внешней среды."
  
 # ====================== Template update =============================
   no_errors_in_update_templates:
@@ -2456,7 +2552,7 @@ transitions:
           value:
             event_data: ['skills']
       - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа создания образцов операции. Осуществлен переход к этапу создания операций ИМ внешней среды."
+          message: "Вы успешно завершили этап создания образцов операции. Осуществлен переход к этапу создания операций ИМ внешней среды."
  
 #====================== Template Usages create =============================
   no_errors_in_create_template_usages:
@@ -2562,7 +2658,7 @@ transitions:
           value:
             event_data: ['skills']
       - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа создания операции. Осуществлен переход к этапу расчета ИМ внешней среды."
+          message: "Вы успешно завершили этап создания операции. Осуществлен переход к этапу расчета ИМ внешней среды."
  
 #====================== Template Usages update =============================
   no_errors_in_update_template_usages:
@@ -2668,7 +2764,7 @@ transitions:
           value:
             event_data: ['skills']
       - show_message:
-          message: "Компонент оценивания вернул возможность завершения этапа создания операции. Осуществлен переход к этапу расчета ИМ внешней среды."
+          message: "Вы успешно завершили этап создания операции. Осуществлен переход к этапу расчета ИМ внешней среды."
 
 #====================== Model translated =============================
   model_translated_successfuly:
@@ -2691,7 +2787,7 @@ transitions:
             event_data: ['translated_sm']
           next:
             - show_message:
-                message: "Компонент оценивания вернул возможность завершения этапа трансляции ИМ. Управляющая программа зафиксировала идентификатор файла внутреннего представления ИМ: {translated_sm}. Осуществлен переход к подготовке прогона модели."
+                message: "Вы успешно завершили этап трансляции ИМ. Управляющая программа зафиксировала идентификатор файла внутреннего представления ИМ: {translated_sm}. Осуществлен переход к подготовке прогона модели."
 
 #====================== Experiment =============================
   experiment_started_successfuly:
@@ -2714,7 +2810,7 @@ transitions:
             event_data: ['experiment_id']
           next:
             - show_message:
-                message: "Компонент оценивания вернул возможность завершения этапа подготовки прогона модели. Управляющая программа зафиксировала идентификатор процесса прогона: {translated_sm}. Осуществлен переход к конфигурированию параметров ИМ и запуску прогона."
+                message: "Вы успешно завершили этап подготовки прогона модели. Управляющая программа зафиксировала идентификатор процесса прогона: {translated_sm}. Осуществлен переход к конфигурированию параметров ИМ и запуску прогона."
 
   
 #==============================================================
@@ -2762,6 +2858,10 @@ events:
           attribute: skills_url_end
           value:
             event_data: ['skills_url_end']
+      - set_attribute:
+          attribute: full_skills_url_end
+          value:
+            event_data: ['full_skills_url_end']
                 
   #====================== Types ============================== 
   # брать из компонентов
@@ -3027,6 +3127,22 @@ events:
       - set_attribute:
           attribute: skills_result
           value: $event_data
+      - set_attribute:
+          attribute: skills_url_start
+          value:
+            event_data: ['skills_url_start']
+      - set_attribute:
+          attribute: legend_url_start
+          value:
+            event_data: ['legend_url_start']
+      - set_attribute:
+          attribute: skills_url_end
+          value:
+            event_data: ['skills_url_end']
+      - set_attribute:
+          attribute: full_skills_url_end
+          value:
+            event_data: ['full_skills_url_end']
 
   models/update:
     handler_component: SimulationService
@@ -3035,6 +3151,22 @@ events:
       - set_attribute:
           attribute: skills_result
           value: $event_data
+      - set_attribute:
+          attribute: skills_url_start
+          value:
+            event_data: ['skills_url_start']
+      - set_attribute:
+          attribute: legend_url_start
+          value:
+            event_data: ['legend_url_start']
+      - set_attribute:
+          attribute: skills_url_end
+          value:
+            event_data: ['skills_url_end']
+      - set_attribute:
+          attribute: full_skills_url_end
+          value:
+            event_data: ['full_skills_url_end']
 
   #====================== Resource Types ============================== 
   resourceTypes/create:
@@ -3044,6 +3176,18 @@ events:
       - set_attribute:
           attribute: skills_result
           value: $event_data
+      - set_attribute:
+          attribute: skills_url_start
+          value:
+            event_data: ['skills_url_start']
+      - set_attribute:
+          attribute: legend_url_start
+          value:
+            event_data: ['legend_url_start']
+      - set_attribute:
+          attribute: skills_url_end
+          value:
+            event_data: ['skills_url_end']
           
   resourceTypes/update:
     handler_component: SimulationService
@@ -3052,6 +3196,18 @@ events:
       - set_attribute:
           attribute: skills_result
           value: $event_data
+      - set_attribute:
+          attribute: skills_url_start
+          value:
+            event_data: ['skills_url_start']
+      - set_attribute:
+          attribute: legend_url_start
+          value:
+            event_data: ['legend_url_start']
+      - set_attribute:
+          attribute: skills_url_end
+          value:
+            event_data: ['skills_url_end']
 
   resourceTypes/duplicate:
     handler_component: SimulationService
@@ -3077,6 +3233,18 @@ events:
       - set_attribute:
           attribute: skills_result
           value: $event_data
+      - set_attribute:
+          attribute: skills_url_start
+          value:
+            event_data: ['skills_url_start']
+      - set_attribute:
+          attribute: legend_url_start
+          value:
+            event_data: ['legend_url_start']
+      - set_attribute:
+          attribute: skills_url_end
+          value:
+            event_data: ['skills_url_end']
           
   resources/update:
     handler_component: SimulationService
@@ -3085,6 +3253,18 @@ events:
       - set_attribute:
           attribute: skills_result
           value: $event_data
+      - set_attribute:
+          attribute: skills_url_start
+          value:
+            event_data: ['skills_url_start']
+      - set_attribute:
+          attribute: legend_url_start
+          value:
+            event_data: ['legend_url_start']
+      - set_attribute:
+          attribute: skills_url_end
+          value:
+            event_data: ['skills_url_end']
           
   resources/duplicate:
     handler_component: SimulationService
@@ -3110,6 +3290,18 @@ events:
       - set_attribute:
           attribute: skills_result
           value: $event_data
+      - set_attribute:
+          attribute: skills_url_start
+          value:
+            event_data: ['skills_url_start']
+      - set_attribute:
+          attribute: legend_url_start
+          value:
+            event_data: ['legend_url_start']
+      - set_attribute:
+          attribute: skills_url_end
+          value:
+            event_data: ['skills_url_end']
           
   templates/update:
     handler_component: SimulationService
@@ -3118,6 +3310,18 @@ events:
       - set_attribute:
           attribute: skills_result
           value: $event_data
+      - set_attribute:
+          attribute: skills_url_start
+          value:
+            event_data: ['skills_url_start']
+      - set_attribute:
+          attribute: legend_url_start
+          value:
+            event_data: ['legend_url_start']
+      - set_attribute:
+          attribute: skills_url_end
+          value:
+            event_data: ['skills_url_end']
           
   templates/dublicate:
     handler_component: SimulationService
@@ -3143,6 +3347,18 @@ events:
       - set_attribute:
           attribute: skills_result
           value: $event_data
+      - set_attribute:
+          attribute: skills_url_start
+          value:
+            event_data: ['skills_url_start']
+      - set_attribute:
+          attribute: legend_url_start
+          value:
+            event_data: ['legend_url_start']
+      - set_attribute:
+          attribute: skills_url_end
+          value:
+            event_data: ['skills_url_end']
           
   templateUsages/update:
     handler_component: SimulationService
@@ -3151,6 +3367,18 @@ events:
       - set_attribute:
           attribute: skills_result
           value: $event_data
+      - set_attribute:
+          attribute: skills_url_start
+          value:
+            event_data: ['skills_url_start']
+      - set_attribute:
+          attribute: legend_url_start
+          value:
+            event_data: ['legend_url_start']
+      - set_attribute:
+          attribute: skills_url_end
+          value:
+            event_data: ['skills_url_end']
           
   templateUsages/dublicate:
     handler_component: SimulationService
