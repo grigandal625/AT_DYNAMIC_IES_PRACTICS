@@ -116,7 +116,7 @@ services:
     build:
       dockerfile: ./docker/Dockerfile.at_simulation_api
     command: python -m at_simulation_api
-      --db_host at_simulation_db
+      --db_host at_postgres
       --db_port ${AT_SIMULATION_API_DB_PORT}
       --db_name ${AT_SIMULATION_API_DB_NAME}
       --db_user ${AT_SIMULATION_API_DB_USER}
