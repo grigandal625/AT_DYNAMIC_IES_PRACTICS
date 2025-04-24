@@ -8,10 +8,12 @@ initial_attributes:
     env: AT_SIMULATION_FRONT_PORT
   at_joint_port:
     env: AT_JOINT_DEBUGGER_PORT
+  skills_port:
+    env: AT_TUTORING_SKILLS_API_SERVER_PORT
   url: ""
   desc: ""
-  skills: "Для отображения навыков начните выполнение работы"
-  hint: "Для отображения текущих проектных задач начните выполнение работы"
+  skills: "Для отображения модели обучаемого начните выполнение работы"
+  hint: "Для отображения текущих заданий начните выполнение работы"
   hint2: ""
 
 #==============================================================
@@ -65,9 +67,9 @@ states:
             3.3. Построение темпоральных объектов (интервалов и событий)
             3.4. Построение правил, описывающих базовые и темпоральные знания
 
-          На этапах построения темпоральной базы знаний осуществляется поддержка в виде показа необходимых к выполнению проектных задач, подсказок, сообщениях о найденных ошибках.
+          На этапах построения темпоральной базы знаний осуществляется поддержка в виде показа необходимых к выполнению заданий, подсказок, сообщениях о найденных ошибках.
 
-          По ходу выполнения всех проектных задач выполняется оценивание навыков, связанных с построением темпоральной БЗ.
+          По ходу выполнения всех заданий выполняется построение **модели обучаемого** (модели навыков обучаемого), связанных с построением темпоральной БЗ.
 
           Для выполнения рекомендуется ознакомиться с материалами, представленными в учебном пособии: *Рыбина Г.В., Григорьев А.А. Практические занятия по методам и технологиям построения динамических интеллектуальных систем: учебное пособие. М.: НИЯУ МИФИ, 2024. 140 с.*
         
@@ -105,11 +107,21 @@ states:
 
           {desc}
 
-          # Проектные задачи
+          # Начальная модель обучаемого
 
-          {hint}
+          Модель навыков, приобритаемых и оцениваемых по ходу выполнения работы
 
-          {hint2}
+          ![IMG](http://%location.hostname%:{skills_port}{skills_url_start}{auth_token}{skills_url_end})
+
+          Легенда
+
+          ![IMG](http://%location.hostname%:{skills_port}{legend_url_start}{auth_token}{skills_url_end})
+          
+  # # Задания
+
+  # {hint}
+
+  # {hint2}
 
   building_types:
     label: Учебное проектирование базовых компонентов динамических ИЭС
@@ -131,18 +143,25 @@ states:
           {url}
 
           <details>
-          <summary>Текущие оценки навыков</summary>
+          <summary>Текущая модель обучаемого</summary>
           <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
 
-          ***К текущим оценкам будут начисляться штрафы в случае допуска ошибок при выполнении заданий***
+          ![IMG](http://%location.hostname%:{skills_port}{skills_url_start}{auth_token}{skills_url_end})
 
-          {skills}
+            <details>
+            <summary>Легенда</summary>
+            <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+
+            ![IMG](http://%location.hostname%:{skills_port}{legend_url_start}{auth_token}{skills_url_end})
+
+            </div>
+            </details>
 
           </div>
           </details>
 
           <details>
-          <summary>Проектные задачи</summary>
+          <summary>Задания</summary>
           <div style="padding: 15px; padding-top: 0px; border: 1px solid silver; border-radius: 2px;">
           
           {hint}
@@ -214,18 +233,25 @@ states:
           {url}
 
           <details>
-          <summary>Текущие оценки навыков</summary>
+          <summary>Текущая модель обучаемого</summary>
           <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
 
-          ***К текущим оценкам будут начисляться штрафы в случае допуска ошибок при выполнении заданий***
+          ![IMG](http://%location.hostname%:{skills_port}{skills_url_start}{auth_token}{skills_url_end})
 
-          {skills}
+            <details>
+            <summary>Легенда</summary>
+            <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+
+            ![IMG](http://%location.hostname%:{skills_port}{legend_url_start}{auth_token}{skills_url_end})
+
+            </div>
+            </details>
 
           </div>
           </details>
 
           <details>
-          <summary>Проектные задачи</summary>
+          <summary>Задания</summary>
           <div style="padding: 15px; padding-top: 0px; border: 1px solid silver; border-radius: 2px;">
           
           {hint}
@@ -286,18 +312,25 @@ states:
           {url}
 
           <details>
-          <summary>Текущие оценки навыков</summary>
+          <summary>Текущая модель обучаемого</summary>
           <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
 
-          ***К текущим оценкам будут начисляться штрафы в случае допуска ошибок при выполнении заданий***
+          ![IMG](http://%location.hostname%:{skills_port}{skills_url_start}{auth_token}{skills_url_end})
 
-          {skills}
+            <details>
+            <summary>Легенда</summary>
+            <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+
+            ![IMG](http://%location.hostname%:{skills_port}{legend_url_start}{auth_token}{skills_url_end})
+
+            </div>
+            </details>
 
           </div>
           </details>
 
           <details>
-          <summary>Проектные задачи</summary>
+          <summary>Задания</summary>
           <div style="padding: 15px; padding-top: 0px; border: 1px solid silver; border-radius: 2px;">
           
           {hint}
@@ -357,18 +390,25 @@ states:
           {url}
 
           <details>
-          <summary>Текущие оценки навыков</summary>
+          <summary>Текущая модель обучаемого</summary>
           <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
 
-          ***К текущим оценкам будут начисляться штрафы в случае допуска ошибок при выполнении заданий***
+          ![IMG](http://%location.hostname%:{skills_port}{skills_url_start}{auth_token}{skills_url_end})
 
-          {skills}
+            <details>
+            <summary>Легенда</summary>
+            <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+
+            ![IMG](http://%location.hostname%:{skills_port}{legend_url_start}{auth_token}{skills_url_end})
+
+            </div>
+            </details>
 
           </div>
           </details>
 
           <details>
-          <summary>Проектные задачи</summary>
+          <summary>Задания</summary>
           <div style="padding: 15px; padding-top: 0px; border: 1px solid silver; border-radius: 2px;">
           
           {hint}
@@ -430,18 +470,25 @@ states:
           {url}
 
           <details>
-          <summary>Текущие оценки навыков</summary>
+          <summary>Текущая модель обучаемого</summary>
           <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
 
-          ***К текущим оценкам будут начисляться штрафы в случае допуска ошибок при выполнении заданий***
+          ![IMG](http://%location.hostname%:{skills_port}{skills_url_start}{auth_token}{skills_url_end})
 
-          {skills}
+            <details>
+            <summary>Легенда</summary>
+            <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+
+            ![IMG](http://%location.hostname%:{skills_port}{legend_url_start}{auth_token}{skills_url_end})
+
+            </div>
+            </details>
 
           </div>
           </details>
 
           <details>
-          <summary>Проектные задачи</summary>
+          <summary>Задания</summary>
           <div style="padding: 15px; padding-top: 0px; border: 1px solid silver; border-radius: 2px;">
           
           {hint}
@@ -503,16 +550,14 @@ states:
       kb_finished:
         type: docs
         src: |
-          # Результаты построения темпоральной базы знаний
+          # Результаты
 
-          ## Финальные оценки навыков:
+          ## Финальная модель обучаемого (навыков обучаемого)
 
-          <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
-
-          {skills}
-
-          </div>
-
+          ![IMG](http://%location.hostname%:{skills_port}{skills_url_start}{auth_token}{skills_url_end})
+            
+          ![IMG](http://%location.hostname%:{skills_port}{legend_url_start}{auth_token}{skills_url_end})
+  
           ## Итоговая темпоральная база знаний
 
           Построенная темпоральная база знаний сохранена в базе учебных проектов и по завершению всех остальных практических занятий будет автоматически загружена для исследования совместного функционирования базовых компонентов динамических ИЭС.
@@ -532,18 +577,18 @@ states:
   #           Состояния по технологии построения ИМ
   #==============================================================
   sm_start:
-      label: Средства поддержки обучающего воздействия типа "Тренинг с ЭС/ИЭС" для учебного проектирования базовых компонентов динамических ИЭС
-      translation: Начало работы 2
-      initial: true
-      frame_rows:
-        docs:
-          type: docs
-          src: |
-            # Учебное проектирование базовых компонентов динамических интегрированных экспертных систем
+    label: Средства поддержки обучающего воздействия типа "Тренинг с ЭС/ИЭС" для учебного проектирования базовых компонентов динамических ИЭС
+    translation: Начало работы 2
+    initial: true
+    frame_rows:
+      docs:
+        type: docs
+        src: |
+          # Учебное проектирование базовых компонентов динамических интегрированных экспертных систем
 
-            ## Практическая работа 2. Моделирование внешней среды с помощью средств подсистемы имитационного моделирования и языка РДО<sup>АТ</sup>.
+          ## Практическая работа 2. Моделирование внешней среды с помощью средств подсистемы имитационного моделирования и языка РДО<sup>АТ</sup>.
 
-            **Цель работы.** Освоение навыков построения простейших имитационных моделей внешней среды на языке РДО<sup>АТ</sup> с помощью подсистемы имитационного моделирования (динамическая версия комплекса АТ-ТЕХНОЛОГИЯ).
+          **Цель работы.** Освоение навыков построения простейших имитационных моделей внешней среды на языке РДО<sup>АТ</sup> с помощью подсистемы имитационного моделирования (динамическая версия комплекса АТ-ТЕХНОЛОГИЯ).
         
   sm_creation:
     label: Учебное проектирование базовых компонентов динамических ИЭС
@@ -560,7 +605,7 @@ states:
         src: |
           ### Подсказки и объяснения
 
-          Для начала работы необходимо создать имитационную модель нешней среды.
+          Для начала работы необходимо создать имитационную модель внешней среды.
 
           После нажатия кнопки `Создать` будет осуществлен автоматический переход к следующему этапу технологии построения имитационной модели
         type: docs
@@ -586,13 +631,39 @@ states:
         src: |
           ### Подсказки и объяснения
           {url}
+
+          <details>
+          <summary>Текущая модель обучаемого</summary>
+          <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+
+          ***К текущим оценкам будут начисляться штрафы в случае допуска ошибок при выполнении заданий***
+
+          {skills}
+
+          </div>
+          </details>
+
+          <details>
+          <summary>Задания</summary>
+          <div style="padding: 15px; padding-top: 0px; border: 1px solid silver; border-radius: 2px;">
+          
           {hint}
+          
+          </div>
+          </details>
 
           #### Этап создания типа ресурса
 
+          Тип ресурсов - это определенная категория ресурсов, в которую входят экземпляры ресурсов
+
           Типы ресурса могут быть двух видов:
-          - Регулярный
-          - Нерегулярный
+          - Постоянный
+          - Временный
+
+          *Ниже представлены синтаксические определения, общие для всех объектов:* 	
+          ```
+          <простое_имя> ::= (<Буква> | <цифра> | _) {{<Буква> | <цифра> | $ | _}}
+          ```
           
         # двойные {{}} для того, чтобы игнорировать форматирование атрибутами
         # например, {hint} - если в атрибтах есть ключ hint - подставится значение hint
@@ -615,9 +686,34 @@ states:
         src: |
           ### Подсказки и объяснения
           {url}
+
+          <details>
+          <summary>Текущая модель обучаемого</summary>
+          <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+
+          ***К текущим оценкам будут начисляться штрафы в случае допуска ошибок при выполнении заданий***
+
+          {skills}
+
+          </div>
+          </details>
+
+          <details>
+          <summary>Задания</summary>
+          <div style="padding: 15px; padding-top: 0px; border: 1px solid silver; border-radius: 2px;">
+          
           {hint}
+          
+          </div>
+          </details>
 
           #### Этап создания ресурса 
+          Ресурс - это элемент СТС/СОТС, внутренней структурой которого можно пренебречь, в то время как наличие и свойства его как целого, важны для целей описания, в зависимости от поставленной задачи ресурсом может быть любая часть системы, каждый экземпляр ресурса относится только к одному типу;
+
+          *Ниже представлены синтаксические определения, общие для всех объектов:* 	
+          ```
+          <простое_имя> ::= (<Буква> | <цифра> | _) {{<Буква> | <цифра> | $ | _}}
+          ```
   building_templates:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения имитационных моделей внешней среды
@@ -635,9 +731,30 @@ states:
         src: |
           ### Подсказки и объяснения
           {url}
+
+          <details>
+          <summary>Текущая модель обучаемого</summary>
+          <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+
+          ***К текущим оценкам будут начисляться штрафы в случае допуска ошибок при выполнении заданий***
+
+          {skills}
+
+          </div>
+          </details>
+
+          <details>
+          <summary>Задания</summary>
+          <div style="padding: 15px; padding-top: 0px; border: 1px solid silver; border-radius: 2px;">
+          
           {hint}
+          
+          </div>
+          </details>
 
           #### Этап создания образца операции
+          
+          Образец операции - это конструкция, описывающая процедура, при которой происходит изменение значений параметров ресурсов;
 
           Образец операции может быть одним из трех типов:
           - Операция, 
@@ -646,8 +763,9 @@ states:
 
           Тело образца операции составляют процедурную часть программы на языке РДО<sup>АТ</sup>:
 
-          *Ниже представлены синтаксические определения, общих для всех объектов:* 	
+          *Ниже представлены синтаксические определения, общие для всех объектов:* 	
           ```
+          <простое_имя> ::= (<Буква> | <цифра> | _) {{<Буква> | <цифра> | $ | _}}
           <арифметическое_выражение> ::= ( <операнд> (* | / | + | -) <операнд>)
           <операнд> ::= <арифметическое_выражение> | <число>
           <число> :: = [+| -] <натчисло> [.[<натчисло>]] [(e|E) [+|-] <натчисло>]
@@ -672,21 +790,36 @@ states:
         src: |
           ### Подсказки и объяснения
           {url}
+
+          <details>
+          <summary>Текущая модель обучаемого</summary>
+          <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+
+          ***К текущим оценкам будут начисляться штрафы в случае допуска ошибок при выполнении заданий***
+
+          {skills}
+
+          </div>
+          </details>
+
+          <details>
+          <summary>Задания</summary>
+          <div style="padding: 15px; padding-top: 0px; border: 1px solid silver; border-radius: 2px;">
+          
           {hint}
+          
+          </div>
+          </details>
 
           #### Этап создания операции
+          
+          Операция - это процедура, при которой происходит изменение значений параметров ресурсов;
 
-          Тело образца операции составляют процедурную часть программы на языке РДО<sup>АТ</sup>:
+          *Ниже представлены синтаксические определения, общие для всех объектов:* 	
+          ```
+          <простое_имя> ::= (<Буква> | <цифра> | _) {{<Буква> | <цифра> | $ | _}}
+          ```
 
-          *Ниже представлены синтаксические определения, общих для всех объектов:* 	
-          ```
-          <арифметическое_выражение> ::= ( <операнд> (* | / | + | -) <операнд>)
-          <операнд> ::= <арифметическое_выражение> | <число>
-          <число> :: = [+| -] <натчисло> [.[<натчисло>]] [(e|E) [+|-] <натчисло>]
-          <натчисло> :: = <цифра> {{<цифра>}}
-          <Буква> ::= A…Z, a…z; А…Я, а…я;
-          <цифра> ::= 0…9
-          ```
   building_funcs:
     label: Учебное проектирование базовых компонентов динамических ИЭС
     control_label: Технология построения имитационных моделей внешней среды
@@ -704,14 +837,34 @@ states:
         src: |
           ### Подсказки и объяснения
           {url}
+
+          <details>
+          <summary>Текущая модель обучаемого</summary>
+          <div style="padding: 15px; border: 1px solid silver; border-radius: 2px;">
+
+          ***К текущим оценкам будут начисляться штрафы в случае допуска ошибок при выполнении заданий***
+
+          {skills}
+
+          </div>
+          </details>
+
+          <details>
+          <summary>Задания</summary>
+          <div style="padding: 15px; padding-top: 0px; border: 1px solid silver; border-radius: 2px;">
+          
           {hint}
+          
+          </div>
+          </details>
 
           #### Этап создания функции
 
           Тело функции составляет процедурную часть программы на языке РДО<sup>АТ</sup>:
 
-          *Ниже представлены синтаксические определения, общих для всех объектов:* 	
+          *Ниже представлены синтаксические определения, общие для всех объектов:* 	
           ```
+          <простое_имя> ::= (<Буква> | <цифра> | _) {{<Буква> | <цифра> | $ | _}}
           <арифметическое_выражение> ::= ( <операнд> (* | / | + | -) <операнд>)
           <операнд> ::= <арифметическое_выражение> | <число>
           <число> :: = [+| -] <натчисло> [.[<натчисло>]] [(e|E) [+|-] <натчисло>]
@@ -848,7 +1001,7 @@ transitions:
       - set_attribute:
           attribute: test_status
           value: sm_creation
-  
+
   create_kb:
     type: link # ручной переход по кнопке
     position: control # header/control/footer расположение кнопки перехода
@@ -861,6 +1014,79 @@ transitions:
           attribute: test_status # сам атрибут/параметр
           value: kb_creation # значение 
   
+  start_create_sm_new:
+    type: link # ручной переход по кнопке
+    position: control # header/control/footer расположение кнопки перехода
+    source: sm_start # из состояния
+    dest: sm_creation # в состояние
+    label: Приступить к работе 2 - Технология построения имитационных моделей внешней среды
+    actions: # действия set_attribute/show_message
+      # задать значение атрибуте
+      - set_attribute:
+          attribute: test_status # сам атрибут/параметр
+          value: sm_creation # значение 
+
+  sm_created:
+    type: event
+    event: models/create
+    source: sm_creation
+    dest: variant_description
+    label: Создать файл ИМ внешней среды
+    trigger_condition:
+      has_attr:
+        left_value: $event_data
+        right_value: sm_id
+    actions:
+      - set_attribute:
+          attribute: selected_sm
+          value:
+            event_data: ["sm_id"]
+          next:
+            - show_message:
+                message: "Управляющая программа зафиксировала идентификатор файла ИМ внешней среды: {selected_sm}"
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ["hint"]
+      - set_attribute:
+          attribute: hint2
+          value:
+            event_data: ["hint2"]
+      - set_attribute:
+          attribute: desc
+          value:
+            event_data: ["desc"]
+
+  sm_updated:
+    type: event
+    event: models/update
+    source: sm_creation
+    dest: variant_description
+    trigger_condition:
+      has_attr:
+        left_value: $event_data
+        right_value: sm_id
+    actions:
+      - set_attribute:
+          attribute: selected_sm
+          value:
+            event_data: ["sm_id"]
+          next:
+            - show_message:
+                message: "Управляющая программа зафиксировала идентификатор файла БЗ: {selected_sm}"
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ["hint"]
+      - set_attribute:
+          attribute: hint2
+          value:
+            event_data: ["hint2"]
+      - set_attribute:
+          attribute: desc
+          value:
+            event_data: ["desc"] 
+
   kb_created:
     type: event
     event: knowledgeBase/create
@@ -1568,7 +1794,7 @@ transitions:
     label: Перейти к этапу организации совместного функционирования подсистемы имитационного моделирования и средств вывода
     actions:
       - show_message:
-          message: "Управляющая программа построила конфигурацию базовых компонентов со следующими параметрами:\n\nФайл базы знаний в редакторе: {selected_kb}\nФайл внутреннего представления ИМ: {translated_file}"
+          message: "Конфигурация базовых компонентов прототипа диамических ИЭС применена. Выполнен переход к этапу совместного функционирования средств вывода и имитационного моделирования"
       - exec_method:
           component: ATConfigurator
           method: authorized_configurate
@@ -1623,7 +1849,16 @@ transitions:
     actions:
       - set_attribute:
           attribute: url
-          value: ""
+          value:
+            event_data: ["url"]
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Задание выполнено успешно"
 
@@ -1655,6 +1890,14 @@ transitions:
           attribute: url
           value:
             event_data: ["url"]
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул необходимость исправлений ошибок в типе ресурса"
 
@@ -1672,6 +1915,17 @@ transitions:
             left_value: { get_attribute: skills_result }
             right_value: stage_done
     actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул возможность завершения этапа создания типов ресурсов. Осуществлен переход к этапу создания ресурсов ИМ внешней среды."
 
@@ -1703,7 +1957,16 @@ transitions:
     actions:
       - set_attribute:
           attribute: url
-          value: ""
+          value:
+            event_data: ["url"]
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Задание выполнено успешно"
 
@@ -1735,6 +1998,14 @@ transitions:
           attribute: url
           value:
             event_data: ["url"]
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул необходимость исправлений типа"
 
@@ -1752,6 +2023,18 @@ transitions:
             left_value: { get_attribute: skills_result }
             right_value: stage_done
     actions:
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул возможность завершения этапа создания типов ресурсов. Осуществлен переход к этапу создания ресурсов ИМ внешней среды."
 
@@ -1783,7 +2066,16 @@ transitions:
     actions:
       - set_attribute:
           attribute: url
-          value: ""
+          value:
+            event_data: ["url"]
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Задание выполнено успешно"
           
@@ -1815,6 +2107,14 @@ transitions:
           attribute: url
           value:
             event_data: ["url"]
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул необходимость исправлений ресурса"
 
@@ -1832,6 +2132,18 @@ transitions:
             left_value: { get_attribute: skills_result }
             right_value: stage_done
     actions:
+      - set_attribute:
+          attribute: url
+          value:
+            event_data: ["url"]
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул возможность завершения этапа создания ресурсов. Осуществлен переход к этапу создания образцов операций ИМ внешней среды."
 
@@ -1864,6 +2176,14 @@ transitions:
       - set_attribute:
           attribute: url
           value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Задание выполнено успешно"
           
@@ -1893,8 +2213,15 @@ transitions:
     actions:
       - set_attribute:
           attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
           value:
-            event_data: ["url"]
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул необходимость исправления ресурса"
 
@@ -1912,6 +2239,17 @@ transitions:
             left_value: { get_attribute: skills_result }
             right_value: stage_done
     actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул возможность завершения этапа создания ресурсов. Осуществлен переход к этапу создания образцов операций ИМ внешней среды."
  
@@ -1944,6 +2282,14 @@ transitions:
       - set_attribute:
           attribute: url
           value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Задание выполнено успешно"
   
@@ -1992,6 +2338,17 @@ transitions:
             left_value: { get_attribute: skills_result }
             right_value: stage_done
     actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул возможность завершения этапа создания образцов операции. Осуществлен переход к этапу создания операций ИМ внешней среды."
  
@@ -2024,6 +2381,14 @@ transitions:
       - set_attribute:
           attribute: url
           value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Задание выполнено успешно"
 
@@ -2053,8 +2418,15 @@ transitions:
     actions:
       - set_attribute:
           attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
           value:
-            event_data: ["url"]
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул необходимость исправлений образцов операций"
 
@@ -2072,6 +2444,17 @@ transitions:
             left_value: { get_attribute: skills_result }
             right_value: stage_done
     actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул возможность завершения этапа создания образцов операции. Осуществлен переход к этапу создания операций ИМ внешней среды."
  
@@ -2104,6 +2487,14 @@ transitions:
       - set_attribute:
           attribute: url
           value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Задание выполнено успешно"
 
@@ -2133,8 +2524,15 @@ transitions:
     actions:
       - set_attribute:
           attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
           value:
-            event_data: ["url"]
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул необходимость исправления операции"
 
@@ -2152,6 +2550,17 @@ transitions:
             left_value: { get_attribute: skills_result }
             right_value: stage_done
     actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул возможность завершения этапа создания операции. Осуществлен переход к этапу расчета ИМ внешней среды."
  
@@ -2184,6 +2593,14 @@ transitions:
       - set_attribute:
           attribute: url
           value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Задание выполнено успешно"
 
@@ -2211,12 +2628,19 @@ transitions:
             left_value: { get_attribute: skills_result }
             right_value: url
     actions:
-    - set_attribute:
-        attribute: url
-        value:
-          event_data: ["url"]
-    - show_message:
-        message: "Компонент оценивания вернул необходимость исправлений операции"
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
+      - show_message:
+          message: "Компонент оценивания вернул необходимость исправлений операции"
 
   all_template_usages_updated:
     type: event
@@ -2232,6 +2656,17 @@ transitions:
             left_value: { get_attribute: skills_result }
             right_value: stage_done
     actions:
+      - set_attribute:
+          attribute: url
+          value: ""
+      - set_attribute:
+          attribute: hint
+          value:
+            event_data: ['hint']
+      - set_attribute:
+          attribute: skills
+          value:
+            event_data: ['skills']
       - show_message:
           message: "Компонент оценивания вернул возможность завершения этапа создания операции. Осуществлен переход к этапу расчета ИМ внешней среды."
 
@@ -2295,6 +2730,18 @@ events:
       - set_attribute:
           attribute: skills_result
           value: $event_data
+      - set_attribute:
+          attribute: skills_url_start
+          value:
+            event_data: ['skills_url_start']
+      - set_attribute:
+          attribute: legend_url_start
+          value:
+            event_data: ['legend_url_start']
+      - set_attribute:
+          attribute: skills_url_end
+          value:
+            event_data: ['skills_url_end']
 
   knowledgeBase/update:
     handler_component: ATTutoringKBSkills
@@ -2303,6 +2750,18 @@ events:
       - set_attribute:
           attribute: skills_result
           value: $event_data
+      - set_attribute:
+          attribute: skills_url_start
+          value:
+            event_data: ['skills_url_start']
+      - set_attribute:
+          attribute: legend_url_start
+          value:
+            event_data: ['legend_url_start']
+      - set_attribute:
+          attribute: skills_url_end
+          value:
+            event_data: ['skills_url_end']
                 
   #====================== Types ============================== 
   # брать из компонентов
@@ -2326,6 +2785,18 @@ events:
           attribute: url
           value:
             event_data: ["url"]
+      - set_attribute:
+          attribute: skills_url_start
+          value:
+            event_data: ['skills_url_start']
+      - set_attribute:
+          attribute: legend_url_start
+          value:
+            event_data: ['legend_url_start']
+      - set_attribute:
+          attribute: skills_url_end
+          value:
+            event_data: ['skills_url_end']
 
   kbTypes/duplicate:
     handler_component: ATTutoringKBSkills
@@ -2367,6 +2838,18 @@ events:
       - set_attribute:
           attribute: skills_result
           value: $event_data
+      - set_attribute:
+          attribute: skills_url_start
+          value:
+            event_data: ['skills_url_start']
+      - set_attribute:
+          attribute: legend_url_start
+          value:
+            event_data: ['legend_url_start']
+      - set_attribute:
+          attribute: skills_url_end
+          value:
+            event_data: ['skills_url_end']
   
   kbObjects/setAttrs:
     handler_component: ATTutoringKBSkills
@@ -2408,6 +2891,18 @@ events:
       - set_attribute:
           attribute: skills_result
           value: $event_data
+      - set_attribute:
+          attribute: skills_url_start
+          value:
+            event_data: ['skills_url_start']
+      - set_attribute:
+          attribute: legend_url_start
+          value:
+            event_data: ['legend_url_start']
+      - set_attribute:
+          attribute: skills_url_end
+          value:
+            event_data: ['skills_url_end']
   
   kbEvents/dublicate:
     handler_component: ATTutoringKBSkills
@@ -2420,46 +2915,6 @@ events:
   kbEvents/delete:
     handler_component: ATTutoringKBSkills
     handler_method: handle_kb_event_deleted
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-
-  kbTypes/get:
-    handler_component: ATTutoringKBSkills
-    handler_method: handle_kb_types_get
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-
-  kbObjects/get:
-    handler_component: ATTutoringKBSkills
-    handler_method: handle_kb_objects_get
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-
-  kbEvents/get:
-    handler_component: ATTutoringKBSkills
-    handler_method: handle_kb_events_get
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-
-  kbIntervals/get:
-    handler_component: ATTutoringKBSkills
-    handler_method: handle_kb_intervals_get
-    actions:
-      - set_attribute:
-          attribute: skills_result
-          value: $event_data
-
-  kbRules/get:
-    handler_component: ATTutoringKBSkills
-    handler_method: handle_kb_rules_get
     actions:
       - set_attribute:
           attribute: skills_result
@@ -2481,6 +2936,18 @@ events:
       - set_attribute:
           attribute: skills_result
           value: $event_data
+      - set_attribute:
+          attribute: skills_url_start
+          value:
+            event_data: ['skills_url_start']
+      - set_attribute:
+          attribute: legend_url_start
+          value:
+            event_data: ['legend_url_start']
+      - set_attribute:
+          attribute: skills_url_end
+          value:
+            event_data: ['skills_url_end']
   
   kbRules/dublicate:
     handler_component: ATTutoringKBSkills
@@ -2514,6 +2981,18 @@ events:
       - set_attribute:
           attribute: skills_result
           value: $event_data
+      - set_attribute:
+          attribute: skills_url_start
+          value:
+            event_data: ['skills_url_start']
+      - set_attribute:
+          attribute: legend_url_start
+          value:
+            event_data: ['legend_url_start']
+      - set_attribute:
+          attribute: skills_url_end
+          value:
+            event_data: ['skills_url_end']
   
   kbIntervals/duplicate:
     handler_component: ATTutoringKBSkills
@@ -2562,39 +3041,17 @@ events:
     handler_component: SimulationService
     handler_method: handle_resource_type
     actions:
-      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next: # выволнить следующим последовательным действием
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-      - set_attribute:
-          attribute: url
-          value:
-            event_data: ["url"]
-          next:
-            - show_message:
-                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
-
+          
   resourceTypes/update:
     handler_component: SimulationService
     handler_method: handle_resource_type
     actions:
-      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next: # выволнить следующим последовательным действием
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-      - set_attribute:
-          attribute: url
-          value:
-            event_data: ["url"]
-          next:
-            - show_message:
-                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
 
   resourceTypes/duplicate:
     handler_component: SimulationService
@@ -2617,52 +3074,26 @@ events:
     handler_component: SimulationService
     handler_method: handle_resource
     actions:
-      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next: # выволнить следующим последовательным действием
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-      - set_attribute:
-          attribute: url
-          value:
-            event_data: ["url"]
-          next:
-            - show_message:
-                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
-
+          
   resources/update:
     handler_component: SimulationService
     handler_method: handle_resource
     actions:
-      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next: # выволнить следующим последовательным действием
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-
+          
   resources/duplicate:
     handler_component: SimulationService
     handler_method: handle_im_resources_duplicated
     actions:
-      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next: # выволнить следующим последовательным действием
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-      - set_attribute:
-          attribute: url
-          value:
-            event_data: ["url"]
-          next:
-            - show_message:
-                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
-
+          
   resources/delete:
     handler_component: SimulationService
     handler_method: handle_im_resources_deleted
@@ -2676,40 +3107,18 @@ events:
     handler_component: SimulationService
     handler_method: handle_template
     actions:
-      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next: # выволнить следующим последовательным действием
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-      - set_attribute:
-          attribute: url
-          value:
-            event_data: ["url"]
-          next:
-            - show_message:
-                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
-
+          
   templates/update:
     handler_component: SimulationService
     handler_method: handle_template
     actions:
-      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next: # выволнить следующим последовательным действием
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-      - set_attribute:
-          attribute: url
-          value:
-            event_data: ["url"]
-          next:
-            - show_message:
-                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
-
+          
   templates/dublicate:
     handler_component: SimulationService
     handler_method: handle_im_template_dublicated
@@ -2731,40 +3140,18 @@ events:
     handler_component: SimulationService
     handler_method: handle_template_usage
     actions:
-      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next: # выволнить следующим последовательным действием
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-      - set_attribute:
-          attribute: url
-          value:
-            event_data: ["url"]
-          next:
-            - show_message:
-                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
-
+          
   templateUsages/update:
     handler_component: SimulationService
     handler_method: handle_template_usage
     actions:
-      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next: # выволнить следующим последовательным действием
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-      - set_attribute:
-          attribute: url
-          value:
-            event_data: ["url"]
-          next:
-            - show_message:
-                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
-
+          
   templateUsages/dublicate:
     handler_component: SimulationService
     handler_method: handle_im_templateUsages_dublicated
@@ -2786,40 +3173,18 @@ events:
     handler_component: SimulationService
     handler_method: handle_function
     actions:
-      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next: # выволнить следующим последовательным действием
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-      - set_attribute:
-          attribute: url
-          value:
-            event_data: ["url"]
-          next:
-            - show_message:
-                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
-
+          
   funcs/update:
     handler_component: SimulationService
     handler_method: handle_function
     actions:
-      # отдельно будут выполняться параллельно
       - set_attribute:
           attribute: skills_result
           value: $event_data
-          next: # выволнить следующим последовательным действием
-            - show_message:
-                message: "Управляющая программа получила ответ от компонента оценивания:\n\n{skills_result}"
-      - set_attribute:
-          attribute: url
-          value:
-            event_data: ["url"]
-          next:
-            - show_message:
-                message: "Управляющая программа получила от компонента оценивания подсказку и установила аттрибут hint:\n\n{url}"
-
+          
   funcs/dublicate:
     handler_component: SimulationService
     handler_method: handle_im_func_dublicated
