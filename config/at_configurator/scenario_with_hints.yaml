@@ -1146,7 +1146,7 @@ transitions:
     type: event
     event: models/update
     source: sm_creation
-    dest: variant_description
+    dest: sm_variant_description
     trigger_condition:
       has_attr:
         left_value: $event_data
@@ -1239,17 +1239,6 @@ transitions:
     source: variant_description 
     dest: building_types 
     label: Приступить к первому этапу технологии построения темпоральных БЗ
-    actions:
-      - set_attribute:
-          attribute: test_status 
-          value: kb_creation
-
-    start_types:
-    type: link
-    position: control
-    source: sm_variant_description 
-    dest: building_resource_types
-    label: Приступить к первому этапу технологии построения имитационных моделей внешней среды.
     actions:
       - set_attribute:
           attribute: test_status 
