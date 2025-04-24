@@ -2838,6 +2838,10 @@ events:
           attribute: skills_url_end
           value:
             event_data: ['skills_url_end']
+      - set_attribute:
+          attribute: full_skills_url_end
+          value:
+            event_data: ['full_skills_url_end']
 
   knowledgeBase/update:
     handler_component: ATTutoringKBSkills
