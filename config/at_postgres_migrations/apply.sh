@@ -7,7 +7,7 @@ apply_migration() {
     local db_name="$3"
 
     export DB_NAME=$db_name
-    export DB_HOST=at_postgres_db
+    export DB_HOST=at_postgres
     export DB_PORT=${AT_POSTGRES_DB_PORT}
     export DB_USER=${AT_POSTGRES_DB_USER}
     export DB_PASS=${AT_POSTGRES_DB_PASS}
