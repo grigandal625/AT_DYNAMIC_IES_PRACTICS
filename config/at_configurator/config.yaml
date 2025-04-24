@@ -2,4 +2,4 @@ auth_token: default
 config:
   ATController:
     scenario:
-      path: /src/scenario.yaml
+      path: /var/config/at_configurator/scenario.yaml

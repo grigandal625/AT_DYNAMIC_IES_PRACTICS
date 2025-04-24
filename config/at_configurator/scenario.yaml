@@ -2195,7 +2195,7 @@ transitions:
           message: "Компонент оценивания вернул возможность завершения этапа создания ресурсов. Осуществлен переход к этапу создания образцов операций ИМ внешней среды."
  
 # ====================== Template create =============================
-    no_errors_in_create_templates:
+  no_errors_in_create_templates:
     type: event
     event: templates/create
     source: building_templates

@@ -1,0 +1,524 @@
+version: "3.9"
+
+name: at_dynamics_ies_practice
+
+services:
+  at_rabbitmq:
+    container_name: at_rabbitmq
+    image: "rabbitmq:management"
+    ports:
+      - "${RABBITMQ_UI_PORT}:${RABBITMQ_UI_PORT}"
+      - "${RABBITMQ_PORT}:${RABBITMQ_PORT}"
+    expose:
+      - ${RABBITMQ_PORT}
+      - ${RABBITMQ_UI_PORT}
+    networks:
+      - custom-network
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_LOGIN}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+      RABBITMQ_NODE_PORT: ${RABBITMQ_PORT}
+    healthcheck:
+      test: rabbitmq-diagnostics check_running
+      interval: 5s
+      timeout: 10s
+      retries: 20
+
+  at_queue:
+    container_name: at_queue
+    build:
+      dockerfile: ./docker/Dockerfile.at_queue
+    command: >
+      python -m at_queue
+      --host ${AT_QUEUE_RABBITMQ_HOST}
+      --port ${AT_QUEUE_RABBITMQ_PORT}
+      --login ${AT_QUEUE_RABBITMQ_LOGIN}
+      --password ${AT_QUEUE_RABBITMQ_PASSWORD}
+      --debugger-host 0.0.0.0
+      --debugger-port ${AT_QUEUE_DEBUGGER_PORT}
+    ports:
+      - "${AT_QUEUE_DEBUGGER_PORT}:${AT_QUEUE_DEBUGGER_PORT}"
+    expose:
+      - "${AT_QUEUE_DEBUGGER_PORT}"
+    networks:
+      - custom-network
+    depends_on:
+      at_rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ps -p $(cat /var/run/at_queue/pidfile.pid) || exit 1
+      interval: 1s
+      timeout: 3s
+      retries: 30
+
+  at_simulation_db:
+    container_name: at_simulation_db
+    image: "postgres:latest"
+    expose:
+      - "${AT_SIMULATION_DB_PORT}"
+    ports:
+      - "${AT_SIMULATION_DB_PORT}:${AT_SIMULATION_DB_PORT}"
+    environment:
+      POSTGRES_USER: ${AT_SIMULATION_DB_USER}
+      POSTGRES_PASSWORD: ${AT_SIMULATION_DB_PASS}
+      POSTGRES_DB: ${AT_SIMULATION_DB_NAME}
+    restart: unless-stopped
+    networks:
+      - custom-network
+    healthcheck:
+      test: >
+        pg_isready
+        --dbname=${AT_SIMULATION_DB_NAME}
+        --username=${AT_SIMULATION_DB_USER}
+        --host=localhost
+        --port=${AT_SIMULATION_DB_PORT}
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - simulation-postgres-data:/var/lib/postgresql/data
+    command: postgres -c port=${AT_SIMULATION_DB_PORT}
+
+  minio:
+    container_name: minio
+    image: "minio/minio:latest"
+    command: server /data --console-address ":${AT_SIMULATION_MINIO_CONSOLE_PORT}" --address ":${AT_SIMULATION_MINIO_API_PORT}"
+    ports:
+      - "${AT_SIMULATION_MINIO_API_PORT}:${AT_SIMULATION_MINIO_API_PORT}"
+      - "${AT_SIMULATION_MINIO_CONSOLE_PORT}:${AT_SIMULATION_MINIO_CONSOLE_PORT}"
+    expose:
+      - "${AT_SIMULATION_MINIO_API_PORT}"
+      - "${AT_SIMULATION_MINIO_CONSOLE_PORT}"
+    environment:
+      MINIO_ROOT_USER: ${AT_SIMULATION_MINIO_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${AT_SIMULATION_MINIO_SECRET_KEY}
+    volumes:
+      - minio-data:/data
+    restart: unless-stopped
+    networks:
+      - custom-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${AT_SIMULATION_MINIO_API_PORT}/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  at_user_api:
+    container_name: at_user_api
+    build:
+      dockerfile: ./docker/Dockerfile.at_user_api
+    command: python -m at_user_api
+      --db_host at_user_db
+      --db_port ${AT_USER_DB_PORT}
+      --db_name ${AT_USER_DB_NAME}
+      --db_user ${AT_USER_DB_USER}
+      --db_pass ${AT_USER_DB_PASS}
+      --rabbitmq_host ${AT_USER_API_RABBITMQ_HOST}
+      --rabbitmq_port ${AT_USER_API_RABBITMQ_PORT}
+      --rabbitmq_login ${AT_USER_API_RABBITMQ_LOGIN}
+      --rabbitmq_password ${AT_USER_API_RABBITMQ_PASSWORD}
+      --rabbitmq_vhost ${AT_USER_API_RABBITMQ_VHOST}
+      --server_port ${AT_USER_API_SERVER_PORT}
+    environment:
+      RABBITMQ_SSL: false
+    expose:
+      - "${AT_USER_API_SERVER_PORT}"
+    ports:
+      - "${AT_USER_API_SERVER_PORT}:${AT_USER_API_SERVER_PORT}"
+    depends_on:
+      at_queue:
+        condition: service_healthy
+      at_user_db:
+        condition: service_healthy
+    networks:
+      - custom-network
+
+  at_simulation_api:
+    container_name: at_simulation_api
+    build:
+      dockerfile: ./docker/Dockerfile.at_simulation_api
+    command: python -m at_simulation_api
+      --db_host at_simulation_db
+      --db_port ${AT_SIMULATION_API_DB_PORT}
+      --db_name ${AT_SIMULATION_API_DB_NAME}
+      --db_user ${AT_SIMULATION_API_DB_USER}
+      --db_pass ${AT_SIMULATION_API_DB_PASS}
+      --minio_host ${AT_SIMULATION_API_MINIO_HOST}
+      --minio_access_key ${AT_SIMULATION_API_MINIO_ACCESS_KEY}
+      --minio_secret_key ${AT_SIMULATION_API_MINIO_SECRET_KEY}
+      --minio_bucket_name ${AT_SIMULATION_API_MINIO_BUCKET_NAME}
+      --minio_api_port ${AT_SIMULATION_API_MINIO_API_PORT}
+      --minio_console_port ${AT_SIMULATION_API_MINIO_CONSOLE_PORT}
+      --rabbitmq_host ${AT_SIMULATION_API_RABBITMQ_HOST}
+      --rabbitmq_port ${AT_SIMULATION_API_RABBITMQ_PORT}
+      --rabbitmq_login ${AT_SIMULATION_API_RABBITMQ_LOGIN}
+      --rabbitmq_password ${AT_SIMULATION_API_RABBITMQ_PASSWORD}
+      --rabbitmq_vhost ${AT_SIMULATION_API_RABBITMQ_VHOST}
+      --server_port ${AT_SIMULATION_API_SERVER_PORT}
+    environment:
+      RABBITMQ_SSL: false
+      MINIO_SECURE: false
+    expose:
+      - "${AT_SIMULATION_API_SERVER_PORT}"
+    ports:
+      - "${AT_SIMULATION_API_SERVER_PORT}:${AT_SIMULATION_API_SERVER_PORT}"
+    depends_on:
+      at_queue:
+        condition: service_healthy
+      at_simulation_db:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    networks:
+      - custom-network
+
+  at_user_db:
+    container_name: at_user_db
+    image: "postgres:latest"
+    expose:
+      - "${AT_USER_DB_PORT}"
+    ports:
+      - "${AT_USER_DB_PORT}:${AT_USER_DB_PORT}"
+    environment:
+      POSTGRES_USER: ${AT_USER_DB_USER}
+      POSTGRES_PASSWORD: ${AT_USER_DB_PASS}
+      POSTGRES_DB: ${AT_USER_DB_NAME}
+    restart: unless-stopped
+    networks:
+      - custom-network
+    healthcheck:
+      test: >
+        pg_isready
+        --dbname=${AT_USER_DB_NAME}
+        --username=${AT_USER_DB_USER}
+        --host=localhost
+        --port=${AT_USER_DB_PORT}
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - user-postgres-data:/var/lib/postgresql/data
+    command: postgres -c port=${AT_USER_DB_PORT}
+
+  at_solver:
+    container_name: at_solver
+    build:
+      dockerfile: ./docker/Dockerfile.at_solver
+    command: python -m at_solver
+      --host ${AT_SOLVER_RABBITMQ_HOST}
+      --port ${AT_SOLVER_RABBITMQ_PORT}
+      --login ${AT_SOLVER_RABBITMQ_LOGIN}
+      --password ${AT_SOLVER_RABBITMQ_PASSWORD}
+    depends_on:
+      at_queue:
+        condition: service_healthy
+    networks:
+      - custom-network
+
+  at_temporal_solver:
+    container_name: at_temporal_solver
+    build:
+      dockerfile: ./docker/Dockerfile.at_temporal_solver
+    command: python -m at_temporal_solver
+      --host ${AT_TEMPORAL_SOLVER_RABBITMQ_HOST}
+      --port ${AT_TEMPORAL_SOLVER_RABBITMQ_PORT}
+      --login ${AT_TEMPORAL_SOLVER_RABBITMQ_LOGIN}
+      --password ${AT_TEMPORAL_SOLVER_RABBITMQ_PASSWORD}
+    depends_on:
+      at_queue:
+        condition: service_healthy
+    networks:
+      - custom-network
+
+  at_blackboard:
+    container_name: at_blackboard
+    build:
+      dockerfile: ./docker/Dockerfile.at_blackboard
+    command: python -m at_blackboard
+      --host ${AT_BLACKBOARD_RABBITMQ_HOST}
+      --port ${AT_BLACKBOARD_RABBITMQ_PORT}
+      --login ${AT_BLACKBOARD_RABBITMQ_LOGIN}
+      --password ${AT_BLACKBOARD_RABBITMQ_PASSWORD}
+    depends_on:
+      at_queue:
+        condition: service_healthy
+    networks:
+      - custom-network
+
+  at_joint:
+    container_name: at_joint
+    build:
+      dockerfile: ./docker/Dockerfile.at_joint
+    command: python -m at_joint
+      --host ${AT_JOINT_RABBITMQ_HOST}
+      --port ${AT_JOINT_RABBITMQ_PORT}
+      --login ${AT_JOINT_RABBITMQ_LOGIN}
+      --password ${AT_JOINT_RABBITMQ_PASSWORD}
+      --debugger-host 0.0.0.0
+      --debugger-port ${AT_JOINT_DEBUGGER_PORT}
+    depends_on:
+      at_queue:
+        condition: service_healthy
+    networks:
+      - custom-network
+    ports:
+      - "${AT_JOINT_DEBUGGER_PORT}:${AT_JOINT_DEBUGGER_PORT}"
+    expose:
+      - "${AT_JOINT_DEBUGGER_PORT}"
+
+  at_renderer:
+    container_name: at_renderer
+    build:
+      dockerfile: ./docker/Dockerfile.at_renderer
+    command: python -m at_renderer
+      --host ${AT_RENDERER_RABBITMQ_HOST}
+      --port ${AT_RENDERER_RABBITMQ_PORT}
+      --login ${AT_RENDERER_RABBITMQ_LOGIN}
+      --password ${AT_RENDERER_RABBITMQ_PASSWORD}
+      --server-host 0.0.0.0
+      --server-port ${AT_RENDERER_PORT}
+    ports:
+      - "${AT_RENDERER_PORT}:${AT_RENDERER_PORT}"
+    expose:
+      - "${AT_RENDERER_PORT}"
+    depends_on:
+      at_queue:
+        condition: service_healthy
+    networks:
+      - custom-network
+    environment:
+      AT_KRL_EDITOR_FRONT_PORT: ${AT_KRL_EDITOR_FRONT_PORT}
+
+  at_controller:
+    container_name: at_controller
+    build:
+      dockerfile: ./docker/Dockerfile.at_controller
+    command: python -m at_controller
+      --host ${AT_CONTROLLER_RABBITMQ_HOST}
+      --port ${AT_CONTROLLER_RABBITMQ_PORT}
+      --login ${AT_CONTROLLER_RABBITMQ_LOGIN}
+      --password ${AT_CONTROLLER_RABBITMQ_PASSWORD}
+    depends_on:
+      at_queue:
+        condition: service_healthy
+    healthcheck:
+      test: ps -p $(cat /var/run/at_controller/pidfile.pid) || exit 1
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    networks:
+      - custom-network
+    volumes:
+      - ./config/at_configurator:/var/config/at_configurator
+    environment:
+      AT_KRL_EDITOR_FRONT_PORT: ${AT_KRL_EDITOR_FRONT_PORT}
+      AT_SIMULATION_FRONT_PORT: ${AT_SIMULATION_FRONT_PORT}
+      AT_JOINT_DEBUGGER_PORT: ${AT_JOINT_DEBUGGER_PORT}
+      AT_TUTORING_SKILLS_API_SERVER_PORT: ${AT_TUTORING_SKILLS_API_SERVER_PORT}
+
+
+  at_configurator:
+    container_name: at_configurator
+    build:
+      dockerfile: ./docker/Dockerfile.at_configurator
+    command: python -m at_configurator
+      --host ${AT_CONFIGURATOR_RABBITMQ_HOST}
+      --port ${AT_CONFIGURATOR_RABBITMQ_PORT}
+      --login ${AT_CONFIGURATOR_RABBITMQ_LOGIN}
+      --password ${AT_CONFIGURATOR_RABBITMQ_PASSWORD}
+      --config ${AT_CONFIGURATOR_CONFIG}
+    depends_on:
+      at_queue:
+        condition: service_healthy
+      at_controller:
+        condition: service_healthy
+    networks:
+      - custom-network
+    volumes:
+      - ./config/at_configurator:/var/config/at_configurator
+
+  at_krl_editor_db:
+    container_name: at_krl_editor_db
+    image: "postgres:latest"
+    expose:
+      - "${AT_KRL_EDITOR_DB_PORT}"
+    ports:
+      - "${AT_KRL_EDITOR_DB_PORT}:${AT_KRL_EDITOR_DB_PORT}"
+    environment:
+      POSTGRES_USER: ${AT_KRL_EDITOR_DB_USER}
+      POSTGRES_PASSWORD: ${AT_KRL_EDITOR_DB_PASS}
+      POSTGRES_DB: ${AT_KRL_EDITOR_DB_NAME}
+    restart: unless-stopped
+    networks:
+      - custom-network
+    healthcheck:
+      test: >
+        pg_isready
+        --dbname=${AT_KRL_EDITOR_DB_NAME}
+        --username=${AT_KRL_EDITOR_DB_USER}
+        --host=localhost
+        --port=${AT_KRL_EDITOR_DB_PORT}
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - knowledge-postgres-data:/var/lib/postgresql/data
+    command: > 
+      postgres -c port=${AT_KRL_EDITOR_DB_PORT}
+
+  at_redis:
+    container_name: at_redis
+    image: redis:latest
+    hostname: at_redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+    volumes:
+      - redis_data:/data
+      - ./config/at_redis/config.conf:/usr/local/etc/redis/redis.conf
+    command: >
+      redis-server /usr/local/etc/redis/redis.conf 
+      --requirepass ${REDIS_PASSWORD}
+      --port ${REDIS_PORT}
+      --maxmemory "${REDIS_MAXMEMORY}"
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    healthcheck:
+      test: >
+        redis-cli
+        -a ${REDIS_PASSWORD}
+        -p ${REDIS_PORT}
+        ping
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - custom-network
+
+  at_krl_editor_api:
+    container_name: at_krl_editor_api
+    build:
+      dockerfile: ./docker/Dockerfile.at_krl_editor_api
+    command: python -m at_krl_editor
+      --host ${AT_KRL_EDITOR_API_RABBITMQ_HOST}
+      --port ${AT_KRL_EDITOR_API_RABBITMQ_PORT}
+      --login ${AT_KRL_EDITOR_API_RABBITMQ_LOGIN}
+      --password ${AT_KRL_EDITOR_API_RABBITMQ_PASSWORD}
+      --server-host 0.0.0.0
+      --server-port ${AT_KRL_EDITOR_API_SERVER_PORT}
+      --redis-host ${AT_KRL_EDITOR_API_REDIS_HOST}
+      --redis-port ${AT_KRL_EDITOR_API_REDIS_PORT}
+      --redis-pass ${AT_KRL_EDITOR_API_REDIS_PASS}
+      --db-engine ${AT_KRL_EDITOR_API_DB_ENGINE}
+      --db-host ${AT_KRL_EDITOR_API_DB_HOST}
+      --db-port ${AT_KRL_EDITOR_API_DB_PORT}
+      --db-name ${AT_KRL_EDITOR_API_DB_NAME}
+      --db-user ${AT_KRL_EDITOR_API_DB_USER}
+      --db-password ${AT_KRL_EDITOR_API_DB_PASS}
+    depends_on:
+      at_queue:
+        condition: service_healthy
+      at_redis:
+        condition: service_healthy
+      at_krl_editor_db:
+        condition: service_healthy
+    networks:
+      - custom-network
+    ports:
+      - "${AT_KRL_EDITOR_API_SERVER_PORT}:${AT_KRL_EDITOR_API_SERVER_PORT}"
+    expose:
+      - "${AT_KRL_EDITOR_API_SERVER_PORT}"
+
+  at_krl_editor_front:
+    image: grigandal625/at-krl-editor-front:latest
+    container_name: at_krl_editor_front
+    ports:
+      - "${AT_KRL_EDITOR_FRONT_PORT}:${AT_KRL_EDITOR_FRONT_PORT}"
+    environment:
+      PORT: ${AT_KRL_EDITOR_FRONT_PORT}
+      API_PORT: ${AT_KRL_EDITOR_FRONT_API_PORT}
+    restart: unless-stopped
+    networks:
+      - custom-network
+
+  at_simulation_front:
+    image: grigandal625/at-simulation-subsystem-front:latest
+    container_name: at_simulation_front
+    ports:
+      - "${AT_SIMULATION_FRONT_PORT}:${AT_SIMULATION_FRONT_PORT}"
+    environment:
+      PORT: ${AT_SIMULATION_FRONT_PORT}
+      API_PORT: ${AT_SIMULATION_FRONT_API_PORT}
+    restart: unless-stopped
+    networks:
+      - custom-network
+
+  at_tutoring_skills_db:
+      container_name: at_tutoring_skills_db
+      image: "postgres:latest"
+      expose:
+        - "${AT_TUTORING_SKILLS_DB_PORT}"
+      ports:
+        - "${AT_TUTORING_SKILLS_DB_PORT}:${AT_TUTORING_SKILLS_DB_PORT}"
+      environment:
+        POSTGRES_USER: ${AT_TUTORING_SKILLS_DB_USER}
+        POSTGRES_PASSWORD: ${AT_TUTORING_SKILLS_DB_PASS}
+        POSTGRES_DB: ${AT_TUTORING_SKILLS_DB_NAME}
+      restart: unless-stopped
+      networks:
+        - custom-network
+      healthcheck:
+        test: >
+          pg_isready
+          --dbname=${AT_TUTORING_SKILLS_DB_NAME}
+          --username=${AT_TUTORING_SKILLS_DB_USER}
+          --host=localhost
+          --port=${AT_TUTORING_SKILLS_DB_PORT}
+        interval: 10s
+        timeout: 5s
+        retries: 10
+      volumes:
+        - tutoring-skills-postgres-data:/var/lib/postgresql/data
+      command: postgres -c port=${AT_TUTORING_SKILLS_DB_PORT}
+
+  at_tutoring_skills_api:
+    container_name: at_tutoring_skills_api
+    expose:
+      - "${AT_TUTORING_SKILLS_API_SERVER_PORT}"
+    ports:
+      - "${AT_TUTORING_SKILLS_API_SERVER_PORT}:${AT_TUTORING_SKILLS_API_SERVER_PORT}"
+    build:
+      dockerfile: ./docker/Dockerfile.at_tutoring_skills_api
+    command: python -m at_tutoring_skills
+      --host ${AT_TUTORING_SKILLS_API_RABBITMQ_HOST}
+      --port ${AT_TUTORING_SKILLS_API_RABBITMQ_PORT}
+      --login ${AT_TUTORING_SKILLS_API_RABBITMQ_LOGIN}
+      --password ${AT_TUTORING_SKILLS_API_RABBITMQ_PASSWORD}
+      --server-host 0.0.0.0
+      --server-port ${AT_TUTORING_SKILLS_API_SERVER_PORT}
+    depends_on:
+      at_queue:
+        condition: service_healthy
+      at_tutoring_skills_db:
+        condition: service_healthy
+    networks:
+      - custom-network
+    environment:
+      DB_ENGINE: ${AT_TUTORING_SKILLS_API_DB_ENGINE}
+      DB_NAME: ${AT_TUTORING_SKILLS_API_DB_NAME}
+      DB_USER: ${AT_TUTORING_SKILLS_API_DB_USER}
+      DB_PASS: ${AT_TUTORING_SKILLS_API_DB_PASS}
+      DB_HOST: ${AT_TUTORING_SKILLS_API_DB_HOST}
+      DB_PORT: ${AT_TUTORING_SKILLS_API_DB_PORT}
+
+networks:
+  custom-network:
+    external: true
+
+volumes:
+  simulation-postgres-data:
+  knowledge-postgres-data:
+  tutoring-skills-postgres-data:
+  user-postgres-data:
+  minio-data:
+  redis_data:
