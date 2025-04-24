@@ -51,34 +51,6 @@ services:
       timeout: 3s
       retries: 30
 
-  at_simulation_db:
-    container_name: at_simulation_db
-    image: "postgres:latest"
-    expose:
-      - "${AT_SIMULATION_DB_PORT}"
-    ports:
-      - "${AT_SIMULATION_DB_PORT}:${AT_SIMULATION_DB_PORT}"
-    environment:
-      POSTGRES_USER: ${AT_SIMULATION_DB_USER}
-      POSTGRES_PASSWORD: ${AT_SIMULATION_DB_PASS}
-      POSTGRES_DB: ${AT_SIMULATION_DB_NAME}
-    restart: unless-stopped
-    networks:
-      - custom-network
-    healthcheck:
-      test: >
-        pg_isready
-        --dbname=${AT_SIMULATION_DB_NAME}
-        --username=${AT_SIMULATION_DB_USER}
-        --host=localhost
-        --port=${AT_SIMULATION_DB_PORT}
-      interval: 10s
-      timeout: 5s
-      retries: 10
-    volumes:
-      - simulation-postgres-data:/var/lib/postgresql/data
-    command: postgres -c port=${AT_SIMULATION_DB_PORT}
-
   minio:
     container_name: minio
     image: "minio/minio:latest"
@@ -98,7 +70,13 @@ services:
     networks:
       - custom-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:${AT_SIMULATION_MINIO_API_PORT}/minio/health/live"]
+      test:
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "http://localhost:${AT_SIMULATION_MINIO_API_PORT}/minio/health/live",
+        ]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -108,11 +86,11 @@ services:
     build:
       dockerfile: ./docker/Dockerfile.at_user_api
     command: python -m at_user_api
-      --db_host at_user_db
-      --db_port ${AT_USER_DB_PORT}
-      --db_name ${AT_USER_DB_NAME}
-      --db_user ${AT_USER_DB_USER}
-      --db_pass ${AT_USER_DB_PASS}
+      --db_host ${AT_USER_API_DB_HOST}
+      --db_port ${AT_USER_API_DB_PORT}
+      --db_name ${AT_USER_API_DB_NAME}
+      --db_user ${AT_USER_API_DB_USER}
+      --db_pass ${AT_USER_API_DB_PASS}
       --rabbitmq_host ${AT_USER_API_RABBITMQ_HOST}
       --rabbitmq_port ${AT_USER_API_RABBITMQ_PORT}
       --rabbitmq_login ${AT_USER_API_RABBITMQ_LOGIN}
@@ -128,7 +106,7 @@ services:
     depends_on:
       at_queue:
         condition: service_healthy
-      at_user_db:
+      at_postgres:
         condition: service_healthy
     networks:
       - custom-network
@@ -165,40 +143,12 @@ services:
     depends_on:
       at_queue:
         condition: service_healthy
-      at_simulation_db:
+      at_postgres:
         condition: service_healthy
       minio:
         condition: service_healthy
     networks:
       - custom-network
-
-  at_user_db:
-    container_name: at_user_db
-    image: "postgres:latest"
-    expose:
-      - "${AT_USER_DB_PORT}"
-    ports:
-      - "${AT_USER_DB_PORT}:${AT_USER_DB_PORT}"
-    environment:
-      POSTGRES_USER: ${AT_USER_DB_USER}
-      POSTGRES_PASSWORD: ${AT_USER_DB_PASS}
-      POSTGRES_DB: ${AT_USER_DB_NAME}
-    restart: unless-stopped
-    networks:
-      - custom-network
-    healthcheck:
-      test: >
-        pg_isready
-        --dbname=${AT_USER_DB_NAME}
-        --username=${AT_USER_DB_USER}
-        --host=localhost
-        --port=${AT_USER_DB_PORT}
-      interval: 10s
-      timeout: 5s
-      retries: 10
-    volumes:
-      - user-postgres-data:/var/lib/postgresql/data
-    command: postgres -c port=${AT_USER_DB_PORT}
 
   at_solver:
     container_name: at_solver
@@ -316,7 +266,6 @@ services:
       AT_JOINT_DEBUGGER_PORT: ${AT_JOINT_DEBUGGER_PORT}
       AT_TUTORING_SKILLS_API_SERVER_PORT: ${AT_TUTORING_SKILLS_API_SERVER_PORT}
 
-
   at_configurator:
     container_name: at_configurator
     build:
@@ -336,35 +285,6 @@ services:
       - custom-network
     volumes:
       - ./config/at_configurator:/var/config/at_configurator
-
-  at_krl_editor_db:
-    container_name: at_krl_editor_db
-    image: "postgres:latest"
-    expose:
-      - "${AT_KRL_EDITOR_DB_PORT}"
-    ports:
-      - "${AT_KRL_EDITOR_DB_PORT}:${AT_KRL_EDITOR_DB_PORT}"
-    environment:
-      POSTGRES_USER: ${AT_KRL_EDITOR_DB_USER}
-      POSTGRES_PASSWORD: ${AT_KRL_EDITOR_DB_PASS}
-      POSTGRES_DB: ${AT_KRL_EDITOR_DB_NAME}
-    restart: unless-stopped
-    networks:
-      - custom-network
-    healthcheck:
-      test: >
-        pg_isready
-        --dbname=${AT_KRL_EDITOR_DB_NAME}
-        --username=${AT_KRL_EDITOR_DB_USER}
-        --host=localhost
-        --port=${AT_KRL_EDITOR_DB_PORT}
-      interval: 10s
-      timeout: 5s
-      retries: 10
-    volumes:
-      - knowledge-postgres-data:/var/lib/postgresql/data
-    command: > 
-      postgres -c port=${AT_KRL_EDITOR_DB_PORT}
 
   at_redis:
     container_name: at_redis
@@ -420,7 +340,7 @@ services:
         condition: service_healthy
       at_redis:
         condition: service_healthy
-      at_krl_editor_db:
+      at_postgres:
         condition: service_healthy
     networks:
       - custom-network
@@ -453,34 +373,6 @@ services:
     networks:
       - custom-network
 
-  at_tutoring_skills_db:
-      container_name: at_tutoring_skills_db
-      image: "postgres:latest"
-      expose:
-        - "${AT_TUTORING_SKILLS_DB_PORT}"
-      ports:
-        - "${AT_TUTORING_SKILLS_DB_PORT}:${AT_TUTORING_SKILLS_DB_PORT}"
-      environment:
-        POSTGRES_USER: ${AT_TUTORING_SKILLS_DB_USER}
-        POSTGRES_PASSWORD: ${AT_TUTORING_SKILLS_DB_PASS}
-        POSTGRES_DB: ${AT_TUTORING_SKILLS_DB_NAME}
-      restart: unless-stopped
-      networks:
-        - custom-network
-      healthcheck:
-        test: >
-          pg_isready
-          --dbname=${AT_TUTORING_SKILLS_DB_NAME}
-          --username=${AT_TUTORING_SKILLS_DB_USER}
-          --host=localhost
-          --port=${AT_TUTORING_SKILLS_DB_PORT}
-        interval: 10s
-        timeout: 5s
-        retries: 10
-      volumes:
-        - tutoring-skills-postgres-data:/var/lib/postgresql/data
-      command: postgres -c port=${AT_TUTORING_SKILLS_DB_PORT}
-
   at_tutoring_skills_api:
     container_name: at_tutoring_skills_api
     expose:
@@ -499,7 +391,7 @@ services:
     depends_on:
       at_queue:
         condition: service_healthy
-      at_tutoring_skills_db:
+      at_postgres:
         condition: service_healthy
     networks:
       - custom-network
@@ -511,14 +403,66 @@ services:
       DB_HOST: ${AT_TUTORING_SKILLS_API_DB_HOST}
       DB_PORT: ${AT_TUTORING_SKILLS_API_DB_PORT}
 
+  at_postgres:
+    container_name: at_postgres
+    image: "postgres:latest"
+    expose:
+      - "${AT_POSTGRES_DB_PORT}"
+    ports:
+      - "${AT_POSTGRES_DB_PORT}:${AT_POSTGRES_DB_PORT}"
+    environment:
+      POSTGRES_DB: at_postgres_user
+      POSTGRES_USER: ${AT_POSTGRES_DB_USER}
+      POSTGRES_PASSWORD: ${AT_POSTGRES_DB_PASS}
+      AT_POSTGRES_DB_USER: ${AT_POSTGRES_DB_USER}
+      AT_POSTGRES_DB_PASS: ${AT_POSTGRES_DB_PASS}
+      AT_POSTGRES_DB_PORT: ${AT_POSTGRES_DB_PORT}
+      AT_POSTGRES_DB_NAME_SIMULATION: ${AT_POSTGRES_DB_NAME_SIMULATION}
+      AT_POSTGRES_DB_NAME_USER: ${AT_POSTGRES_DB_NAME_USER}
+    restart: unless-stopped
+    networks:
+      - custom-network
+    healthcheck:
+      test: >
+        pg_isready
+        --username=${AT_POSTGRES_DB_USER}
+        --host=localhost
+        --port=${AT_POSTGRES_DB_PORT}
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./config/at_postgres:/docker-entrypoint-initdb.d:ro
+    command: postgres -c port=${AT_POSTGRES_DB_PORT}
+
+  at_postgres_migrations:
+    image: python:3.12
+    container_name: at_postgres_migrations
+    profiles:
+      - manual
+    depends_on:
+      at_postgres:
+        condition: service_healthy
+    environment:
+      POSTGRES_USER: ${AT_POSTGRES_DB_USER}
+      POSTGRES_PASSWORD: ${AT_POSTGRES_DB_PASS}
+      AT_POSTGRES_DB_USER: ${AT_POSTGRES_DB_USER}
+      AT_POSTGRES_DB_PASS: ${AT_POSTGRES_DB_PASS}
+      AT_POSTGRES_DB_PORT: ${AT_POSTGRES_DB_PORT}
+      AT_POSTGRES_DB_NAME_SIMULATION: ${AT_POSTGRES_DB_NAME_SIMULATION}
+      AT_POSTGRES_DB_NAME_USER: ${AT_POSTGRES_DB_NAME_USER}
+    volumes:
+      - ./config/at_postgres_migrations:/migrations
+    entrypoint: ["/migrations/apply.sh"]
+    networks:
+      - custom-network
+
 networks:
   custom-network:
     external: true
 
 volumes:
-  simulation-postgres-data:
-  knowledge-postgres-data:
-  tutoring-skills-postgres-data:
-  user-postgres-data:
+  postgres-data:
   minio-data:
   redis_data:

@@ -1,2 +1,6 @@
 FROM python:3.12
+
+RUN apt-get update && \
+apt-get install -y graphviz
+
 RUN pip install git+https://github.com/grigandal625/AT_TUTORING_SKILLS.git@main
