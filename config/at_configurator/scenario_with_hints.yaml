@@ -1091,14 +1091,26 @@ transitions:
     type: link # ручной переход по кнопке
     position: control # header/control/footer расположение кнопки перехода
     source: kb_start # из состояния
-    dest: kb_creation # в состояние
-    label: Приступить к работе 1 - Технология построения темпоральных баз знаний
+    dest: sm_creation # в состояние
+    label: Приступить к работе 2 - Технология построения имитационных моделей внешней среды
     actions: # действия set_attribute/show_message
       # задать значение атрибуте
       - set_attribute:
           attribute: test_status # сам атрибут/параметр
-          value: kb_creation # значение 
+          value: sm_creation # значение 
   
+  create_var_new:
+    type: link # ручной переход по кнопке
+    position: control # header/control/footer расположение кнопки перехода
+    source: sm_variant_description # из состояния
+    dest: sm_creation # в состояние
+    label: Приступить к работе 2 - Технология построения имитационных моделей внешней среды
+    actions: # действия set_attribute/show_message
+      # задать значение атрибуте
+      - set_attribute:
+          attribute: test_status # сам атрибут/параметр
+          value: sm_creation # значение 
+
   start_create_sm_new:
     type: link # ручной переход по кнопке
     position: control # header/control/footer расположение кнопки перехода

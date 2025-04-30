@@ -454,7 +454,7 @@ services:
       AT_POSTGRES_DB_NAME_USER: ${AT_POSTGRES_DB_NAME_USER}
     volumes:
       - ./config/at_postgres_migrations:/migrations
-    entrypoint: ["/migrations/apply.sh"]
+    command: bash -c "/migrations/apply.sh"
     networks:
       - custom-network
 
