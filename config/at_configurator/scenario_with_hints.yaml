@@ -1103,13 +1103,13 @@ transitions:
     type: link # ручной переход по кнопке
     position: control # header/control/footer расположение кнопки перехода
     source: sm_variant_description # из состояния
-    dest: sm_creation # в состояние
+    dest: building_resource_types # в состояние
     label: Приступить к работе 2 - Технология построения имитационных моделей внешней среды
     actions: # действия set_attribute/show_message
       # задать значение атрибуте
       - set_attribute:
           attribute: test_status # сам атрибут/параметр
-          value: sm_creation # значение 
+          value: building_resource_types # значение 
 
   start_create_sm_new:
     type: link # ручной переход по кнопке
