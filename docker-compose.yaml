@@ -373,6 +373,18 @@ services:
     networks:
       - custom-network
 
+  at_tutoring_skills_front:
+    image: grigandal625/at-tutoring-skills-front:latest
+    container_name: at_tutoring_skills_front
+    ports:
+      - "${AT_TUTORING_SKILLS_FRONT_PORT}:${AT_TUTORING_SKILLS_FRONT_PORT}"
+    environment:
+      PORT: ${AT_TUTORING_SKILLS_FRONT_PORT}
+      API_PORT: ${AT_TUTORING_SKILLS_FRONT_API_PORT}
+    restart: unless-stopped
+    networks:
+      - custom-network
+
   at_tutoring_skills_api:
     container_name: at_tutoring_skills_api
     expose:
@@ -432,7 +444,7 @@ services:
       timeout: 5s
       retries: 10
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql
       - ./config/at_postgres:/docker-entrypoint-initdb.d:ro
     command: postgres -c port=${AT_POSTGRES_DB_PORT}
 

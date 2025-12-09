@@ -12,7 +12,7 @@ golangci-lint --version
 
 RUN /usr/local/go/bin/go install golang.org/x/tools/cmd/goimports@latest
 
-RUN pip install git+https://github.com/leerycorsair/at_simulation_api.git@master
+RUN pip install git+https://github.com/grigandal625/at_simulation_api.git@master
 
 ENV PATH=$PATH:/root/go/bin
 
