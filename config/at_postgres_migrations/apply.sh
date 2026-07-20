@@ -27,5 +27,5 @@ apply_migration() {
     cd ..
 }
 
-apply_migration "https://github.com/leerycorsair/at_user_api.git" "at_user_api" ${AT_POSTGRES_DB_NAME_USER}
+# apply_migration "https://github.com/leerycorsair/at_user_api.git" "at_user_api" ${AT_POSTGRES_DB_NAME_USER}
 apply_migration "https://github.com/leerycorsair/at_simulation_api.git" "at_simulation_api" ${AT_POSTGRES_DB_NAME_SIMULATION}

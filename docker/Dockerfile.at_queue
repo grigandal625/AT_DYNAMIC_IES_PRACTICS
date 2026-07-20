@@ -1,2 +1,6 @@
 FROM python:3.12
-RUN pip install git+https://github.com/grigandal625/AT_QUEUE.git@master
+RUN apt-get update && apt-get install -y git
+RUN cd / && git clone https://github.com/grigandal625/AT_QUEUE.git
+WORKDIR /AT_QUEUE/
+RUN git checkout master
+RUN poetry config virtualenvs.create false && poetry env use /usr/bin/python3 && poetry lock && poetry install

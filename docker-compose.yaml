@@ -85,7 +85,8 @@ services:
     container_name: at_user_api
     build:
       dockerfile: ./docker/Dockerfile.at_user_api
-    command: python -m at_user_api
+    command: python -m at_user_ng
+      --db_engine ${AT_USER_API_DB_ENGINE}
       --db_host ${AT_USER_API_DB_HOST}
       --db_port ${AT_USER_API_DB_PORT}
       --db_name ${AT_USER_API_DB_NAME}
