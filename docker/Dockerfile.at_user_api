@@ -1,2 +1,2 @@
 FROM python:3.12
-RUN pip install git+https://github.com/leerycorsair/at_user_api.git@master
+RUN pip install git+https://github.com/grigandal625/AT_USER_NG.git@main
